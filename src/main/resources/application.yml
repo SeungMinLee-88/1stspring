@@ -19,11 +19,13 @@ spring:
     password: 123qwe
     username: root
     url: jdbc:mariadb://localhost:3306/shop
+    hikari:
+      auto-commit: true
   profiles:
     active: old
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     show-sql: 'true'
     properties:
       hibernate:
