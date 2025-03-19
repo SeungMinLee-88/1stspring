@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -31,4 +32,28 @@ public class BoardService {
     }
     return boardDTOList;
   }
+
+  @Transactional
+  public void updateHits(Long id) {
+    boardRepository.updateHits(id);
+  }
+
+  @Transactional
+  public BoardDTO findById(Long id) {
+    Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(id);
+    if (optionalBoardEntity.isPresent()) {
+      BoardEntity boardEntity = optionalBoardEntity.get();
+      BoardDTO boardDTO = BoardDTO.toBoardDTO(boardEntity);
+      return boardDTO;
+    } else {
+      return null;
+    }
+  }
+
+  public BoardDTO update(BoardDTO boardDTO) {
+    BoardEntity boardEntity = BoardEntity.toUpdateEntity(boardDTO);
+    boardRepository.save(boardEntity);
+    return findById(boardDTO.getId());
+  }
+
 }
