@@ -1,7 +1,9 @@
 package com.spring.board.controller;
 
 import com.spring.board.dto.BoardDTO;
+import com.spring.board.dto.CommentDTO;
 import com.spring.board.service.BoardService.BoardService;
+import com.spring.board.service.BoardService.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +20,7 @@ import java.util.List;
 @RequestMapping("/board")
 public class BoardController {
     private final BoardService boardService;
+    private final CommentService commentService;
 
     @GetMapping("/save")
     public String saveForm() {
@@ -40,7 +43,6 @@ public class BoardController {
         return "list";
     }
 
-
     @GetMapping("/{id}")
     public String findById(@PathVariable Long id, Model model,
                            @PageableDefault(page=1) Pageable pageable) {
@@ -50,6 +52,9 @@ public class BoardController {
          */
         boardService.updateHits(id);
         BoardDTO boardDTO = boardService.findById(id);
+        /* 댓글 목록 가져오기 */
+        List<CommentDTO> commentDTOList = commentService.findAll(id);
+        model.addAttribute("commentList", commentDTOList);
         model.addAttribute("board", boardDTO);
         model.addAttribute("page", pageable.getPageNumber());
         return "detail";
@@ -63,9 +68,17 @@ public class BoardController {
     }
 
     @PostMapping("/update")
-    public String update(@ModelAttribute BoardDTO boardDTO, Model model) {
+    public String update(@ModelAttribute BoardDTO boardDTO, Model model,
+                         @PageableDefault(page=1) Pageable pageable) {
         BoardDTO board = boardService.update(boardDTO);
         model.addAttribute("board", board);
+
+        /* 댓글 목록 가져오기 */
+        List<CommentDTO> commentDTOList = commentService.findAll(board.getId());
+        model.addAttribute("commentList", commentDTOList);
+        model.addAttribute("board", boardDTO);
+        model.addAttribute("page", pageable.getPageNumber());
+
         return "detail";
 //        return "redirect:/board/" + boardDTO.getId();
     }
