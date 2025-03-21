@@ -1,4 +1,4 @@
-package com.spring.board.service.BoardService;
+package com.spring.board.service;
 
 import com.spring.board.dto.CommentDTO;
 import com.spring.board.entity.BoardEntity;

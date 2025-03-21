@@ -2,8 +2,8 @@ package com.spring.board.controller;
 
 import com.spring.board.dto.BoardDTO;
 import com.spring.board.dto.CommentDTO;
-import com.spring.board.service.BoardService.BoardService;
-import com.spring.board.service.BoardService.CommentService;
+import com.spring.board.service.BoardService;
+import com.spring.board.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
