@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.List;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/board")
 public class BoardController {
@@ -35,12 +35,12 @@ public class BoardController {
     }
 
     @GetMapping("/")
-    public String findAll(Model model) {
+    public List<BoardDTO> findAll(Model model) {
         // DB에서 전체 게시글 데이터를 가져와서 list.html에 보여준다.
         List<BoardDTO> boardDTOList = boardService.findAll();
         System.out.println("boardDTOList : " + boardDTOList.toString());
-        model.addAttribute("boardList", boardDTOList);
-        return "list";
+        //model.addAttribute("boardList", boardDTOList);
+        return boardDTOList;
     }
 
     @GetMapping("/{id}")
@@ -90,7 +90,7 @@ public class BoardController {
     }
 
     @GetMapping("/paging")
-    public String paging(@PageableDefault(page = 1) Pageable pageable, Model model){
+    public Page<BoardDTO> paging(@PageableDefault(page = 1) Pageable pageable, Model model){
         //pageable.getPageNumber();
         Page<BoardDTO> boardList = boardService.paging(pageable);
         int blockLimit = 3;
@@ -100,7 +100,7 @@ public class BoardController {
         model.addAttribute("boardList", boardList);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
-        return "paging";
+        return boardList;
     }
 
 }

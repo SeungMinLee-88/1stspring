@@ -1,8 +1,10 @@
 package com.spring.board.config;
 
 import com.spring.board.component.JWTUtil;
+import com.spring.board.filter.CustomLogoutFilter;
 import com.spring.board.filter.JWTFilter;
 import com.spring.board.filter.LoginFilter;
+import com.spring.board.repository.RefreshRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +16,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
@@ -30,11 +33,14 @@ public class SecurityConfig {
   //JWTUtil 주입
   private final JWTUtil jwtUtil;
 
+  private final RefreshRepository refreshRepository;
 
-  public SecurityConfig(AuthenticationConfiguration authenticationConfiguration, JWTUtil jwtUtil) {
+
+  public SecurityConfig(AuthenticationConfiguration authenticationConfiguration, JWTUtil jwtUtil, RefreshRepository refreshRepository) {
 
     this.authenticationConfiguration = authenticationConfiguration;
     this.jwtUtil = jwtUtil;
+    this.refreshRepository = refreshRepository;
   }
 
   //AuthenticationManager Bean 등록
@@ -90,8 +96,12 @@ public class SecurityConfig {
                     .anyRequest().authenticated());*/
     http
             .authorizeHttpRequests((auth) -> auth
-                    .requestMatchers("/login", "/", "/join", "/reissue").permitAll()
-                    .anyRequest().authenticated());
+                    //.requestMatchers("/login", "/", "/join", "/reissue").permitAll()
+                    .requestMatchers("/**").permitAll()
+                    .requestMatchers("/*").permitAll()
+                    .requestMatchers("/swagger-ui/*").permitAll()
+                    .requestMatchers("/swagger-ui/**").permitAll());
+                    //.anyRequest().authenticated());
 
     //JWTFilter 등록
     http.addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
@@ -102,9 +112,10 @@ public class SecurityConfig {
 
     //AuthenticationManager()와 JWTUtil 인수 전달
     http
-            .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
+            .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, refreshRepository), UsernamePasswordAuthenticationFilter.class);
 
-
+    http
+            .addFilterBefore(new CustomLogoutFilter(jwtUtil, refreshRepository), LogoutFilter.class);
 
     //세션 설정
     http.sessionManagement((session) -> session
