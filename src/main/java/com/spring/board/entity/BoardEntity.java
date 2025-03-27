@@ -10,10 +10,10 @@ import java.util.List;
 // DB의 테이블 역할을 하는 클래스
 @Entity
 @Getter
-@Setter
-/*@Builder
+/*@Setter*/
+@Builder
 @NoArgsConstructor
-@AllArgsConstructor*/
+@AllArgsConstructor
 @Table(name = "board_table")
 public class BoardEntity extends BaseEntity {
   @Id // pk 컬럼 지정. 필수
@@ -45,6 +45,48 @@ public class BoardEntity extends BaseEntity {
   private List<CommentEntity> commentEntityList = new ArrayList<>();
 
   public static BoardEntity toSaveEntity(BoardDTO boardDTO) {
+    return BoardEntity.builder()
+            .id(boardDTO.getId())
+            .boardWriter(boardDTO.getBoardWriter())
+            .boardPass(boardDTO.getBoardPass())
+            .boardTitle(boardDTO.getBoardTitle())
+            .boardContents(boardDTO.getBoardContents())
+            .boardHits(boardDTO.getBoardHits())
+            .fileAttached(0)
+            .build();
+  }
+
+  public static BoardEntity toUpdateEntity(BoardDTO boardDTO) {
+
+    return BoardEntity.builder()
+            .id(boardDTO.getId())
+            .boardWriter(boardDTO.getBoardWriter())
+            .boardPass(boardDTO.getBoardPass())
+            .boardTitle(boardDTO.getBoardTitle())
+            .boardContents(boardDTO.getBoardContents())
+            .boardHits(boardDTO.getBoardHits())
+            .fileAttached(0)
+            .build();
+  }
+
+/*
+  public static BoardEntity toSaveFileEntity(BoardDTO boardDTO) {
+    return BoardEntity.builder()
+            .id(boardDTO.getId())
+            .boardWriter(boardDTO.getBoardWriter())
+            .boardPass(boardDTO.getBoardPass())
+            .boardTitle(boardDTO.getBoardTitle())
+            .boardContents(boardDTO.getBoardContents())
+            .boardHits(boardDTO.getBoardHits())
+            .fileAttached(1)
+            .build();
+  }
+*/
+/*
+ no user builder
+*/
+
+  /*public static BoardEntity toSaveEntity(BoardDTO boardDTO) {
     BoardEntity boardEntity = new BoardEntity();
     boardEntity.setBoardWriter(boardDTO.getBoardWriter());
     boardEntity.setBoardPass(boardDTO.getBoardPass());
@@ -56,14 +98,6 @@ public class BoardEntity extends BaseEntity {
 
     return boardEntity;
 
-    /*return BoardEntity.builder()
-            .id(boardDTO.getId())
-            .boardWriter(boardDTO.getBoardWriter())
-            .boardPass(boardDTO.getBoardPass())
-            .boardTitle(boardDTO.getBoardTitle())
-            .boardContents(boardDTO.getBoardContents())
-            .boardHits(boardDTO.getBoardHits())
-            .build();*/
   }
 
   public static BoardEntity toUpdateEntity(BoardDTO boardDTO) {
@@ -76,14 +110,6 @@ public class BoardEntity extends BaseEntity {
     boardEntity.setBoardHits(boardDTO.getBoardHits());
     return boardEntity;
 
-    /*return BoardEntity.builder()
-            .id(boardDTO.getId())
-            .boardWriter(boardDTO.getBoardWriter())
-            .boardPass(boardDTO.getBoardPass())
-            .boardTitle(boardDTO.getBoardTitle())
-            .boardContents(boardDTO.getBoardContents())
-            .boardHits(boardDTO.getBoardHits())
-            .build();*/
   }
 
   public static BoardEntity toSaveFileEntity(BoardDTO boardDTO) {
@@ -95,6 +121,6 @@ public class BoardEntity extends BaseEntity {
     boardEntity.setBoardHits(0);
     boardEntity.setFileAttached(1); // 파일 있음.
     return boardEntity;
-  }
+  }*/
 
 }

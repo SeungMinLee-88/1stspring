@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -21,16 +22,13 @@ public class RestBoardController {
     private final BoardService boardService;
     private final CommentService commentService;
 
-    @GetMapping("/save")
-    public String saveForm() {
-        return "save";
-    }
-
     @PostMapping("/save")
-    public String save(@ModelAttribute BoardDTO boardDTO) throws IOException {
+    public BoardDTO save(@ModelAttribute BoardDTO boardDTO) throws IOException {
         System.out.println("boardDTO = " + boardDTO);
-        boardService.save(boardDTO);
-        return "index";
+        LocalDateTime time = LocalDateTime.now();
+        System.out.println("time = " + time);
+
+        return boardService.save(boardDTO);
     }
 
     @GetMapping("/")

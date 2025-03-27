@@ -26,25 +26,15 @@ public class BoardService {
   private final BoardRepository boardRepository;
   private final BoardFileRepository boardFileRepository;
 
-  public void save(BoardDTO boardDTO) throws IOException {
+  public BoardDTO save(BoardDTO boardDTO) throws IOException {
     // 파일 첨부 여부에 따라 로직 분리
-    if (boardDTO.getBoardFile().isEmpty()) {
-      // 첨부 파일 없음.
+    /*if (boardDTO.getBoardFile().isEmpty()) {*/
+
       BoardEntity boardEntity = BoardEntity.toSaveEntity(boardDTO);
       boardRepository.save(boardEntity);
-    } else {
+/*    } else {*/
       // 첨부 파일 있음.
-            /*
-                1. DTO에 담긴 파일을 꺼냄
-                2. 파일의 이름 가져옴
-                3. 서버 저장용 이름을 만듦
-                // 내사진.jpg => 839798375892_내사진.jpg
-                4. 저장 경로 설정
-                5. 해당 경로에 파일 저장
-                6. board_table에 해당 데이터 save 처리
-                7. board_file_table에 해당 데이터 save 처리
-             */
-      BoardEntity boardEntity = BoardEntity.toSaveFileEntity(boardDTO);
+/*      BoardEntity boardEntity = BoardEntity.toSaveFileEntity(boardDTO);
       Long savedId = boardRepository.save(boardEntity).getId();
       BoardEntity board = boardRepository.findById(savedId).get();
 
@@ -57,9 +47,9 @@ public class BoardService {
         boardFile.transferTo(new File(savePath)); // 5.
         BoardFileEntity boardFileEntity = BoardFileEntity.toBoardFileEntity(board, originalFilename, storedFileName);
         boardFileRepository.save(boardFileEntity);
-      }
-    }
-
+      }*/
+/*  }*/
+      return boardDTO;
   }
 
   @Transactional
