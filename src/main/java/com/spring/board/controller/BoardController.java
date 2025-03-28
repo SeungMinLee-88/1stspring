@@ -89,7 +89,7 @@ public class BoardController {
         return "redirect:/board/";
     }
 
-    @GetMapping("/paging")
+/*    @GetMapping("/paging")
     public String paging(@PageableDefault(page = 1) Pageable pageable, Model model){
         //pageable.getPageNumber();
         Page<BoardDTO> boardList = boardService.paging(pageable);
@@ -101,6 +101,6 @@ public class BoardController {
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
         return "paging";
-    }
+    }*/
 
 }

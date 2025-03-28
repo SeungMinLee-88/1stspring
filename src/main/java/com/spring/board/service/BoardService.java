@@ -1,5 +1,6 @@
 package com.spring.board.service;
 
+import com.spring.board.controller.RequestParameters;
 import com.spring.board.dto.BoardDTO;
 import com.spring.board.entity.BoardEntity;
 import com.spring.board.entity.BoardFileEntity;
@@ -7,6 +8,8 @@ import com.spring.board.repository.BoardFileRepository;
 import com.spring.board.repository.BoardRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -88,11 +91,30 @@ public class BoardService {
     boardRepository.deleteById(id);
   }
 
-  public Page<BoardDTO> paging(Pageable pageable){
+/*  public List<BoardDTO> findList(){
+    List<BoardEntity> boardEntities = boardRepository.findAllboards123123();
+
+    ModelMapper mapper = new ModelMapper();
+
+    List<BoardDTO> boardDTOList = mapper.map(boardEntities, new TypeToken<List<BoardDTO>>(){}.getType());
+
+    return boardDTOList;
+
+  }*/
+
+
+  public Page<BoardDTO> paging(Pageable pageable, RequestParameters requestParameters){
     int page = pageable.getPageNumber() - 1;
     int pageLimit = 3;
-    Page<BoardEntity> boardEntities = boardRepository.findAll(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
-    System.out.println("boardEntities.getContent() = " + boardEntities.getContent()); // 요청 페이지에 해당하는 글
+    /*Page<BoardEntity> boardEntities = boardRepository.findAllboardWithParameterPagination(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")), sortfield, searchfield, searchtext);*/
+
+    String wheretext = "";
+    if(requestParameters.getSearchfield() != null && requestParameters.getSearchfield() != "") wheretext =  "where " + requestParameters.getSearchfield() + " like " + "\'%" + requestParameters.getSearchtext() + "%\'";
+
+
+    Page<BoardEntity> boardEntities = boardRepository.findAllboardWithParameterPagination(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")), requestParameters.getSortfield(), wheretext);
+
+    System.out.println("boardEntities.getContent() = " + boardEntities.getContent());
     System.out.println("boardEntities.getTotalElements() = " + boardEntities.getTotalElements()); // 전체 글갯수
     System.out.println("boardEntities.getNumber() = " + boardEntities.getNumber()); // DB로 요청한 페이지 번호
     System.out.println("boardEntities.getTotalPages() = " + boardEntities.getTotalPages()); // 전체 페이지 갯수

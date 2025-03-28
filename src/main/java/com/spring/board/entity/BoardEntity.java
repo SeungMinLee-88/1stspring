@@ -14,7 +14,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "board_table")
+@Table(name = "board")
 public class BoardEntity extends BaseEntity {
   @Id // pk 컬럼 지정. 필수
   @GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment
@@ -51,7 +51,7 @@ public class BoardEntity extends BaseEntity {
             .boardPass(boardDTO.getBoardPass())
             .boardTitle(boardDTO.getBoardTitle())
             .boardContents(boardDTO.getBoardContents())
-            .boardHits(boardDTO.getBoardHits())
+            .boardHits(0)
             .fileAttached(0)
             .build();
   }
