@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @RestController
@@ -25,6 +26,7 @@ import java.util.Objects;
 public class RestBoardController {
     private final BoardService boardService;
     private final CommentService commentService;
+
 
     @PutMapping("/save")
     public ResponseEntity<BoardPostResponse> boardSave(@ModelAttribute BoardDTO boardDTO) throws IOException {
@@ -116,17 +118,17 @@ public class RestBoardController {
         return ResponseEntity.status(HttpStatus.OK).body("delete success");
     }
 
-    @PostMapping("/pagingList")
+    /*@PostMapping("/pagingList")
     public Page<BoardDTO> paging(@PageableDefault(page = 1) Pageable pageable, Model model, @RequestBody RequestParameters requestParameters){
         System.out.println("call pagingList");
         //pageable.getPageNumber();
-        /*
+        *//*
 {
   "sortfield": "board_title",
   "searchfield": "board_title",
   "searchtext": "11"
 }
-        */
+        *//*
         System.out.println("reuestparam : " + requestParameters.getSortfield());
         String sortfield ="";
         String searchfield ="";
@@ -137,9 +139,24 @@ public class RestBoardController {
 
         int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1; // 1 4 7 10 ~~
         int endPage = ((startPage + blockLimit - 1) < boardList.getTotalPages()) ? startPage + blockLimit - 1 : boardList.getTotalPages();
-        model.addAttribute("boardList", boardList);
+*//*        model.addAttribute("boardList", boardList);
         model.addAttribute("startPage", startPage);
-        model.addAttribute("endPage", endPage);
+        model.addAttribute("endPage", endPage);*//*
+        return boardList;
+    }*/
+
+
+    @GetMapping("/pagingList")
+    public Page<BoardDTO> paging(@PageableDefault(page = 1) Pageable pageable, Model model, @RequestParam Map<String,String> params){
+
+        Page<BoardDTO> boardList = boardService.paging(pageable, params);
+        int blockLimit = 3;
+
+        int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1; // 1 4 7 10 ~~
+        int endPage = ((startPage + blockLimit - 1) < boardList.getTotalPages()) ? startPage + blockLimit - 1 : boardList.getTotalPages();
+/*        model.addAttribute("boardList", boardList);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);*/
         return boardList;
     }
 

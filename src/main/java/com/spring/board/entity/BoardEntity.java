@@ -44,6 +44,14 @@ public class BoardEntity extends BaseEntity {
   @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
   private List<CommentEntity> commentEntityList = new ArrayList<>();
 
+  @Data
+  public class SearchCriteria {
+
+    private String searchKey;
+    private String searchValue;
+  }
+
+
   public static BoardEntity toSaveEntity(BoardDTO boardDTO) {
     return BoardEntity.builder()
             .id(boardDTO.getId())

@@ -1,26 +1,23 @@
 package com.spring.board.service;
 
-import com.spring.board.controller.RequestParameters;
 import com.spring.board.dto.BoardDTO;
 import com.spring.board.entity.BoardEntity;
-import com.spring.board.entity.BoardFileEntity;
+import com.spring.board.entity.SearchCriteria;
 import com.spring.board.repository.BoardFileRepository;
 import com.spring.board.repository.BoardRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -103,10 +100,10 @@ public class BoardService {
   }*/
 
 
-  public Page<BoardDTO> paging(Pageable pageable, RequestParameters requestParameters){
+  /*public Page<BoardDTO> paging(Pageable pageable, RequestParameters requestParameters){
     int page = pageable.getPageNumber() - 1;
     int pageLimit = 3;
-    /*Page<BoardEntity> boardEntities = boardRepository.findAllboardWithParameterPagination(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")), sortfield, searchfield, searchtext);*/
+    *//*Page<BoardEntity> boardEntities = boardRepository.findAllboardWithParameterPagination(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")), sortfield, searchfield, searchtext);*//*
 
     String wheretext = "";
     if(requestParameters.getSearchfield() != null && requestParameters.getSearchfield() != "") wheretext =  "where " + requestParameters.getSearchfield() + " like " + "\'%" + requestParameters.getSearchtext() + "%\'";
@@ -114,14 +111,37 @@ public class BoardService {
 
     Page<BoardEntity> boardEntities = boardRepository.findAllboardWithParameterPagination(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")), requestParameters.getSortfield(), wheretext);
 
-    System.out.println("boardEntities.getContent() = " + boardEntities.getContent());
+  *//*  System.out.println("boardEntities.getContent() = " + boardEntities.getContent());
     System.out.println("boardEntities.getTotalElements() = " + boardEntities.getTotalElements()); // 전체 글갯수
     System.out.println("boardEntities.getNumber() = " + boardEntities.getNumber()); // DB로 요청한 페이지 번호
     System.out.println("boardEntities.getTotalPages() = " + boardEntities.getTotalPages()); // 전체 페이지 갯수
     System.out.println("boardEntities.getSize() = " + boardEntities.getSize()); // 한 페이지에 보여지는 글 갯수
     System.out.println("boardEntities.hasPrevious() = " + boardEntities.hasPrevious()); // 이전 페이지 존재 여부
     System.out.println("boardEntities.isFirst() = " + boardEntities.isFirst()); // 첫 페이지 여부
-    System.out.println("boardEntities.isLast() = " + boardEntities.isLast()); // 마지막 페이지 여부
+    System.out.println("boardEntities.isLast() = " + boardEntities.isLast()); // 마지막 페이지 여부*//*
+
+    Page<BoardDTO> boardDTOList = boardEntities.map(board -> new BoardDTO(board.getId(), board.getBoardWriter(), board.getBoardTitle(), board.getBoardHits(), board.getCreatedTime()));
+
+    return boardDTOList;
+
+  }*/
+
+  public Page<BoardDTO> paging(Pageable pageable, Map<String, String> params){
+    int page = pageable.getPageNumber() - 1;
+    int pageLimit = 3;
+
+    Specification<BoardEntity> specification = new BoardSpecification(new SearchCriteria(params.get("searchkey"), params.get("searchvalue")));
+
+    Page<BoardEntity> boardEntities = boardRepository.findAll(specification, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+
+  /*  System.out.println("boardEntities.getContent() = " + boardEntities.getContent());
+    System.out.println("boardEntities.getTotalElements() = " + boardEntities.getTotalElements()); // 전체 글갯수
+    System.out.println("boardEntities.getNumber() = " + boardEntities.getNumber()); // DB로 요청한 페이지 번호
+    System.out.println("boardEntities.getTotalPages() = " + boardEntities.getTotalPages()); // 전체 페이지 갯수
+    System.out.println("boardEntities.getSize() = " + boardEntities.getSize()); // 한 페이지에 보여지는 글 갯수
+    System.out.println("boardEntities.hasPrevious() = " + boardEntities.hasPrevious()); // 이전 페이지 존재 여부
+    System.out.println("boardEntities.isFirst() = " + boardEntities.isFirst()); // 첫 페이지 여부
+    System.out.println("boardEntities.isLast() = " + boardEntities.isLast()); // 마지막 페이지 여부*/
 
     Page<BoardDTO> boardDTOList = boardEntities.map(board -> new BoardDTO(board.getId(), board.getBoardWriter(), board.getBoardTitle(), board.getBoardHits(), board.getCreatedTime()));
 
