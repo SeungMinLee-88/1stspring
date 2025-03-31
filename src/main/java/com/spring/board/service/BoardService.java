@@ -107,6 +107,16 @@ public class BoardService {
     System.out.println("pageable : " + pageable.getPageSize());
 
     System.out.println("params : " + params.toString());
+
+    /*if(params.get("searchKey") != null){
+      Specification<BoardEntity> specification = new BoardSpecification(new SearchCriteria(params.get("searchKey"), params.get("searchValue")));
+      Page<BoardEntity> boardEntities = boardRepository.findAll(specification, PageRequest.of(page, pageable.getPageSize(), pageable.getSort()));
+    }
+    else{
+      Page<BoardEntity> boardEntities = boardRepository.findAll(PageRequest.of(page, pageable.getPageSize(), pageable.getSort()));
+    }*/
+
+
     Specification<BoardEntity> specification = new BoardSpecification(new SearchCriteria(params.get("searchKey"), params.get("searchValue")));
 
     /*Page<BoardEntity> boardEntities = boardRepository.findAll(specification, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));*/

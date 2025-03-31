@@ -97,6 +97,15 @@ public class BoardController {
 
         int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1; // 1 4 7 10 ~~
         int endPage = ((startPage + blockLimit - 1) < boardList.getTotalPages()) ? startPage + blockLimit - 1 : boardList.getTotalPages();
+
+
+        System.out.println("(((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) : " + (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1));
+        System.out.println("pageable.getPageNumber() : " + pageable.getPageNumber());
+        System.out.println("boardList.getTotalPages() : " + boardList.getTotalPages());
+        System.out.println("pageable.getPageSize() : " + pageable.getPageSize());
+        System.out.println("startPage : " + startPage);
+        System.out.println("endPage : " + endPage);
+
         model.addAttribute("boardList", boardList);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
