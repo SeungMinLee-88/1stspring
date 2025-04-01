@@ -28,14 +28,17 @@ public class BoardSpecification implements Specification<BoardEntity> {
                     root.<String> get(criteria.getKey()), criteria.getValue().toString());
         }
         else if (criteria.getOperation().equalsIgnoreCase(":")) {*/
-        if (root.get(criteria.getSearchKey()).getJavaType() == String.class) {
-               return builder.like(
-               root.<String>get(criteria.getSearchKey()), "%" + criteria.getSearchValue() + "%");
-           } else {
-              return builder.equal(root.get(criteria.getSearchKey()), criteria.getSearchValue());
+
+        if(criteria.getSearchKey() != null){
+            if (root.get(criteria.getSearchKey()).getJavaType() == String.class) {
+                   return builder.like(
+                   root.<String>get(criteria.getSearchKey()), "%" + criteria.getSearchValue() + "%");
+               } else {
+                  return builder.equal(root.get(criteria.getSearchKey()), criteria.getSearchValue());
+            }
         }
 /*        }*/
-        //return null;
+        return null;
     }
 
 }

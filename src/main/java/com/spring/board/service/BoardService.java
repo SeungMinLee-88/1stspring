@@ -7,6 +7,8 @@ import com.spring.board.repository.BoardFileRepository;
 import com.spring.board.repository.BoardRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -31,7 +33,7 @@ public class BoardService {
     /*if (boardDTO.getBoardFile().isEmpty()) {*/
 
       BoardEntity boardEntity = BoardEntity.toSaveEntity(boardDTO);
-      boardRepository.save(boardEntity);
+      BoardEntity boardEntitys = boardRepository.save(boardEntity);
 /*    } else {*/
       // 첨부 파일 있음.
 /*      BoardEntity boardEntity = BoardEntity.toSaveFileEntity(boardDTO);
@@ -49,7 +51,12 @@ public class BoardService {
         boardFileRepository.save(boardFileEntity);
       }*/
 /*  }*/
-      return boardDTO;
+
+    ModelMapper mapper = new ModelMapper();
+
+    System.out.println("boardEntitys : " + boardEntitys.toString());
+    BoardDTO boardDTO1  = mapper.map(boardEntitys, new TypeToken<BoardDTO>(){}.getType());
+      return boardDTO1;
   }
 
   @Transactional

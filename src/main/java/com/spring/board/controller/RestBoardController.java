@@ -27,20 +27,29 @@ public class RestBoardController {
     private final BoardService boardService;
     private final CommentService commentService;
 
-
+//@Validated @RequestBody
     @PutMapping("/save")
-    public ResponseEntity<BoardPostResponse> boardSave(@ModelAttribute BoardDTO boardDTO) throws IOException {
+    public ResponseEntity<BoardPostResponse> boardSave(@RequestBody BoardDTO boardDTO) throws IOException {
         System.out.println("boardDTO = " + boardDTO);
         LocalDateTime time = LocalDateTime.now();
         System.out.println("time = " + time);
 
-        boardService.save(boardDTO);
+        BoardDTO boardDTO1 = boardService.save(boardDTO);
+
+        System.out.println("BoardPostResponse = " + ResponseEntity.ok(BoardPostResponse
+                .builder()
+                .resultMessage("save success")
+                .resultCode("200")
+                .id(boardDTO1.getId())
+                .build()));
+        //BoardPostResponse boardPostResponse = new BoardPostResponse();
 
         //return boardService.save(boardDTO);
         return ResponseEntity.ok(BoardPostResponse
                 .builder()
                 .resultMessage("save success")
                 .resultCode("200")
+                .id(boardDTO1.getId())
                 .build());
     }
 
