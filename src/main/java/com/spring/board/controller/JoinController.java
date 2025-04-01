@@ -3,10 +3,10 @@ package com.spring.board.controller;
 import com.spring.board.dto.JoinDTO;
 import com.spring.board.service.JoinService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
+@RequestMapping("/auth")
 @ResponseBody
 public class JoinController {
   private final JoinService joinService;
@@ -17,7 +17,7 @@ public class JoinController {
   }
 
   @PostMapping("/join")
-  public String joinProcess(JoinDTO joinDTO) {
+  public String joinProcess(@RequestBody JoinDTO joinDTO) {
 
     System.out.println(joinDTO.getUsername());
     joinService.joinProcess(joinDTO);
