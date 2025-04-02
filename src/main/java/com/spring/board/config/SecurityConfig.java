@@ -101,12 +101,11 @@ public class SecurityConfig {
     http
             .authorizeHttpRequests((auth) -> auth
                     .requestMatchers("/board/*").permitAll()
-                    .requestMatchers("/api/v1/*/*/*").permitAll()
                     .requestMatchers("/reissue").permitAll()
                     .requestMatchers("/reissue/*").permitAll()
                     .requestMatchers("/login", "/", "/join").permitAll()
                     .requestMatchers("/admin").hasRole("ADMIN")
-
+                    //.requestMatchers("/api/v1/*/*/*").permitAll()
                     .anyRequest().authenticated());
                     /*.requestMatchers("/*").permitAll()*/
 /*                    .requestMatchers("/swagger-ui/*").permitAll()
