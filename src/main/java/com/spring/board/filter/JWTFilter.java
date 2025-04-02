@@ -29,11 +29,14 @@ public class JWTFilter extends OncePerRequestFilter {
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
+    System.out.println("call doFilterInternal");
     // 헤더에서 access키에 담긴 토큰을 꺼냄
     String accessToken = request.getHeader("access");
 
+    System.out.println("accessToken : " + accessToken);
 // 토큰이 없다면 다음 필터로 넘김
     if (accessToken == null) {
+      System.out.println("accessToken == null");
 
       filterChain.doFilter(request, response);
 
@@ -42,9 +45,12 @@ public class JWTFilter extends OncePerRequestFilter {
 
 // 토큰 만료 여부 확인, 만료시 다음 필터로 넘기지 않음
     try {
+      System.out.println("call JWTFilter.isExpired");
       jwtUtil.isExpired(accessToken);
+      System.out.println("call JWTFilter.isExpired end");
     } catch (ExpiredJwtException e) {
 
+      System.out.println("call JWTFilter.isExpired catch");
       //response body
       PrintWriter writer = response.getWriter();
       writer.print("access token expired");
@@ -54,9 +60,11 @@ public class JWTFilter extends OncePerRequestFilter {
       return;
     }
 
+    System.out.println("catch end");
 // 토큰이 access인지 확인 (발급시 페이로드에 명시)
     String category = jwtUtil.getCategory(accessToken);
 
+    System.out.println("call JWTFilter.getCategory");
     if (!category.equals("access")) {
 
       //response body
@@ -67,20 +75,24 @@ public class JWTFilter extends OncePerRequestFilter {
       response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
       return;
     }
+    System.out.println("getCategory end");
 
 // username, role 값을 획득
     String username = jwtUtil.getUsername(accessToken);
     String role = jwtUtil.getRole(accessToken);
+    System.out.println("getUsername end");
 
     UserEntity userEntity = new UserEntity();
     userEntity.setUsername(username);
     userEntity.setRole(role);
     CustomUserDetails customUserDetails = new CustomUserDetails(userEntity);
 
+    System.out.println("CustomUserDetails end");
     Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
     SecurityContextHolder.getContext().setAuthentication(authToken);
-
+    System.out.println("setAuthentication end");
     filterChain.doFilter(request, response);
+    System.out.println("doFilter end");
   }
 }
     /*//request에서 Authorization 헤더를 찾음

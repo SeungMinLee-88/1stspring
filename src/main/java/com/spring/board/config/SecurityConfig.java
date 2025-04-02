@@ -46,6 +46,7 @@ public class SecurityConfig {
   //AuthenticationManager Bean 등록
   @Bean
   public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+    System.out.println("call authenticationManager");
 
     return configuration.getAuthenticationManager();
   }
@@ -59,6 +60,7 @@ public class SecurityConfig {
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    System.out.println("call SecurityFilterChain");
 
     http
             .cors((corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {
@@ -75,6 +77,8 @@ public class SecurityConfig {
                 configuration.setMaxAge(3600L);
 
                 configuration.setExposedHeaders(Collections.singletonList("Authorization"));
+                configuration.setExposedHeaders(Collections.singletonList("Set-Cookie"));
+                configuration.setExposedHeaders(Collections.singletonList("access"));
 
                 return configuration;
               }
@@ -96,8 +100,14 @@ public class SecurityConfig {
                     .anyRequest().authenticated());*/
     http
             .authorizeHttpRequests((auth) -> auth
-                    //.requestMatchers("/login", "/", "/join", "/reissue").permitAll()
-                    .requestMatchers("/admin").permitAll());
+                    .requestMatchers("/board/*").permitAll()
+                    .requestMatchers("/api/v1/*/*/*").permitAll()
+                    .requestMatchers("/reissue").permitAll()
+                    .requestMatchers("/reissue/*").permitAll()
+                    .requestMatchers("/login", "/", "/join").permitAll()
+                    .requestMatchers("/admin").hasRole("ADMIN")
+
+                    .anyRequest().authenticated());
                     /*.requestMatchers("/*").permitAll()*/
 /*                    .requestMatchers("/swagger-ui/*").permitAll()
                     .requestMatchers("/swagger-ui/**").permitAll());*/
