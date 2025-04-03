@@ -103,6 +103,7 @@ public class SecurityConfig {
                     .requestMatchers("/board/*").permitAll()
                     .requestMatchers("/reissue").permitAll()
                     .requestMatchers("/reissue/*").permitAll()
+                    .requestMatchers("/reserve/*/*/*/*").permitAll()
                     .requestMatchers("/login", "/", "/join").permitAll()
                     .requestMatchers("/admin").hasRole("ADMIN")
                     //.requestMatchers("/api/v1/*/*/*").permitAll()
