@@ -1,27 +1,32 @@
 package com.spring.board.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Setter
 @Getter
-public class UserEntity {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "user")
+public class UserEntity extends BaseEntity {
 /*  @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;*/
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "id")
-  private ReserveEntity reserveEntity;
+  private Long id;
 
   private String username;
   private String password;
-
   private String role;
 
+  @OneToMany(mappedBy = "userEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+  private List<ReserveEntity> reserveEntities = new ArrayList<>();
 
 }

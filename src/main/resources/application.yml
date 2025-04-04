@@ -8,7 +8,7 @@ around:
         secret: '"0GWzpWTm_I";'
 spring:
   jwt:
-    secret: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30
+    secret: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-z
   redis:
     host: localhost
     port: '6379'
@@ -27,7 +27,7 @@ spring:
     active: old
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
       #ddl-auto: create
     show-sql: 'true'
     properties:

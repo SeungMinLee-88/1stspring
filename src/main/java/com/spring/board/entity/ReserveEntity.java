@@ -19,12 +19,17 @@ public class ReserveEntity extends BaseEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment
   private Long id;
 
-  @OneToMany(mappedBy = "reserveEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
-  @Column(length = 10, nullable = false) // 크기 20, not null
-  private List<UserEntity> reserveId = new ArrayList<>();
 
-  @ManyToMany(mappedBy = "reserveEntity", fetch = FetchType.LAZY)
-  private List<ReserveTimeEntity> reserveTimeEntities = new ArrayList<>();
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "userId")
+  private UserEntity userEntity;
+
+  @OneToMany(mappedBy = "reserveEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+  private List<ReserveTimeEntity> reserveTimeEntity = new ArrayList<>();
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "hallId")
+  private HallEntity hallEntity;
 
   @Data
   public class SearchCriteria {
@@ -32,4 +37,5 @@ public class ReserveEntity extends BaseEntity {
     private String searchKey;
     private String searchValue;
   }
+
 }
