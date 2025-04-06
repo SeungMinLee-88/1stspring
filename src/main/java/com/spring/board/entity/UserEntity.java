@@ -27,6 +27,6 @@ public class UserEntity extends BaseEntity {
   private String role;
 
   @OneToMany(mappedBy = "userEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
-  private List<ReserveEntity> reserveEntities = new ArrayList<>();
+  private final List<ReserveEntity> reserveEntities = new ArrayList<>();
 
 }

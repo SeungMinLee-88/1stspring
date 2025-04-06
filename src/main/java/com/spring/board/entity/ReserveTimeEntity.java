@@ -1,5 +1,6 @@
 package com.spring.board.entity;
 
+import com.spring.board.dto.ReserveDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,4 +26,11 @@ public class ReserveTimeEntity extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "time_id")
     private TimeEntity timeEntity;
+
+    public static ReserveTimeEntity toSaveEntity(ReserveEntity reserveEntity, TimeEntity timeEntity) {
+        return ReserveTimeEntity.builder()
+                .reserveEntity(reserveEntity)
+                .timeEntity(timeEntity)
+                .build();
+    }
 }

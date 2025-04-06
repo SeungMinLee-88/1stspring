@@ -1,10 +1,12 @@
 package com.spring.board.entity;
 
+import com.spring.board.dto.ReserveDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 // DB의 테이블 역할을 하는 클래스
 @Entity
@@ -19,23 +21,41 @@ public class ReserveEntity extends BaseEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment
   private Long id;
 
+  private String reserveReason;
+  private String reserveDate;
+  private String reservePeriod;
+
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "userId")
+  @JoinColumn(name = "user_id")
   private UserEntity userEntity;
 
-  @OneToMany(mappedBy = "reserveEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
-  private List<ReserveTimeEntity> reserveTimeEntity = new ArrayList<>();
-
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "hallId")
+  @JoinColumn(name = "hall_id")
   private HallEntity hallEntity;
+
+
+  @OneToMany(mappedBy = "reserveEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+  private final List<ReserveTimeEntity> reserveTimeEntity = new ArrayList<>();
+
+
 
   @Data
   public class SearchCriteria {
 
     private String searchKey;
     private String searchValue;
+  }
+
+
+  public static ReserveEntity toSaveEntity(ReserveDTO reserveDTO, UserEntity userEntity, HallEntity hallEntity) {
+    return ReserveEntity.builder()
+            .id(reserveDTO.getId())
+            .reserveReason(reserveDTO.getReserveReason())
+            .reserveDate(reserveDTO.getReserveDate())
+            .reservePeriod(reserveDTO.getReservePeriod())
+            .hallEntity(hallEntity)
+            .build();
   }
 
 }

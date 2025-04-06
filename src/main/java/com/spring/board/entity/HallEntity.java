@@ -7,6 +7,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 /*@Setter*/
@@ -20,4 +23,7 @@ public class HallEntity {
     private Long id;
 
     private String hallName;
+
+    @OneToMany(mappedBy = "hallEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<ReserveEntity> reserveEntities = new ArrayList<>();
 }
