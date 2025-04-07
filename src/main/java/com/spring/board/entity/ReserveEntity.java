@@ -54,6 +54,7 @@ public class ReserveEntity extends BaseEntity {
             .reserveReason(reserveDTO.getReserveReason())
             .reserveDate(reserveDTO.getReserveDate())
             .reservePeriod(reserveDTO.getReservePeriod())
+            .userEntity(userEntity)
             .hallEntity(hallEntity)
             .build();
   }

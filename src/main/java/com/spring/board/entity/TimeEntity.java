@@ -23,7 +23,7 @@ public class TimeEntity{
   private int time;
 
   @OneToMany(mappedBy = "timeEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
-  private List<ReserveTimeEntity> reserveTimeEntity = new ArrayList<>();
+  private final List<ReserveTimeEntity> reserveTimeEntity = new ArrayList<>();
 
 
 }

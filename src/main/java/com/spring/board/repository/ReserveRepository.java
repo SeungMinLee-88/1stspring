@@ -15,5 +15,5 @@ public interface ReserveRepository extends JpaRepository<ReserveEntity, Long> {
             ,nativeQuery = true)
     List<ReserveEntity> findByreserveDateQuery(String reserveDate);
 
-    List<ReserveEntity> findByReserveDate(String reserveDate);
+    List<ReserveEntity> findByReserveDateContaining(String reserveDate);
 }

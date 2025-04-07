@@ -1,6 +1,7 @@
 package com.spring.board.dto;
 
 import com.spring.board.entity.ReserveEntity;
+import com.spring.board.entity.ReserveTimeEntity;
 import lombok.*;
 import org.hibernate.mapping.Map;
 
@@ -20,7 +21,8 @@ public class ReserveDTO {
     private String reservePeriod;
     private Long userId;
     private Long hallId;
-    private List<ReserveEntity> reserveTime;
+    private List<Long> reserveTimeSave;
+    private List<ReserveTimeDTO> reserveTime;
     private LocalDateTime reserveCreatedTime;
     private LocalDateTime reserveUpdatedTime;
 

@@ -2,6 +2,7 @@ package com.spring.board.service;
 
 import com.spring.board.dto.BoardDTO;
 import com.spring.board.dto.ReserveDTO;
+import com.spring.board.dto.ReserveTimeDTO;
 import com.spring.board.dto.TimeDto;
 import com.spring.board.entity.*;
 import com.spring.board.repository.*;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -38,17 +40,18 @@ public class ReserveService {
             ReserveEntity reserveEntity = ReserveEntity.toSaveEntity(reserveDTO, userEntity, hallEntity);
             ReserveEntity reserveEntitys = reserveRepository.save(reserveEntity);
 
-            List<ReserveEntity> timeDtoList = reserveDTO.getReserveTime();
-            for(int i = 0; i < timeDtoList.size(); i++) {
-                System.out.println("timeDtoList : " + timeDtoList.get(i));
-                TimeEntity timeEntity = timeRepository.findById(timeDtoList.get(i)).get();
-                ReserveTimeEntity reserveTimeEntity = ReserveTimeEntity.toSaveEntity(reserveEntity, timeEntity);
+            //List<ReserveTimeDTO> timeDtoList = reserveDTO.getReserveTime();
+            for(int i = 0; i < reserveDTO.getReserveTimeSave().size(); i++) {
+                System.out.println("timeDtoList : " + reserveDTO.getReserveTimeSave().get(i));
+                TimeEntity timeEntity = timeRepository.findById(reserveDTO.getReserveTimeSave() .get(i)).get();
+                ReserveTimeEntity reserveTimeEntity = ReserveTimeEntity.toSaveEntity(reserveEntity, timeEntity,reserveDTO);
                 ReserveTimeEntity reserveTimeEntitys = reserveTimeRepository.save(reserveTimeEntity);
             }
             ModelMapper mapper = new ModelMapper();
 
             System.out.println("reserveEntitys : " + reserveEntitys.toString());
             ReserveDTO reserveDTO1  = mapper.map(reserveEntitys, new TypeToken<ReserveDTO>(){}.getType());
+
             return reserveDTO1;
 
         } else {
@@ -59,18 +62,55 @@ public class ReserveService {
 
     @Transactional
     public List<ReserveDTO> reserveList(ReserveDTO reserveDTO) {
-        List<ReserveEntity> reserveEntityList = reserveRepository.findByreserveDateQuery(reserveDTO.getReserveDate());
+        List<ReserveEntity> reserveEntityList = reserveRepository.findByReserveDateContaining(reserveDTO.getReserveDate());
         //List<ReserveDTO> reserveDTOList = new ArrayList<>();
         for(int i = 0; i < reserveEntityList.size(); i++) {
-            System.out.println("reserveEntityList : " + reserveEntityList.get(i).toString());
-
+            System.out.println("reserveEntityList : " + reserveEntityList.get(i).getReserveTimeEntity().toString());
         }
 /*
         Page<BoardDTO> boardDTOList = boardEntities.map(board -> new BoardDTO(board.getId(), board.getBoardWriter(), board.getBoardTitle(), board.getBoardHits(), board.getCreatedTime()));*/
 
         ModelMapper mapper = new ModelMapper();
         List<ReserveDTO> reserveDTOList  = mapper.map(reserveEntityList, new TypeToken<List<ReserveDTO>>(){}.getType());
-        return reserveDTOList;
+
+        List<ReserveDTO> reserveDTOListAdd = new ArrayList<>();
+        ReserveDTO reserveTimeDTO = new ReserveDTO();
+       /* for(int i = 0; i < reserveDTOList.size(); i++) {
+
+            System.out.println("getReserveTime : " + mapper.map(reserveEntityList.get(i).getReserveTimeEntity(), new TypeToken<ReserveTimeDTO>(){}.getType()));
+            System.out.println("getReserveReason : " + mapper.map(reserveEntityList.get(i).getReserveReason(), new TypeToken<String>(){}.getType()));
+
+            reserveTimeDTO.setId(mapper.map(reserveEntityList.get(i).getId(), new TypeToken<Long>(){}.getType()));
+            reserveTimeDTO.setReserveDate(mapper.map(reserveEntityList.get(i).getReserveDate(), new TypeToken<String>(){}.getType()));
+            reserveTimeDTO.setReserveReason(mapper.map(reserveEntityList.get(i).getReserveReason(), new TypeToken<String>(){}.getType()));
+            reserveTimeDTO.setReservePeriod(mapper.map(reserveEntityList.get(i).getReservePeriod(), new TypeToken<String>(){}.getType()));
+            reserveTimeDTO.setReserveReason(mapper.map(reserveEntityList.get(i).getReserveReason(), new TypeToken<String>(){}.getType()));
+            reserveTimeDTO.setUserId(mapper.map(reserveEntityList.get(i).getReservePeriod(), new TypeToken<Long>(){}.getType()));
+            reserveTimeDTO.setHallId(mapper.map(reserveEntityList.get(i).getReservePeriod(), new TypeToken<Long>(){}.getType()));
+            reserveTimeDTO.setReserveTime(mapper.map(reserveEntityList.get(i).getReserveTimeEntity(), new TypeToken<List<ReserveTimeDTO>>(){}.getType()));
+
+            reserveDTOListAdd.add(i, reserveTimeDTO);
+        }
+        System.out.println("reserveDTOListAdd : " + reserveDTOListAdd);*/
+
+        for(int i = 0; i < reserveDTOList.size(); i++) {
+            System.out.println("getReserveTime : " + mapper.map(reserveEntityList.get(i).getReserveTimeEntity(), new TypeToken<List<ReserveTimeDTO>>(){}.getType()));
+        }
+
+/*        List<ReserveDTO> reserveDTOList1 = reserveEntityList.stream().map(this::convertToDto).collect(Collectors.toList());*/
+        List<ReserveDTO> reserveDTOList2 = mapper.map(reserveEntityList, new TypeToken<List<ReserveDTO>>(){}.getType());
+
+        List<ReserveDTO> reserveDTOListfor = new ArrayList<ReserveDTO>();
+
+
+
+        return reserveDTOList2;
+    }
+
+    private ReserveDTO convertToDto(ReserveEntity reserveEntity) {
+        ModelMapper mapper = new ModelMapper();
+        ReserveDTO reserveDTO = mapper.map(reserveEntity, ReserveDTO.class);
+        return reserveDTO;
     }
 
     public void deletetime(TimeDto timeDto) throws IOException {

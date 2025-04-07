@@ -25,5 +25,5 @@ public class HallEntity {
     private String hallName;
 
     @OneToMany(mappedBy = "hallEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<ReserveEntity> reserveEntities = new ArrayList<>();
+    private final List<ReserveEntity> reserveEntities = new ArrayList<>();
 }
