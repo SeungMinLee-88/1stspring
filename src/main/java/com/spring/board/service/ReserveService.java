@@ -63,19 +63,23 @@ public class ReserveService {
     @Transactional
     public List<ReserveDTO> reserveList(ReserveDTO reserveDTO) {
         List<ReserveEntity> reserveEntityList = reserveRepository.findByReserveDateContaining(reserveDTO.getReserveDate());
-        //List<ReserveDTO> reserveDTOList = new ArrayList<>();
+
         for(int i = 0; i < reserveEntityList.size(); i++) {
             System.out.println("reserveEntityList : " + reserveEntityList.get(i).getReserveTimeEntity().toString());
         }
-/*
-        Page<BoardDTO> boardDTOList = boardEntities.map(board -> new BoardDTO(board.getId(), board.getBoardWriter(), board.getBoardTitle(), board.getBoardHits(), board.getCreatedTime()));*/
 
         ModelMapper mapper = new ModelMapper();
         List<ReserveDTO> reserveDTOList  = mapper.map(reserveEntityList, new TypeToken<List<ReserveDTO>>(){}.getType());
+        for(int i = 0; i < reserveDTOList.size(); i++) {
+            System.out.println("getReserveTime : " + mapper.map(reserveEntityList.get(i).getReserveTimeEntity(), new TypeToken<List<ReserveTimeDTO>>(){}.getType()));
+        }
 
-        List<ReserveDTO> reserveDTOListAdd = new ArrayList<>();
-        ReserveDTO reserveTimeDTO = new ReserveDTO();
-       /* for(int i = 0; i < reserveDTOList.size(); i++) {
+        List<ReserveDTO> reserveDTOList2 = mapper.map(reserveEntityList, new TypeToken<List<ReserveDTO>>(){}.getType());
+
+        return reserveDTOList2;
+    }
+
+    /* for(int i = 0; i < reserveDTOList.size(); i++) {
 
             System.out.println("getReserveTime : " + mapper.map(reserveEntityList.get(i).getReserveTimeEntity(), new TypeToken<ReserveTimeDTO>(){}.getType()));
             System.out.println("getReserveReason : " + mapper.map(reserveEntityList.get(i).getReserveReason(), new TypeToken<String>(){}.getType()));
@@ -92,20 +96,6 @@ public class ReserveService {
             reserveDTOListAdd.add(i, reserveTimeDTO);
         }
         System.out.println("reserveDTOListAdd : " + reserveDTOListAdd);*/
-
-        for(int i = 0; i < reserveDTOList.size(); i++) {
-            System.out.println("getReserveTime : " + mapper.map(reserveEntityList.get(i).getReserveTimeEntity(), new TypeToken<List<ReserveTimeDTO>>(){}.getType()));
-        }
-
-/*        List<ReserveDTO> reserveDTOList1 = reserveEntityList.stream().map(this::convertToDto).collect(Collectors.toList());*/
-        List<ReserveDTO> reserveDTOList2 = mapper.map(reserveEntityList, new TypeToken<List<ReserveDTO>>(){}.getType());
-
-        List<ReserveDTO> reserveDTOListfor = new ArrayList<ReserveDTO>();
-
-
-
-        return reserveDTOList2;
-    }
 
     private ReserveDTO convertToDto(ReserveEntity reserveEntity) {
         ModelMapper mapper = new ModelMapper();

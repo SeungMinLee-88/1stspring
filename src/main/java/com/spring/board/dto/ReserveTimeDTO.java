@@ -3,6 +3,8 @@ package com.spring.board.dto;
 import com.spring.board.entity.ReserveEntity;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @ToString
@@ -14,5 +16,6 @@ public class ReserveTimeDTO {
     private String reserveId;
     private String timeId;
     private String reserveDate;
+    private TimeDto time;
 
 }

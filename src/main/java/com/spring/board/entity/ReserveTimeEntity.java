@@ -23,11 +23,12 @@ public class ReserveTimeEntity extends BaseEntity {
     @JoinColumn(name = "reserve_id")
     private ReserveEntity reserveEntity;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "time_id")
     private TimeEntity timeEntity;
 
     private String reserveDate;
+
 
     public static ReserveTimeEntity toSaveEntity(ReserveEntity reserveEntity, TimeEntity timeEntity, ReserveDTO reserveDTO) {
         return ReserveTimeEntity.builder()
