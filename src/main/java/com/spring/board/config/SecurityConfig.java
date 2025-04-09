@@ -100,15 +100,8 @@ public class SecurityConfig {
                     .anyRequest().authenticated());*/
     http
             .authorizeHttpRequests((auth) -> auth
-                    .requestMatchers("/board/*").permitAll()
-                    .requestMatchers("/reissue").permitAll()
-                    .requestMatchers("/reissue/**").permitAll()
-                    .requestMatchers("/reserve/**").permitAll()
-                    .requestMatchers("/reserve/**/**").permitAll()
-                    .requestMatchers("/swagger-ui/*/*/*/*").permitAll()
-                    .requestMatchers("/swagger-ui/**").permitAll()
-                    .requestMatchers("/api/v1/*/*/*").permitAll()
                     .requestMatchers("/**").permitAll()
+
                     .requestMatchers("/login", "/", "/join").permitAll()
                     .requestMatchers("/admin").hasRole("ADMIN"));
                     //.requestMatchers("/api/v1/*/*/*").permitAll()
