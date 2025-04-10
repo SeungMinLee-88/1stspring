@@ -2,6 +2,7 @@ package com.spring.board.controller;
 
 import com.spring.board.dto.BoardDTO;
 import com.spring.board.dto.ReserveDTO;
+import com.spring.board.dto.ReserveTimeDTO;
 import com.spring.board.dto.TimeDto;
 import com.spring.board.entity.ReserveEntity;
 import com.spring.board.entity.TimeEntity;
@@ -53,6 +54,20 @@ public class ReserveController {
         System.out.println("reserveDTOList : " + reserveDTOList.toString());
         //model.addAttribute("boardList", boardDTOList);
         return reserveDTOList;
+    }
+
+    @GetMapping("/reserveTimeList")
+    public List<ReserveTimeDTO> reserveTimeList(@RequestParam Map<String, String> params) {
+        /*StringBuilder sb = new StringBuilder();*/
+
+        ReserveTimeDTO reserveTimeDTO = new ReserveTimeDTO();
+        reserveTimeDTO.setReserveDate(params.get("reserveDate"));
+        System.out.println("reserveList reserveDTO : " + reserveTimeDTO.toString());
+        // DB에서 전체 게시글 데이터를 가져와서 list.html에 보여준다.
+        List<ReserveTimeDTO> reserveTimeDTOList = reserveService.reserveTimeList(reserveTimeDTO);
+        System.out.println("reserveDTOList : " + reserveTimeDTOList.toString());
+        //model.addAttribute("boardList", boardDTOList);
+        return reserveTimeDTOList;
     }
 
 

@@ -79,6 +79,15 @@ public class ReserveService {
         return reserveDTOList2;
     }
 
+
+    @Transactional
+    public List<ReserveTimeDTO> reserveTimeList(ReserveTimeDTO reserveTimeDTO) {
+        List<ReserveTimeEntity> reserveTimeEntityList = reserveTimeRepository.findByReserveDate(reserveTimeDTO.getReserveDate());
+        ModelMapper mapper = new ModelMapper();
+        List<ReserveTimeDTO> reserveDTOList2 = mapper.map(reserveTimeEntityList, new TypeToken<List<ReserveTimeDTO>>(){}.getType());
+        return reserveDTOList2;
+    }
+
     /* for(int i = 0; i < reserveDTOList.size(); i++) {
 
             System.out.println("getReserveTime : " + mapper.map(reserveEntityList.get(i).getReserveTimeEntity(), new TypeToken<ReserveTimeDTO>(){}.getType()));
