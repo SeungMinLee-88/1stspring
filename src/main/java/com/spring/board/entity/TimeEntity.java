@@ -1,5 +1,6 @@
 package com.spring.board.entity;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,6 +22,11 @@ public class TimeEntity{
   private Long id;
 
   private int time;
+
+  private int reserved;
+
+  @Nullable
+  private String userId;
 
   @OneToMany(mappedBy = "timeEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
   private final List<ReserveTimeEntity> reserveTimeEntity = new ArrayList<>();

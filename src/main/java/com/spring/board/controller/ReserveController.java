@@ -1,13 +1,12 @@
 package com.spring.board.controller;
 
-import com.spring.board.dto.BoardDTO;
-import com.spring.board.dto.ReserveDTO;
-import com.spring.board.dto.ReserveTimeDTO;
-import com.spring.board.dto.TimeDto;
+import com.spring.board.dto.*;
 import com.spring.board.entity.ReserveEntity;
 import com.spring.board.entity.TimeEntity;
 import com.spring.board.service.ReserveService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -56,6 +55,19 @@ public class ReserveController {
         return reserveDTOList;
     }
 
+    @GetMapping("reserveDetail/{id}")
+    public ReserveDTO reserveDetail(@PathVariable Long id, Model model) {
+        /*StringBuilder sb = new StringBuilder();*/
+
+        ReserveDTO reserveDTO = new ReserveDTO();
+        System.out.println("reserveList reserveDTO : " + reserveDTO.toString());
+        // DB에서 전체 게시글 데이터를 가져와서 list.html에 보여준다.
+        reserveDTO = reserveService.reserveList(id);
+        System.out.println("reserveDTO : " + reserveDTO.toString());
+        //model.addAttribute("boardList", boardDTOList);
+        return reserveDTO;
+    }
+
     @GetMapping("/reserveTimeList")
     public List<ReserveTimeDTO> reserveTimeList(@RequestParam Map<String, String> params) {
         /*StringBuilder sb = new StringBuilder();*/
@@ -68,6 +80,24 @@ public class ReserveController {
         System.out.println("reserveDTOList : " + reserveTimeDTOList.toString());
         //model.addAttribute("boardList", boardDTOList);
         return reserveTimeDTOList;
+    }
+
+    @GetMapping("/timeList")
+    public List<TimeDto> timeList(@RequestParam Map<String, String> params) {
+        /*StringBuilder sb = new StringBuilder();*/
+
+        // DB에서 전체 게시글 데이터를 가져와서 list.html에 보여준다.
+        List<TimeDto> timeDtoList = reserveService.timeList(params);
+        System.out.println("reserveDTOList : " + timeDtoList.toString());
+        //model.addAttribute("boardList", boardDTOList);
+        return timeDtoList;
+    }
+
+    @DeleteMapping("/deleteReserve")
+    public ResponseEntity<ReserveDTO> deleteReserve(@RequestBody ReserveDTO reserveDTO) throws IOException {
+        System.out.println("reserveDTO = " + reserveDTO);
+        reserveService.deleteReserve(reserveDTO);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(reserveDTO);
     }
 
 

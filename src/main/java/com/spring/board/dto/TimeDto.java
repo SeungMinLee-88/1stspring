@@ -11,4 +11,6 @@ import lombok.*;
 public class TimeDto {
     private Long id;
     private int time;
+    private int reserved;
+    private String userId;
 }

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -79,6 +80,19 @@ public class ReserveService {
         return reserveDTOList2;
     }
 
+    @Transactional
+    public ReserveDTO reserveList(Long id) {
+        ModelMapper mapper = new ModelMapper();
+        Optional<ReserveEntity> optionalReserveEntity = reserveRepository.findById(id);
+        if (optionalReserveEntity.isPresent()) {
+            ReserveEntity reserveEntity = optionalReserveEntity.get();
+            ReserveDTO reserveDTO = mapper.map(reserveEntity, new TypeToken<ReserveDTO>(){}.getType());
+            return reserveDTO;
+        } else {
+            return null;
+        }
+    }
+
 
     @Transactional
     public List<ReserveTimeDTO> reserveTimeList(ReserveTimeDTO reserveTimeDTO) {
@@ -86,6 +100,15 @@ public class ReserveService {
         ModelMapper mapper = new ModelMapper();
         List<ReserveTimeDTO> reserveDTOList2 = mapper.map(reserveTimeEntityList, new TypeToken<List<ReserveTimeDTO>>(){}.getType());
         return reserveDTOList2;
+    }
+
+    @Transactional
+    public List<TimeDto> timeList(Map<String, String> params) {
+        System.out.println("params.get : " + params.get("reserveDate"));
+        List<TimeEntity> timeEntityList = timeRepository.findByReserveDate(params.get("reserveDate"));
+        ModelMapper mapper = new ModelMapper();
+        List<TimeDto> timeDtoList = mapper.map(timeEntityList, new TypeToken<List<TimeDto>>(){}.getType());
+        return timeDtoList;
     }
 
     /* for(int i = 0; i < reserveDTOList.size(); i++) {
@@ -110,6 +133,10 @@ public class ReserveService {
         ModelMapper mapper = new ModelMapper();
         ReserveDTO reserveDTO = mapper.map(reserveEntity, ReserveDTO.class);
         return reserveDTO;
+    }
+
+    public void deleteReserve(ReserveDTO reserveDTO) throws IOException {
+        reserveRepository.deleteById(reserveDTO.getId());
     }
 
     public void deletetime(TimeDto timeDto) throws IOException {
