@@ -21,7 +21,7 @@ public class TimeEntity{
   @GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment
   private Long id;
 
-  private int time;
+  private String time;
 
   private int reserved;
 

@@ -10,7 +10,7 @@ import lombok.*;
 @Builder
 public class TimeDto {
     private Long id;
-    private int time;
+    private String time;
     private int reserved;
     private String userId;
 }
