@@ -120,6 +120,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     //유저 정보
     String username = authentication.getName();
+    String userId = (String) authentication.getPrincipal();
+    System.out.println("userId : " + userId);
 
     Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
     Iterator<? extends GrantedAuthority> iterator = authorities.iterator();

@@ -1,7 +1,11 @@
 package com.spring.board.service;
 
+import com.spring.board.dto.ReserveDTO;
+import com.spring.board.dto.UserDto;
 import com.spring.board.entity.UserEntity;
 import com.spring.board.repository.UserRepository;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -9,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CustomUserDetailsService  implements UserDetailsService {
+
 
   private final UserRepository userRepository;
 
@@ -20,8 +25,16 @@ public class CustomUserDetailsService  implements UserDetailsService {
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
+    System.out.println("call loadUserByUsername");
+
     //DB에서 조회
     UserEntity userData = userRepository.findByUsername(username);
+
+    ModelMapper mapper = new ModelMapper();
+
+    UserDto userDto  = mapper.map(userData, new TypeToken<UserDto>(){}.getType());
+    System.out.println("userDto : " + userDto);
+
 
     if (userData != null) {
 
