@@ -60,6 +60,35 @@ public class ReserveService {
         }
     }
 
+    public ReserveDTO updateReserve(ReserveDTO reserveDTO) {
+
+        Optional<UserEntity> optionalUserEntity = userRepository.findById(reserveDTO.getUserId());
+        Optional<HallEntity> optionalHallEntity = hallRepository.findById(reserveDTO.getHallId());
+        if (optionalUserEntity.isPresent() && optionalHallEntity.isPresent()) {
+            UserEntity userEntity = optionalUserEntity.get();
+            HallEntity hallEntity = optionalHallEntity.get();
+            ReserveEntity reserveEntity = ReserveEntity.toSaveEntity(reserveDTO, userEntity, hallEntity);
+            ReserveEntity reserveEntitys = reserveRepository.save(reserveEntity);
+
+            //List<ReserveTimeDTO> timeDtoList = reserveDTO.getReserveTime();
+            for(int i = 0; i < reserveDTO.getReserveTimeSave().size(); i++) {
+                System.out.println("timeDtoList : " + reserveDTO.getReserveTimeSave().get(i));
+                TimeEntity timeEntity = timeRepository.findById(reserveDTO.getReserveTimeSave() .get(i)).get();
+                ReserveTimeEntity reserveTimeEntity = ReserveTimeEntity.toSaveEntity(reserveEntity, timeEntity,reserveDTO);
+                ReserveTimeEntity reserveTimeEntitys = reserveTimeRepository.save(reserveTimeEntity);
+            }
+            ModelMapper mapper = new ModelMapper();
+
+            System.out.println("reserveEntitys : " + reserveEntitys.toString());
+            ReserveDTO reserveDTO1  = mapper.map(reserveEntitys, new TypeToken<ReserveDTO>(){}.getType());
+
+            return reserveDTO1;
+
+        } else {
+            return null;
+        }
+    }
+
 
     @Transactional
     public List<ReserveDTO> reserveList(ReserveDTO reserveDTO) {

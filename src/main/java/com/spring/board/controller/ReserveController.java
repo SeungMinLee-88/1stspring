@@ -31,12 +31,14 @@ public class ReserveController {
         ReserveDTO reserveDTO1 = reserveService.save(reserveDTO);
         return ResponseEntity.ok(ReserveEntity.builder().id(reserveDTO1.getId()).build());
     }
-//@GetMapping(value = "/product/{productId}")
-//@GetMapping("/request1")
-//    public String getRequestParam1(
-//            @RequestParam String name,
-//            @RequestParam String email,
-//            @RequestParam String organization
+
+    @PostMapping("/update")
+    public ResponseEntity<ReserveEntity> updateReserve(@RequestBody ReserveDTO reserveDTO) {
+        System.out.println("update reserveDTO = " + reserveDTO);
+        ReserveDTO reserveDTO1 = reserveService.updateReserve(reserveDTO);
+        return ResponseEntity.ok(ReserveEntity.builder().id(reserveDTO1.getId()).build());
+    }
+
     @GetMapping("/reservelist")
     public List<ReserveDTO> reserveList(@RequestParam Map<String, String> params) {
         /*StringBuilder sb = new StringBuilder();*/
