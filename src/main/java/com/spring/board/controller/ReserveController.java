@@ -28,7 +28,7 @@ public class ReserveController {
     public ResponseEntity<ReserveEntity> reserveSave(@RequestBody ReserveDTO reserveDTO) throws IOException {
         System.out.println("reserveDTO = " + reserveDTO);
         /*List<TimeDto> timeDtoList = reserveDTO.getReserveTime();*/
-        ReserveDTO reserveDTO1 = reserveService.save(reserveDTO);
+        ReserveDTO reserveDTO1 = reserveService.reserveSave(reserveDTO);
         return ResponseEntity.ok(ReserveEntity.builder().id(reserveDTO1.getId()).build());
     }
 
@@ -62,9 +62,9 @@ public class ReserveController {
         /*StringBuilder sb = new StringBuilder();*/
 
         ReserveDTO reserveDTO = new ReserveDTO();
-        System.out.println("reserveList reserveDTO : " + reserveDTO.toString());
+        System.out.println("reserveDetail reserveDTO : " + reserveDTO.toString());
         // DB에서 전체 게시글 데이터를 가져와서 list.html에 보여준다.
-        reserveDTO = reserveService.reserveList(id);
+        reserveDTO = reserveService.reserveDetail(id);
         System.out.println("reserveDTO : " + reserveDTO.toString());
         //model.addAttribute("boardList", boardDTOList);
         return reserveDTO;

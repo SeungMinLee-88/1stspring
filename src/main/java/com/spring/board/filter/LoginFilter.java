@@ -18,6 +18,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.util.StreamUtils;
 
@@ -120,8 +121,11 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     //유저 정보
     String username = authentication.getName();
-    String userId = (String) authentication.getPrincipal();
-    System.out.println("userId : " + userId);
+    //String userId = (String) authentication.getPrincipal();
+/*    String userId = (String) SecurityContextHolder.getContext()
+            .getAuthentication()
+            .getPrincipal();*/
+    System.out.println("username : " + username);
 
     Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
     Iterator<? extends GrantedAuthority> iterator = authorities.iterator();

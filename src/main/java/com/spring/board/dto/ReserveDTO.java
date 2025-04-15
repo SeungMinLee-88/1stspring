@@ -19,7 +19,9 @@ public class ReserveDTO {
     private String reserveReason;
     private String reserveDate;
     private String reservePeriod;
+    private String username;
     private Long userId;
+
     private Long hallId;
     private List<Long> reserveTimeSave;
     private List<ReserveTimeDTO> reserveTime;

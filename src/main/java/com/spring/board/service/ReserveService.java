@@ -29,7 +29,7 @@ public class ReserveService {
     private final TimeRepository timeRepository;
     private final ReserveTimeRepository reserveTimeRepository;
 
-    public ReserveDTO save(ReserveDTO reserveDTO) throws IOException {
+    public ReserveDTO reserveSave(ReserveDTO reserveDTO) throws IOException {
         // 파일 첨부 여부에 따라 로직 분리
         /*if (boardDTO.getBoardFile().isEmpty()) {*/
 
@@ -110,7 +110,7 @@ public class ReserveService {
     }
 
     @Transactional
-    public ReserveDTO reserveList(Long id) {
+    public ReserveDTO reserveDetail(Long id) {
         ModelMapper mapper = new ModelMapper();
         Optional<ReserveEntity> optionalReserveEntity = reserveRepository.findById(id);
         if (optionalReserveEntity.isPresent()) {
