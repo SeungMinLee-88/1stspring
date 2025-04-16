@@ -39,7 +39,7 @@ public class ReserveController {
         return ResponseEntity.ok(ReserveEntity.builder().id(reserveDTO1.getId()).build());
     }
 
-    @GetMapping("/reservelist")
+    @GetMapping("/reserveList")
     public List<ReserveDTO> reserveList(@RequestParam Map<String, String> params) {
         /*StringBuilder sb = new StringBuilder();*/
         params.entrySet().forEach(map -> {
@@ -49,6 +49,7 @@ public class ReserveController {
 
         ReserveDTO reserveDTO = new ReserveDTO();
         reserveDTO.setReserveDate(params.get("reserveDate"));
+        reserveDTO.setUserName(params.get("userName"));
         System.out.println("reserveList reserveDTO : " + reserveDTO.toString());
         // DB에서 전체 게시글 데이터를 가져와서 list.html에 보여준다.
         List<ReserveDTO> reserveDTOList = reserveService.reserveList(reserveDTO);

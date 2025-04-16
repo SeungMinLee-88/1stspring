@@ -25,7 +25,7 @@ public class ReserveEntity extends BaseEntity {
   private String reserveDate;
   private String reservePeriod;
 
-  private String username;
+  private String userName;
 
 
   @ManyToOne(fetch = FetchType.LAZY)
@@ -58,7 +58,7 @@ public class ReserveEntity extends BaseEntity {
             .reserveDate(reserveDTO.getReserveDate())
             .reservePeriod(reserveDTO.getReservePeriod())
             .userEntity(userEntity)
-            .username(reserveDTO.getUsername())
+            .userName(reserveDTO.getUserName())
             .hallEntity(hallEntity)
             .build();
   }

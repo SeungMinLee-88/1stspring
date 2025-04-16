@@ -33,7 +33,8 @@ public class ReserveService {
         // 파일 첨부 여부에 따라 로직 분리
         /*if (boardDTO.getBoardFile().isEmpty()) {*/
 
-        Optional<UserEntity> optionalUserEntity = userRepository.findById(reserveDTO.getUserId());
+        /*Optional<UserEntity> optionalUserEntity = userRepository.findById(reserveDTO.getUserId());*/
+        Optional<UserEntity> optionalUserEntity = Optional.ofNullable(userRepository.findByUsername(reserveDTO.getUserName()));
         Optional<HallEntity> optionalHallEntity = hallRepository.findById(reserveDTO.getHallId());
         if (optionalUserEntity.isPresent() && optionalHallEntity.isPresent()) {
             UserEntity userEntity = optionalUserEntity.get();
@@ -92,7 +93,8 @@ public class ReserveService {
 
     @Transactional
     public List<ReserveDTO> reserveList(ReserveDTO reserveDTO) {
-        List<ReserveEntity> reserveEntityList = reserveRepository.findByReserveDateContaining(reserveDTO.getReserveDate());
+        System.out.println("reserveList reserveDTO : " + reserveDTO);
+        List<ReserveEntity> reserveEntityList = reserveRepository.findByReserveDateContainingAndUserNameContaining(reserveDTO.getReserveDate(), reserveDTO.getUserName());
 
         for(int i = 0; i < reserveEntityList.size(); i++) {
             System.out.println("reserveEntityList : " + reserveEntityList.get(i).getReserveTimeEntity().toString());

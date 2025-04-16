@@ -135,7 +135,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     //토큰 생성
     /*String access = jwtUtil.createJwt("access", username, role, 20000L);*/
     /*String access = jwtUtil.createJwt("access", username, role, 600000L);*/
-    String access = jwtUtil.createJwt("access", username, role, 15000L);
+    String access = jwtUtil.createJwt("access", username, role, 1500000L);
     String refresh = jwtUtil.createJwt("refresh", username, role, 86400000L);
 
     //Refresh 토큰 저장
@@ -143,6 +143,10 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     //응답 설정
     response.setHeader("access", access );
+/*    response.setHeader("Access-Control-Allow-Origin", "*" );
+    response.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE, OPTIONS" );
+    response.setHeader("Access-Control-Allow-Headers", "Origin, Content-Type, X-Auth-Token" );
+    response.setHeader("username", username );*/
     response.addCookie(createCookie("refresh", refresh));
     response.setStatus(HttpStatus.OK.value());
   }
