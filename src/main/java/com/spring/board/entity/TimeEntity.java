@@ -26,7 +26,7 @@ public class TimeEntity{
   private int reserved;
 
   @Nullable
-  private String userId;
+  private String userName;
 
   @OneToMany(mappedBy = "timeEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
   private final List<ReserveTimeEntity> reserveTimeEntity = new ArrayList<>();
