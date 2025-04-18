@@ -1,6 +1,7 @@
 package com.spring.board.entity;
 
 import com.spring.board.dto.BoardDTO;
+import com.spring.board.dto.FileDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -32,11 +33,13 @@ public class BoardEntity extends BaseEntity {
   @Column(length = 500)
   private String boardContents;
 
+  private FileDTO fileDTO;
+
   @Column
   private int boardHits;
 
-  @Column
-  private int fileAttached; // 1 or 0
+/*  @Column
+  private int fileAttached; // 1 or 0*/
 
   @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
   private List<BoardFileEntity> boardFileEntityList = new ArrayList<>();
@@ -60,7 +63,7 @@ public class BoardEntity extends BaseEntity {
             .boardTitle(boardDTO.getBoardTitle())
             .boardContents(boardDTO.getBoardContents())
             .boardHits(0)
-            .fileAttached(0)
+            .fileDTO(boardDTO.getFileDTO())
             .build();
   }
 
@@ -73,7 +76,7 @@ public class BoardEntity extends BaseEntity {
             .boardTitle(boardDTO.getBoardTitle())
             .boardContents(boardDTO.getBoardContents())
             .boardHits(boardDTO.getBoardHits())
-            .fileAttached(0)
+            .fileDTO(boardDTO.getFileDTO())
             .build();
   }
 

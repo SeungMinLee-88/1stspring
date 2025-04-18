@@ -23,8 +23,10 @@ public class BoardDTO {
   private String boardTitle;
   private String boardContents;
   private int boardHits;
+  private FileDTO fileDTO;
   private LocalDateTime boardCreatedTime;
   private LocalDateTime boardUpdatedTime;
+
 
 /*  private List<MultipartFile> boardFile; // save.html -> Controller 파일 담는 용도
   private List<String> originalFileName; // 원본 파일 이름
