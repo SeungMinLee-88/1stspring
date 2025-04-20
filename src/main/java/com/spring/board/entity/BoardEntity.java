@@ -33,8 +33,6 @@ public class BoardEntity extends BaseEntity {
   @Column(length = 500)
   private String boardContents;
 
-  private FileDTO fileDTO;
-
   @Column
   private int boardHits;
 
@@ -42,7 +40,7 @@ public class BoardEntity extends BaseEntity {
   private int fileAttached; // 1 or 0*/
 
   @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
-  private List<BoardFileEntity> boardFileEntityList = new ArrayList<>();
+  private List<FileEntity> fileEntityList = new ArrayList<>();
 
   @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
   private List<CommentEntity> commentEntityList = new ArrayList<>();
@@ -63,7 +61,6 @@ public class BoardEntity extends BaseEntity {
             .boardTitle(boardDTO.getBoardTitle())
             .boardContents(boardDTO.getBoardContents())
             .boardHits(0)
-            .fileDTO(boardDTO.getFileDTO())
             .build();
   }
 
@@ -76,7 +73,6 @@ public class BoardEntity extends BaseEntity {
             .boardTitle(boardDTO.getBoardTitle())
             .boardContents(boardDTO.getBoardContents())
             .boardHits(boardDTO.getBoardHits())
-            .fileDTO(boardDTO.getFileDTO())
             .build();
   }
 

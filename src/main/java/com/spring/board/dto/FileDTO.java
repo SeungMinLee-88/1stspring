@@ -1,5 +1,7 @@
 package com.spring.board.dto;
 
+import com.spring.board.entity.BoardEntity;
+import jakarta.persistence.Column;
 import lombok.*;
 
 @Getter
@@ -10,5 +12,6 @@ import lombok.*;
 @Builder
 public class FileDTO {
     private Long id;
+    private Long boardId;
     private String fileName;
 }

@@ -19,5 +19,13 @@ public class FileEntity extends BaseEntity {
     @Id // pk 컬럼 지정. 필수
     @GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment
     private Long id;
-    private String fileName;
+    @Column
+    private String originalFileName;
+
+    @Column
+    private String storedFileName;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "board_id")
+    private BoardEntity boardEntity;
 }

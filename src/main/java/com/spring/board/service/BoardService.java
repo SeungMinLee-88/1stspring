@@ -2,6 +2,8 @@ package com.spring.board.service;
 
 import com.spring.board.dto.BoardDTO;
 import com.spring.board.entity.BoardEntity;
+import com.spring.board.entity.BoardFileEntity;
+import com.spring.board.entity.FileEntity;
 import com.spring.board.entity.SearchCriteria;
 import com.spring.board.repository.BoardFileRepository;
 import com.spring.board.repository.BoardRepository;
@@ -15,7 +17,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +61,37 @@ public class BoardService {
     System.out.println("boardEntitys : " + boardEntitys.toString());
     BoardDTO boardDTO1  = mapper.map(boardEntitys, new TypeToken<BoardDTO>(){}.getType());
       return boardDTO1;
+  }
+
+  public BoardDTO boardSaveAtta(BoardDTO boardDTO) throws IOException {
+    // 파일 첨부 여부에 따라 로직 분리
+    /*if (boardDTO.getBoardFile().isEmpty()) {*/
+
+    BoardEntity boardEntity = BoardEntity.toSaveEntity(boardDTO);
+    BoardEntity boardEntitys = boardRepository.save(boardEntity);
+    /*    } else {*/
+    // 첨부 파일 있음.
+      //BoardEntity boardEntity = BoardEntity.toSaveFileEntity(boardDTO);
+      Long savedId = boardRepository.save(boardEntity).getId();
+      BoardEntity board = boardRepository.findById(savedId).get();
+
+      for(MultipartFile boardFile : boardDTO.getFileList()) {
+        //MultipartFile boardFile = boardDTO.getBoardFile(); // 1.
+        String originalFilename = boardFile.getOriginalFilename(); // 2.
+        String storedFileName = System.currentTimeMillis() + "_" + originalFilename; // 3.
+        String savePath = "C:/Users/lsmls/IdeaProjects/1stspring/springboot_img/" + storedFileName; // 4. C:/springboot_img/9802398403948_내사진.jpg
+//            String savePath = "/Users/사용자이름/springboot_img/" + storedFileName; // C:/springboot_img/9802398403948_내사진.jpg
+        boardFile.transferTo(new File(savePath)); // 5.
+        BoardFileEntity boardFileEntity = BoardFileEntity.toBoardFileEntity(board, originalFilename, storedFileName);
+        boardFileRepository.save(boardFileEntity);
+      }
+    /*  }*/
+
+    ModelMapper mapper = new ModelMapper();
+
+    System.out.println("boardEntitys : " + boardEntitys.toString());
+    BoardDTO boardDTO1  = mapper.map(boardEntitys, new TypeToken<BoardDTO>(){}.getType());
+    return boardDTO1;
   }
 
   @Transactional

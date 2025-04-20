@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -27,7 +28,7 @@ public class RestBoardController {
     private final BoardService boardService;
     private final CommentService commentService;
 
-//@Validated @RequestBody
+/*
     @PutMapping("/save")
     public ResponseEntity<BoardPostResponse> boardSave(@RequestBody BoardDTO boardDTO) throws IOException {
         System.out.println("boardDTO = " + boardDTO);
@@ -52,6 +53,37 @@ public class RestBoardController {
                 .id(boardDTO1.getId())
                 .build());
     }
+*/
+
+    @PostMapping("/boardSave")
+    public ResponseEntity<BoardPostResponse> boardSave(@RequestParam("boardTitle") String boardTitle , @RequestParam("boardFile") MultipartFile[] boardFile) throws IOException {
+        System.out.println("boardTitle = " + boardTitle);
+        System.out.println("boardFile = " + boardFile);
+        //boardService.save(boardDTO);
+        LocalDateTime time = LocalDateTime.now();
+        System.out.println("time = " + time);
+        BoardDTO boardDTO = new BoardDTO();
+        boardDTO.setBoardTitle(boardTitle);
+        boardDTO.setFileList(boardFile);
+
+        BoardDTO boardDTO1 = boardService.boardSaveAtta(boardDTO);
+
+        /*System.out.println("BoardPostResponse = " + ResponseEntity.ok(BoardPostResponse
+                .builder()
+                .resultMessage("save success")
+                .resultCode("200")
+                .id(boardDTO1.getId())
+                .build()));*/
+        //BoardPostResponse boardPostResponse = new BoardPostResponse();
+
+        return ResponseEntity.ok(BoardPostResponse
+                .builder()
+                .resultMessage("save success")
+                .resultCode("200")
+                .id(1L)
+                .build());
+    }
+
 
     @GetMapping("/list")
     public List<BoardDTO> findAll(Model model) {

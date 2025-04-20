@@ -23,15 +23,13 @@ public class BoardDTO {
   private String boardTitle;
   private String boardContents;
   private int boardHits;
-  private FileDTO fileDTO;
   private LocalDateTime boardCreatedTime;
   private LocalDateTime boardUpdatedTime;
 
-
-/*  private List<MultipartFile> boardFile; // save.html -> Controller 파일 담는 용도
+  private MultipartFile[] fileList; // save.html -> Controller 파일 담는 용도
   private List<String> originalFileName; // 원본 파일 이름
-  private List<String> storedFileName; // 서버 저장용 파일 이름*/
-  private int fileAttached; // 파일 첨부 여부(첨부 1, 미첨부 0)
+  private List<String> storedFileName; // 서버 저장용 파일 이름
+  //private int fileAttached; // 파일 첨부 여부(첨부 1, 미첨부 0)
 
   public BoardDTO(Long id, String boardWriter, String boardTitle, int boardHits, LocalDateTime boardCreatedTime) {
     this.id = id;
