@@ -55,8 +55,9 @@ public class RestBoardController {
     }
 */
 
+    //https://green-bin.tistory.com/44
     @PostMapping("/boardSave")
-    public ResponseEntity<BoardPostResponse> boardSave(@RequestParam("boardTitle") String boardTitle , @RequestParam("boardFile") MultipartFile[] boardFile) throws IOException {
+    public ResponseEntity<BoardPostResponse> boardSave(@RequestParam("boardTitle") String boardTitle, @RequestParam("boardWriter") String boardWriter, @RequestParam("boardContents") String boardContents,@RequestParam("boardPass") String boardPass, @RequestParam(name="boardFile", defaultValue = "", required = false) MultipartFile[] boardFile) throws IOException {
         System.out.println("boardTitle = " + boardTitle);
         System.out.println("boardFile = " + boardFile);
         //boardService.save(boardDTO);
@@ -64,17 +65,10 @@ public class RestBoardController {
         System.out.println("time = " + time);
         BoardDTO boardDTO = new BoardDTO();
         boardDTO.setBoardTitle(boardTitle);
+        boardDTO.setBoardWriter(boardWriter);
+        boardDTO.setBoardContents(boardContents);
+        boardDTO.setBoardPass(boardPass);
         boardDTO.setFileList(boardFile);
-
-        BoardDTO boardDTO1 = boardService.boardSaveAtta(boardDTO);
-
-        /*System.out.println("BoardPostResponse = " + ResponseEntity.ok(BoardPostResponse
-                .builder()
-                .resultMessage("save success")
-                .resultCode("200")
-                .id(boardDTO1.getId())
-                .build()));*/
-        //BoardPostResponse boardPostResponse = new BoardPostResponse();
 
         return ResponseEntity.ok(BoardPostResponse
                 .builder()
@@ -111,20 +105,21 @@ public class RestBoardController {
             게시글 데이터를 가져와서 detail.html에 출력
          */
         boardService.updateHits(id);
-        BoardDTO boardDTO = boardService.findById(id);
+        BoardDTO boardDTO = boardService.boardDetail(id);
         /* 댓글 목록 가져오기 */
         List<CommentDTO> commentDTOList = commentService.findAll(id);
         model.addAttribute("commentList", commentDTOList);
         model.addAttribute("board", boardDTO);
         model.addAttribute("page", pageable.getPageNumber());
-        return boardService.findById(id);
+        System.out.println("return boardDTO : " + boardDTO);
+        return boardService.boardDetail(id);
     }
 
     @GetMapping("/update/{id}")
     public BoardDTO updateForm(@PathVariable Long id, Model model) {
-        BoardDTO boardDTO = boardService.findById(id);
+        BoardDTO boardDTO = boardService.boardDetail(id);
         model.addAttribute("boardUpdate", boardDTO);
-        return boardService.findById(id);
+        return boardService.boardDetail(id);
     }
 
     @PostMapping("/update")
@@ -192,6 +187,7 @@ public class RestBoardController {
 
         System.out.println("GetMapping pageable.getSort() : " + pageable.getSort());
         System.out.println("GetMapping pageable : " + pageable.toString());
+        System.out.println("paging params : " + params.toString());
 
         Page<BoardDTO> boardList = boardService.pagingList(pageable, params);
         int blockLimit = 3;

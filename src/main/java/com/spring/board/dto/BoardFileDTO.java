@@ -1,7 +1,9 @@
 package com.spring.board.dto;
 
-import com.spring.board.entity.BoardEntity;
 import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.*;
 
 @Getter
@@ -10,8 +12,9 @@ import lombok.*;
 @NoArgsConstructor // 기본생성자
 @AllArgsConstructor // 모든 필드를 매개변수로 하는 생성자
 @Builder
-public class FileDTO {
+public class BoardFileDTO {
     private Long id;
     private Long boardId;
-    private String fileName;
+    private String originalFileName;
+    private String storedFileName;
 }

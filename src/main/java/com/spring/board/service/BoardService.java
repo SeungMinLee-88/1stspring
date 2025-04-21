@@ -1,6 +1,7 @@
 package com.spring.board.service;
 
 import com.spring.board.dto.BoardDTO;
+import com.spring.board.dto.BoardFileDTO;
 import com.spring.board.entity.BoardEntity;
 import com.spring.board.entity.BoardFileEntity;
 import com.spring.board.entity.FileEntity;
@@ -65,33 +66,43 @@ public class BoardService {
 
   public BoardDTO boardSaveAtta(BoardDTO boardDTO) throws IOException {
     // 파일 첨부 여부에 따라 로직 분리
-    /*if (boardDTO.getBoardFile().isEmpty()) {*/
-
-    BoardEntity boardEntity = BoardEntity.toSaveEntity(boardDTO);
-    BoardEntity boardEntitys = boardRepository.save(boardEntity);
-    /*    } else {*/
-    // 첨부 파일 있음.
-      //BoardEntity boardEntity = BoardEntity.toSaveFileEntity(boardDTO);
-      Long savedId = boardRepository.save(boardEntity).getId();
-      BoardEntity board = boardRepository.findById(savedId).get();
-
-      for(MultipartFile boardFile : boardDTO.getFileList()) {
-        //MultipartFile boardFile = boardDTO.getBoardFile(); // 1.
-        String originalFilename = boardFile.getOriginalFilename(); // 2.
-        String storedFileName = System.currentTimeMillis() + "_" + originalFilename; // 3.
-        String savePath = "C:/Users/lsmls/IdeaProjects/1stspring/springboot_img/" + storedFileName; // 4. C:/springboot_img/9802398403948_내사진.jpg
-//            String savePath = "/Users/사용자이름/springboot_img/" + storedFileName; // C:/springboot_img/9802398403948_내사진.jpg
-        boardFile.transferTo(new File(savePath)); // 5.
-        BoardFileEntity boardFileEntity = BoardFileEntity.toBoardFileEntity(board, originalFilename, storedFileName);
-        boardFileRepository.save(boardFileEntity);
-      }
-    /*  }*/
-
     ModelMapper mapper = new ModelMapper();
+    if (boardDTO.getFileList().length == 0) {
+    System.out.println("boardSaveAtta boardDTO = " + boardDTO);
+    boardDTO.setFileAttached(0);
+    BoardEntity saveBoardEntity = BoardEntity.toSaveEntity(boardDTO);
+    BoardEntity boardEntitys = boardRepository.save(saveBoardEntity);
 
     System.out.println("boardEntitys : " + boardEntitys.toString());
     BoardDTO boardDTO1  = mapper.map(boardEntitys, new TypeToken<BoardDTO>(){}.getType());
     return boardDTO1;
+        } else {
+    // 첨부 파일 있음.
+      boardDTO.setFileAttached(1);
+      BoardEntity saveBoardEntity = BoardEntity.toSaveEntity(boardDTO);
+      BoardEntity boardEntitys = boardRepository.save(saveBoardEntity);
+      Long savedId = boardRepository.save(saveBoardEntity).getId();
+      BoardEntity board = boardRepository.findById(savedId).get();
+
+
+      if(boardDTO.getFileList().length > 0) {
+        for (MultipartFile boardFile : boardDTO.getFileList()) {
+          //MultipartFile boardFile = boardDTO.getBoardFile(); // 1.
+          String originalFilename = boardFile.getOriginalFilename(); // 2.
+          String storedFileName = System.currentTimeMillis() + "_" + originalFilename; // 3.
+          String savePath = "C:/Users/lsmls/IdeaProjects/1stspring/springboot_img/" + storedFileName; // 4. C:/springboot_img/9802398403948_내사진.jpg
+//            String savePath = "/Users/사용자이름/springboot_img/" + storedFileName; // C:/springboot_img/9802398403948_내사진.jpg
+          boardFile.transferTo(new File(savePath)); // 5.
+          BoardFileEntity boardFileEntity = BoardFileEntity.toBoardFileEntity(board, originalFilename, storedFileName);
+          boardFileRepository.save(boardFileEntity);
+        }
+      }
+
+      System.out.println("boardEntitys : " + boardEntitys.toString());
+      BoardDTO boardDTO1  = mapper.map(boardEntitys, new TypeToken<BoardDTO>(){}.getType());
+      return boardDTO1;
+      }
+
   }
 
   @Transactional
@@ -110,11 +121,31 @@ public class BoardService {
   }
 
   @Transactional
-  public BoardDTO findById(Long id) {
+  public BoardDTO boardDetail(Long id) {
     Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(id);
     if (optionalBoardEntity.isPresent()) {
       BoardEntity boardEntity = optionalBoardEntity.get();
+
       BoardDTO boardDTO = BoardDTO.toBoardDTO(boardEntity);
+
+      System.out.println("boardDTO.getFileAttached() : " + boardDTO.getFileAttached());
+
+      if (boardDTO.getFileAttached() == 1) {
+        ModelMapper mapper = new ModelMapper();
+        List<BoardFileDTO> boardFileDTOList = mapper.map(boardEntity.getBoardFileEntityList(), new TypeToken<List<BoardFileDTO>>() {
+        }.getType());
+
+        boardDTO.setBoardFileDTO(boardFileDTOList);
+      }
+      System.out.println("boardDetail boardDTO : " + boardDTO);
+
+/*      List<BoardFileEntity> boardFileEntityList = boardFileRepository.findByBoardId(boardEntity.getId());
+
+      ModelMapper mapper = new ModelMapper();
+      List<BoardFileDTO> boardFileDTOList = mapper.map(boardFileEntityList, new TypeToken<List<BoardFileDTO>>(){}.getType());
+
+      boardDTO.setBoardFileDTO(boardFileDTOList);*/
+
       return boardDTO;
     } else {
       return null;
@@ -124,7 +155,7 @@ public class BoardService {
   public BoardDTO update(BoardDTO boardDTO) {
     BoardEntity boardEntity = BoardEntity.toUpdateEntity(boardDTO);
     boardRepository.save(boardEntity);
-    return findById(boardDTO.getId());
+    return boardDetail(boardDTO.getId());
   }
   public void delete(Long id) {
     boardRepository.deleteById(id);

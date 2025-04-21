@@ -51,7 +51,7 @@ public class BoardController {
             게시글 데이터를 가져와서 detail.html에 출력
          */
         boardService.updateHits(id);
-        BoardDTO boardDTO = boardService.findById(id);
+        BoardDTO boardDTO = boardService.boardDetail(id);
         /* 댓글 목록 가져오기 */
         List<CommentDTO> commentDTOList = commentService.findAll(id);
         model.addAttribute("commentList", commentDTOList);
@@ -62,7 +62,7 @@ public class BoardController {
 
     @GetMapping("/update/{id}")
     public String updateForm(@PathVariable Long id, Model model) {
-        BoardDTO boardDTO = boardService.findById(id);
+        BoardDTO boardDTO = boardService.boardDetail(id);
         model.addAttribute("boardUpdate", boardDTO);
         return "update";
     }
