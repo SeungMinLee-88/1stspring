@@ -60,7 +60,7 @@ public class RestBoardController {
     public ResponseEntity<BoardPostResponse> boardSave(@RequestParam("boardTitle") String boardTitle, @RequestParam("boardWriter") String boardWriter, @RequestParam("boardContents") String boardContents,@RequestParam("boardPass") String boardPass, @RequestParam(name="boardFile", defaultValue = "", required = false) MultipartFile[] boardFile) throws IOException {
         System.out.println("boardTitle = " + boardTitle);
         System.out.println("boardFile = " + boardFile);
-        //boardService.save(boardDTO);
+
         LocalDateTime time = LocalDateTime.now();
         System.out.println("time = " + time);
         BoardDTO boardDTO = new BoardDTO();
@@ -69,6 +69,12 @@ public class RestBoardController {
         boardDTO.setBoardContents(boardContents);
         boardDTO.setBoardPass(boardPass);
         boardDTO.setFileList(boardFile);
+        boardService.boardSaveAtta(boardDTO);
+        for (MultipartFile boardFiles : boardDTO.getFileList()) {
+            //MultipartFile boardFile = boardDTO.getBoardFile(); // 1.
+            String originalFilename = boardFiles.getOriginalFilename(); // 2.
+            System.out.println("originalFilename : " + originalFilename);
+        }
 
         return ResponseEntity.ok(BoardPostResponse
                 .builder()
@@ -98,12 +104,9 @@ public class RestBoardController {
     }*/
 
     @GetMapping("/{id}")
-    public BoardDTO findById(@PathVariable Long id, Model model,
+    public BoardDTO boardDetail(@PathVariable Long id, Model model,
                            @PageableDefault(page=1) Pageable pageable) {
-        /*
-            해당 게시글의 조회수를 하나 올리고
-            게시글 데이터를 가져와서 detail.html에 출력
-         */
+        System.out.println("call boardDetail");
         boardService.updateHits(id);
         BoardDTO boardDTO = boardService.boardDetail(id);
         /* 댓글 목록 가져오기 */
@@ -112,7 +115,7 @@ public class RestBoardController {
         model.addAttribute("board", boardDTO);
         model.addAttribute("page", pageable.getPageNumber());
         System.out.println("return boardDTO : " + boardDTO);
-        return boardService.boardDetail(id);
+        return boardDTO;
     }
 
     @GetMapping("/update/{id}")

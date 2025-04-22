@@ -89,6 +89,7 @@ public class BoardService {
         for (MultipartFile boardFile : boardDTO.getFileList()) {
           //MultipartFile boardFile = boardDTO.getBoardFile(); // 1.
           String originalFilename = boardFile.getOriginalFilename(); // 2.
+          System.out.println("originalFilename : " + originalFilename);
           String storedFileName = System.currentTimeMillis() + "_" + originalFilename; // 3.
           String savePath = "C:/Users/lsmls/IdeaProjects/1stspring/springboot_img/" + storedFileName; // 4. C:/springboot_img/9802398403948_내사진.jpg
 //            String savePath = "/Users/사용자이름/springboot_img/" + storedFileName; // C:/springboot_img/9802398403948_내사진.jpg

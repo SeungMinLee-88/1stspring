@@ -9,7 +9,7 @@ from board
 order by created_time desc
 ;
 
-select count(*), board.*
+select board.*
 from board
 ;
 
