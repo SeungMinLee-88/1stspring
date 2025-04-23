@@ -1,15 +1,20 @@
 package com.spring.board.controller;
 
 import com.spring.board.dto.BoardDTO;
+import com.spring.board.dto.BoardFileDTO;
 import com.spring.board.dto.BoardPostResponse;
 import com.spring.board.dto.CommentDTO;
 import com.spring.board.service.BoardService;
 import com.spring.board.service.CommentService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -94,15 +99,6 @@ public class RestBoardController {
         return boardDTOList;
     }
 
-/*    @GetMapping("/boardlist")
-    public List<BoardDTO> boardList(Model model) {
-        // DB에서 전체 게시글 데이터를 가져와서 list.html에 보여준다.
-        List<BoardDTO> boardDTOList = boardService.findList();
-        System.out.println("boardDTOList : " + boardDTOList.toString());
-        //model.addAttribute("boardList", boardDTOList);
-        return boardDTOList;
-    }*/
-
     @GetMapping("/{id}")
     public BoardDTO boardDetail(@PathVariable Long id, Model model,
                            @PageableDefault(page=1) Pageable pageable) {
@@ -118,6 +114,36 @@ public class RestBoardController {
         return boardDTO;
     }
 
+    @GetMapping("/fileList/{boardId}")
+    public List<BoardFileDTO> fileList(@PathVariable Long boardId, HttpServletRequest request) {
+
+            List<BoardFileDTO> boardFileDTOList = boardService.fileList(boardId);
+            return boardFileDTOList;
+    }
+
+    @GetMapping("/download/{fileName:.+}")
+    public ResponseEntity<Object> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
+
+        try {
+            Resource resource = this.boardService.fetchFileAsResource(fileName);
+            String contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+
+            if (contentType == null) {
+                contentType = "application/octet-stream";
+            }
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(contentType))
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                    .body(resource);
+
+        } catch (IOException ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+
+
     @GetMapping("/update/{id}")
     public BoardDTO updateForm(@PathVariable Long id, Model model) {
         BoardDTO boardDTO = boardService.boardDetail(id);
@@ -125,18 +151,29 @@ public class RestBoardController {
         return boardService.boardDetail(id);
     }
 
-    @PostMapping("/update")
-    public ResponseEntity<BoardPostResponse> boardUpdate(@ModelAttribute BoardDTO boardDTO, Model model,
-                         @PageableDefault(page=1) Pageable pageable) {
-        BoardDTO board = boardService.update(boardDTO);
-        model.addAttribute("board", board);
+    @PostMapping("/updateBoard")
+    public ResponseEntity<BoardPostResponse> updateBoard(@RequestParam("boardId") Long id,
+            @RequestParam("boardTitle") String boardTitle, @RequestParam("boardWriter") String boardWriter, @RequestParam("boardContents") String boardContents,@RequestParam("boardPass") String boardPass, @RequestParam(name="boardFile", defaultValue = "", required = false) MultipartFile[] boardFile) {
 
-        /* 댓글 목록 가져오기 */
-        List<CommentDTO> commentDTOList = commentService.findAll(board.getId());
-        model.addAttribute("commentList", commentDTOList);
-        model.addAttribute("board", boardDTO);
-        model.addAttribute("page", pageable.getPageNumber());
+        System.out.println("boardTitle = " + boardTitle);
+        System.out.println("boardFile = " + boardFile);
 
+        LocalDateTime time = LocalDateTime.now();
+        System.out.println("time = " + time);
+        BoardDTO boardDTO = new BoardDTO();
+        boardDTO.setId(id);
+        boardDTO.setBoardTitle(boardTitle);
+        boardDTO.setBoardWriter(boardWriter);
+        boardDTO.setBoardContents(boardContents);
+        boardDTO.setBoardPass(boardPass);
+        boardDTO.setFileList(boardFile);
+
+        try {
+            /*BoardDTO board = boardService.updateBoard(boardDTO);*/
+            boardService.updateBoard(boardDTO);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         return ResponseEntity.ok(BoardPostResponse
                 .builder()
                 .resultMessage("update success")

@@ -52,6 +52,7 @@ public class BoardController {
          */
         boardService.updateHits(id);
         BoardDTO boardDTO = boardService.boardDetail(id);
+        System.out.println("Board boardDTO : " + boardDTO);
         /* 댓글 목록 가져오기 */
         List<CommentDTO> commentDTOList = commentService.findAll(id);
         model.addAttribute("commentList", commentDTOList);
