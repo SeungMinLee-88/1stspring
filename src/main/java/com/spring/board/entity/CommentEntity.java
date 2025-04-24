@@ -28,6 +28,14 @@ public class CommentEntity extends BaseEntity {
   @JoinColumn(name = "board_id")
   private BoardEntity boardEntity;
 
+  @OneToMany(mappedBy = "commentEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+  private List<CommentEntity> commentEntityList = new ArrayList<>();
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "parent_id")
+  private CommentEntity commentEntity;
+
+
 
   public static CommentEntity toSaveEntity(CommentDTO commentDTO, BoardEntity boardEntity) {
     CommentEntity commentEntity = new CommentEntity();

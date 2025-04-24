@@ -5,7 +5,7 @@ import com.spring.board.dto.BoardFileDTO;
 import com.spring.board.dto.BoardPostResponse;
 import com.spring.board.dto.CommentDTO;
 import com.spring.board.service.BoardService;
-import com.spring.board.service.CommentService;
+import com.spring.board.service.CommentService_bak2;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
@@ -24,14 +24,13 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/board")
 public class RestBoardController {
     private final BoardService boardService;
-    private final CommentService commentService;
+    private final CommentService_bak2 commentServiceBak2;
 
 /*
     @PutMapping("/save")
@@ -106,7 +105,7 @@ public class RestBoardController {
         boardService.updateHits(id);
         BoardDTO boardDTO = boardService.boardDetail(id);
         /* 댓글 목록 가져오기 */
-        List<CommentDTO> commentDTOList = commentService.findAll(id);
+        List<CommentDTO> commentDTOList = commentServiceBak2.findAll(id);
         model.addAttribute("commentList", commentDTOList);
         model.addAttribute("board", boardDTO);
         model.addAttribute("page", pageable.getPageNumber());

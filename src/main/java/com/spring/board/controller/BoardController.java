@@ -3,7 +3,7 @@ package com.spring.board.controller;
 import com.spring.board.dto.BoardDTO;
 import com.spring.board.dto.CommentDTO;
 import com.spring.board.service.BoardService;
-import com.spring.board.service.CommentService;
+import com.spring.board.service.CommentService_bak2;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,7 +20,7 @@ import java.util.List;
 @RequestMapping("/board")
 public class BoardController {
     private final BoardService boardService;
-    private final CommentService commentService;
+    private final CommentService_bak2 commentServiceBak2;
 
     @GetMapping("/save")
     public String saveForm() {
@@ -54,7 +54,7 @@ public class BoardController {
         BoardDTO boardDTO = boardService.boardDetail(id);
         System.out.println("Board boardDTO : " + boardDTO);
         /* 댓글 목록 가져오기 */
-        List<CommentDTO> commentDTOList = commentService.findAll(id);
+        List<CommentDTO> commentDTOList = commentServiceBak2.findAll(id);
         model.addAttribute("commentList", commentDTOList);
         model.addAttribute("board", boardDTO);
         model.addAttribute("page", pageable.getPageNumber());
@@ -75,7 +75,7 @@ public class BoardController {
         model.addAttribute("board", board);
 
         /* 댓글 목록 가져오기 */
-        List<CommentDTO> commentDTOList = commentService.findAll(board.getId());
+        List<CommentDTO> commentDTOList = commentServiceBak2.findAll(board.getId());
         model.addAttribute("commentList", commentDTOList);
         model.addAttribute("board", boardDTO);
         model.addAttribute("page", pageable.getPageNumber());

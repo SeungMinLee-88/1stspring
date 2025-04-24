@@ -1,7 +1,7 @@
 package com.spring.board.controller;
 
 import com.spring.board.dto.CommentDTO;
-import com.spring.board.service.CommentService;
+import com.spring.board.service.CommentService_bak2;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,13 +16,13 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/comment")
 public class CommentController {
-  private final CommentService commentService;
+  private final CommentService_bak2 commentServiceBak2;
   @PostMapping("/save")
   public ResponseEntity save(@ModelAttribute CommentDTO commentDTO) {
     System.out.println("commentDTO = " + commentDTO);
-    Long saveResult = commentService.save(commentDTO);
+    Long saveResult = commentServiceBak2.save(commentDTO);
     if (saveResult != null) {
-      List<CommentDTO> commentDTOList = commentService.findAll(commentDTO.getBoardId());
+      List<CommentDTO> commentDTOList = commentServiceBak2.findAll(commentDTO.getBoardId());
       return new ResponseEntity<>(commentDTOList, HttpStatus.OK);
     } else {
       return new ResponseEntity<>("해당 게시글이 존재하지 않습니다.", HttpStatus.NOT_FOUND);
