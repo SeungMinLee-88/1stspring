@@ -121,6 +121,15 @@ public class RestBoardController {
             return boardFileDTOList;
     }
 
+    @GetMapping("/fileDelete/{fileId}&{boardId}")
+    public List<BoardFileDTO> fileDelete(@PathVariable Long fileId, @PathVariable Long boardId) {
+        System.out.println("fileDelete fileId : " + fileId);
+        System.out.println("fileDelete boardId : " + boardId);
+
+        List<BoardFileDTO> boardFileDTOList = boardService.fileDelete(fileId, boardId);
+        return boardFileDTOList;
+    }
+
     @GetMapping("/download/{fileName:.+}")
     public ResponseEntity<Object> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
 

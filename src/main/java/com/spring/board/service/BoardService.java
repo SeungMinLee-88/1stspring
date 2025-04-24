@@ -143,6 +143,26 @@ public class BoardService {
       return fileDTOList;
   }
 
+  @Transactional
+  public List<BoardFileDTO> fileDelete(Long fileId, Long boardId) {
+    boardFileRepository.deleteById(fileId);
+
+    List<BoardFileEntity> boardFileEntityList = boardFileRepository.findByBoardId(boardId);
+
+    ModelMapper mapper = new ModelMapper();
+    List<BoardFileDTO> fileDTOList = mapper.map(boardFileEntityList, new TypeToken<List<BoardFileDTO>>() {
+    }.getType());
+
+    System.out.println("fileList fileDTOList : " + fileDTOList);
+
+    if(boardFileEntityList.size() == 0)
+    {
+      boardRepository.updatefileAttached(boardId);
+    }
+
+    return fileDTOList;
+  }
+
 
   public Resource fetchFileAsResource(String fileName) throws FileNotFoundException {
     Path UPLOAD_PATH;
