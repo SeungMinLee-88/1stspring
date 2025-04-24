@@ -17,7 +17,7 @@ import java.util.List;
 @RequestMapping("/comment")
 public class CommentController {
   private final CommentService_bak2 commentServiceBak2;
-  @PostMapping("/save")
+  /*@PostMapping("/save")
   public ResponseEntity save(@ModelAttribute CommentDTO commentDTO) {
     System.out.println("commentDTO = " + commentDTO);
     Long saveResult = commentServiceBak2.save(commentDTO);
@@ -27,5 +27,5 @@ public class CommentController {
     } else {
       return new ResponseEntity<>("해당 게시글이 존재하지 않습니다.", HttpStatus.NOT_FOUND);
     }
-  }
+  }*/
 }

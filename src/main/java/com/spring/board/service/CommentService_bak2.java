@@ -18,8 +18,8 @@ public class CommentService_bak2 {
   private final CommentRepository commentRepository;
   private final BoardRepository boardRepository;
 
-  public Long save(CommentDTO commentDTO) {
-    /* 부모엔티티(BoardEntity) 조회 */
+  /*public Long save(CommentDTO commentDTO) {
+    *//* 부모엔티티(BoardEntity) 조회 *//*
     Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(commentDTO.getBoardId());
     if (optionalBoardEntity.isPresent()) {
       BoardEntity boardEntity = optionalBoardEntity.get();
@@ -33,13 +33,13 @@ public class CommentService_bak2 {
   public List<CommentDTO> findAll(Long boardId) {
     BoardEntity boardEntity = boardRepository.findById(boardId).get();
     List<CommentEntity> commentEntityList = commentRepository.findAllByBoardEntityOrderByIdDesc(boardEntity);
-    /* EntityList -> DTOList */
+    *//* EntityList -> DTOList *//*
     List<CommentDTO> commentDTOList = new ArrayList<>();
     for (CommentEntity commentEntity: commentEntityList) {
       CommentDTO commentDTO = CommentDTO.toCommentDTO(commentEntity, boardId);
       commentDTOList.add(commentDTO);
     }
     return commentDTOList;
-  }
+  }*/
 
 }

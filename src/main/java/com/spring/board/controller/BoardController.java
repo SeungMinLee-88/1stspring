@@ -22,7 +22,7 @@ public class BoardController {
     private final BoardService boardService;
     private final CommentService_bak2 commentServiceBak2;
 
-    @GetMapping("/save")
+   /* @GetMapping("/save")
     public String saveForm() {
         return "save";
     }
@@ -46,14 +46,14 @@ public class BoardController {
     @GetMapping("/{id}")
     public String findById(@PathVariable Long id, Model model,
                            @PageableDefault(page=1) Pageable pageable) {
-        /*
+        *//*
             해당 게시글의 조회수를 하나 올리고
             게시글 데이터를 가져와서 detail.html에 출력
-         */
+         *//*
         boardService.updateHits(id);
         BoardDTO boardDTO = boardService.boardDetail(id);
         System.out.println("Board boardDTO : " + boardDTO);
-        /* 댓글 목록 가져오기 */
+        *//* 댓글 목록 가져오기 *//*
         List<CommentDTO> commentDTOList = commentServiceBak2.findAll(id);
         model.addAttribute("commentList", commentDTOList);
         model.addAttribute("board", boardDTO);
@@ -74,7 +74,7 @@ public class BoardController {
         BoardDTO board = boardService.update(boardDTO);
         model.addAttribute("board", board);
 
-        /* 댓글 목록 가져오기 */
+        *//* 댓글 목록 가져오기 *//*
         List<CommentDTO> commentDTOList = commentServiceBak2.findAll(board.getId());
         model.addAttribute("commentList", commentDTOList);
         model.addAttribute("board", boardDTO);
@@ -111,6 +111,6 @@ public class BoardController {
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
         return "paging";
-    }
+    }*/
 
 }

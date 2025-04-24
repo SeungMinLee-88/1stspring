@@ -105,8 +105,8 @@ public class RestBoardController {
         boardService.updateHits(id);
         BoardDTO boardDTO = boardService.boardDetail(id);
         /* 댓글 목록 가져오기 */
-        List<CommentDTO> commentDTOList = commentServiceBak2.findAll(id);
-        model.addAttribute("commentList", commentDTOList);
+        /*List<CommentDTO> commentDTOList = commentServiceBak2.findAll(id);
+        model.addAttribute("commentList", commentDTOList);*/
         model.addAttribute("board", boardDTO);
         model.addAttribute("page", pageable.getPageNumber());
         System.out.println("return boardDTO : " + boardDTO);

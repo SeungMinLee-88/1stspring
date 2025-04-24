@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -16,6 +17,7 @@ public class CommentDTO extends BaseEntity {
   private String commentWriter;
   private String commentContents;
   private Long boardId;
+  private List<CommentDTO> commentDTOList;
 
   public static CommentDTO toCommentDTO(CommentEntity commentEntity, Long boardId) {
     CommentDTO commentDTO = new CommentDTO();

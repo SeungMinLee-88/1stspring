@@ -31,7 +31,7 @@ public class CommentEntity extends BaseEntity {
   @OneToMany(mappedBy = "commentEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
   private List<CommentEntity> commentEntityList = new ArrayList<>();
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "parent_id")
   private CommentEntity commentEntity;
 
@@ -44,4 +44,12 @@ public class CommentEntity extends BaseEntity {
     commentEntity.setBoardEntity(boardEntity);
     return commentEntity;
   }
+
+/*  public static List<CommentEntity> tocommentList(CommentDTO commentDTO, BoardEntity boardEntity) {
+    List<CommentEntity> commentEntity = new CommentEntity();
+    commentEntity.setCommentWriter(commentDTO.getCommentWriter());
+    commentEntity.setCommentContents(commentDTO.getCommentContents());
+    commentEntity.setBoardEntity(boardEntity);
+    return commentEntity;
+  }*/
 }

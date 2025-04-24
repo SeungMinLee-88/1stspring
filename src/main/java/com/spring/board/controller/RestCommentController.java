@@ -34,6 +34,7 @@ public class RestCommentController {
     private final CommentService commentService;
     @GetMapping("/commentList")
     public List<CommentDTO> commentList(@RequestParam Long boardId) {
+        System.out.println("boardId : " + boardId);
         // DB에서 전체 게시글 데이터를 가져와서 list.html에 보여준다.
         List<CommentDTO> commentDTOList = commentService.commentList(boardId);
         System.out.println("commentDTOList : " + commentDTOList.toString());
