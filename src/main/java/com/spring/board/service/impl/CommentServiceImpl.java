@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 
@@ -34,15 +36,19 @@ public class CommentServiceImpl implements CommentService {
 
   @Override
   public List<CommentDTO> commentList(Long boardId) {
-    BoardEntity boardEntity = boardRepository.findById(boardId).get();
-    List<CommentEntity> commentEntityList = commentRepository.findByBoardEntityAndCommentEntityIsNull(boardEntity);
+/*    BoardEntity boardEntity = boardRepository.findById(boardId).get();
+    List<CommentEntity> commentEntityList = commentRepository.findByBoardEntity(boardEntity);
+
 
     ModelMapper mapper = new ModelMapper();
     List<CommentDTO> commentDTOList = mapper.map(commentEntityList, new TypeToken<List<CommentDTO>>() {
-    }.getType());
+    }.getType());*/
+    List<CommentDTO> commentDTOList = new CommentDTO().getChildrencomments();
 
     return commentDTOList;
   }
+
+
 
 
 }

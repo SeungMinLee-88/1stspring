@@ -1,5 +1,7 @@
 package com.spring.board.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.spring.board.dto.BoardDTO;
 import com.spring.board.dto.CommentDTO;
 import jakarta.persistence.*;
@@ -7,6 +9,7 @@ import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -26,16 +29,29 @@ public class CommentEntity extends BaseEntity {
   /* Board:Comment = 1:N */
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "board_id")
+  @JsonIgnore
   private BoardEntity boardEntity;
 
-  @OneToMany(mappedBy = "commentEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
-  private List<CommentEntity> commentEntityList = new ArrayList<>();
 
-  @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "parent_id")
-  private CommentEntity commentEntity;
+  /*@OneToMany(mappedBy = "commentEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+  private Set<CommentEntity> commentEntityList;*/
+/*  @OneToMany(mappedBy = "commentEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+  private List<CommentEntity> commentEntityList = new ArrayList<>();*/
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "parent_comment_id")
+  @JsonIgnore
+  private CommentEntity parentCommentEntity;
 
 
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "root_comment_id")
+  @JsonIgnore
+  private CommentEntity rootCommentEntity;
+
+  @Transient
+  public List<CommentEntity> childrencomments = new ArrayList<CommentEntity>();
 
   public static CommentEntity toSaveEntity(CommentDTO commentDTO, BoardEntity boardEntity) {
     CommentEntity commentEntity = new CommentEntity();
