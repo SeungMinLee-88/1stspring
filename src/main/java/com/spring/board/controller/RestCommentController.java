@@ -74,7 +74,7 @@ public class RestCommentController {
         List<CommentEntity> subComments = commentRepository.findAllSubCommentEntitysInRoot(rootCommentIds); // second db call
 
         subComments.forEach(subComment -> {
-            //subComment.getParentCommentEntity().getChildrencomments().add(subComment); // no further db call, because everyone inside the root is in the persistence context.
+            subComment.getParentCommentEntity().getChildrencomments().add(subComment); // no further db call, because everyone inside the root is in the persistence context.
         });
 
         return rootCommentEntity;
