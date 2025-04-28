@@ -19,6 +19,8 @@ public class CommentDTO extends BaseEntity {
   private String commentWriter;
   private String commentContents;
   private Long boardId;
+  private Long parentCommentId;
+  private Long rootCommentId;
   private List<CommentDTO> childrencomments;
   /*private Set<CommentDTO> commentDTOList;*/
 

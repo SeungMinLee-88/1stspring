@@ -51,13 +51,15 @@ public class CommentEntity extends BaseEntity {
   private CommentEntity rootCommentEntity;
 
   @Transient
-  public List<CommentEntity> childrencomments = new ArrayList<CommentEntity>();
+  public List<CommentEntity> childrenComments = new ArrayList<CommentEntity>();
 
-  public static CommentEntity toSaveEntity(CommentDTO commentDTO, BoardEntity boardEntity) {
+  public static CommentEntity toSaveEntity(CommentDTO commentDTO, BoardEntity boardEntity, CommentEntity parentCommentEntity, CommentEntity rootCommentEntity) {
     CommentEntity commentEntity = new CommentEntity();
     commentEntity.setCommentWriter(commentDTO.getCommentWriter());
     commentEntity.setCommentContents(commentDTO.getCommentContents());
     commentEntity.setBoardEntity(boardEntity);
+    commentEntity.setParentCommentEntity(parentCommentEntity);
+    commentEntity.setRootCommentEntity(rootCommentEntity);
     return commentEntity;
   }
 
