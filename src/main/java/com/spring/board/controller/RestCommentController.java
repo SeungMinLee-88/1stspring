@@ -115,6 +115,19 @@ public class RestCommentController {
         return ResponseEntity.status(HttpStatus.OK).body("save success");
     }
 
+    @Transactional
+    @PostMapping("/commentUpdate")
+    public ResponseEntity<String> commentUpdate(@RequestBody CommentDTO commentDTO) throws IOException {
+        System.out.println("commentUpdate commentDTO = " + commentDTO);
+
+
+        CommentEntity updateCommentEntity = CommentEntity.toUpdateEntity(commentDTO);
+        updateCommentEntity.setCommentContents(commentDTO.getCommentContents());
+        commentRepository.updateCommentContents(commentDTO.getCommentContents(), commentDTO.getId());
+
+        return ResponseEntity.status(HttpStatus.OK).body("update success");
+    }
+
 
     @GetMapping("/categories")
     @Transactional(readOnly = true)

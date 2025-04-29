@@ -62,6 +62,12 @@ public class CommentEntity extends BaseEntity {
     commentEntity.setRootCommentEntity(rootCommentEntity);
     return commentEntity;
   }
+  public static CommentEntity toUpdateEntity(CommentDTO commentDTO) {
+    CommentEntity commentEntity = new CommentEntity();
+    commentEntity.setId(commentDTO.getId());
+    commentEntity.setCommentContents(commentDTO.getCommentContents());
+    return commentEntity;
+  }
 
 /*  public static List<CommentEntity> tocommentList(CommentDTO commentDTO, BoardEntity boardEntity) {
     List<CommentEntity> commentEntity = new CommentEntity();
