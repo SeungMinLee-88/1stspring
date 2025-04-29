@@ -23,17 +23,18 @@ public class CustomUserDetailsService  implements UserDetailsService {
   }
 
   @Override
-  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+  public UserDetails loadUserByUsername(String loginId) throws UsernameNotFoundException {
 
     System.out.println("call loadUserByUsername");
 
+    System.out.println("loadUserByUsername loginId : " + loginId);
     //DB에서 조회
-    UserEntity userData = userRepository.findByUsername(username);
+    UserEntity userData = userRepository.findByLoginId(loginId);
 
     ModelMapper mapper = new ModelMapper();
-
+    System.out.println("loadUserByUsername userData : " + userData);
     UserDto userDto  = mapper.map(userData, new TypeToken<UserDto>(){}.getType());
-    System.out.println("userDto : " + userDto);
+    System.out.println("loadUserByUsername userDto : " + userDto);
 
 
     if (userData != null) {

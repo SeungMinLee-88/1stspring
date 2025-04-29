@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spring.board.component.JWTUtil;
 import com.spring.board.dto.JoinDTO;
+import com.spring.board.dto.UserDto;
 import com.spring.board.entity.RefreshEntity;
 import com.spring.board.repository.RefreshRepository;
 import com.spring.board.service.CustomUserDetails;
@@ -64,29 +65,31 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
 
 
-    System.out.println("request username : " + request.getParameter("username"));
-    System.out.println("request password : " + request.getParameter("password"));
+    System.out.println("request loginId : " + request.getParameter("loginId"));
+    System.out.println("request userPassword : " + request.getParameter("userPassword"));
     //클라이언트 요청에서 username, password 추출
     /*String username = obtainUsername(request);
     String password = obtainPassword(request);*/
-    JoinDTO joinDTO = new JoinDTO();
-    String username = "";
-    String password = "";
+    UserDto userDto = new UserDto();
+    String loginId = "";
+    String userPassword = "";
     try {
-      joinDTO = objectMapper.readValue(messageBody, JoinDTO.class);
-      username = joinDTO.getUsername();
-      password = joinDTO.getPassword();
+      userDto = objectMapper.readValue(messageBody, UserDto.class);
+      loginId = userDto.getLoginId();
+      userPassword = userDto.getUserPassword();
+      System.out.println("userDto : " + userDto);
 
     } catch (JsonProcessingException e) {
       throw new RuntimeException(e);
     }
-    System.out.println("username : " + username);
+    System.out.println("loginId : " + loginId);
 
 
     //스프링 시큐리티에서 username과 password를 검증하기 위해서는 token에 담아야 함
-    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password, null);
+    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(loginId, userPassword, null);
 
     //token에 담은 검증을 위한 AuthenticationManager로 전달
+    System.out.println("authToken : " + authToken);
     return authenticationManager.authenticate(authToken);
   }
 

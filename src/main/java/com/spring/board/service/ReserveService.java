@@ -34,7 +34,7 @@ public class ReserveService {
         /*if (boardDTO.getBoardFile().isEmpty()) {*/
 
         /*Optional<UserEntity> optionalUserEntity = userRepository.findById(reserveDTO.getUserId());*/
-        Optional<UserEntity> optionalUserEntity = Optional.ofNullable(userRepository.findByUsername(reserveDTO.getUserName()));
+        Optional<UserEntity> optionalUserEntity = Optional.ofNullable(userRepository.findByLoginId(reserveDTO.getUserName()));
         Optional<HallEntity> optionalHallEntity = hallRepository.findById(reserveDTO.getHallId());
         if (optionalUserEntity.isPresent() && optionalHallEntity.isPresent()) {
             UserEntity userEntity = optionalUserEntity.get();

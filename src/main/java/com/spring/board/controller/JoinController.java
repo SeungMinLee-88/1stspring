@@ -1,6 +1,7 @@
 package com.spring.board.controller;
 
 import com.spring.board.dto.JoinDTO;
+import com.spring.board.dto.UserDto;
 import com.spring.board.service.JoinService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -17,10 +18,10 @@ public class JoinController {
   }
 
   @PostMapping("/join")
-  public String joinProcess(@RequestBody JoinDTO joinDTO) {
+  public String joinProcess(@RequestBody UserDto userDto) {
 
-    System.out.println(joinDTO.getUsername());
-    joinService.joinProcess(joinDTO);
+    System.out.println(userDto.getUserName());
+    joinService.joinProcess(userDto);
 
     return "ok";
   }

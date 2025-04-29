@@ -22,9 +22,10 @@ public class UserEntity extends BaseEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  private String username;
-  private String password;
-  private String role;
+  private String loginId;
+  private String userName;
+  private String userPassword;
+  private String userRole;
 
   @OneToMany(mappedBy = "userEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
   private final List<ReserveEntity> reserveEntities = new ArrayList<>();

@@ -1,6 +1,7 @@
 package com.spring.board.service;
 
 import com.spring.board.dto.JoinDTO;
+import com.spring.board.dto.UserDto;
 import com.spring.board.entity.UserEntity;
 import com.spring.board.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,24 +18,26 @@ public class JoinService {
     this.bCryptPasswordEncoder = bCryptPasswordEncoder;
   }
 
-  public void joinProcess(JoinDTO joinDTO) {
+  public void joinProcess(UserDto userDto) {
 
-    String username = joinDTO.getUsername();
-    String password = joinDTO.getPassword();
+    String loginId = userDto.getLoginId();
+    String userName = userDto.getUserName();
+    String userPassword = userDto.getUserPassword();
 
-    Boolean isExist = userRepository.existsByUsername(username);
+    Boolean isExist = userRepository.existsByLoginId(userName);
 
     if (isExist) {
 
       return;
     }
 
-    UserEntity data = new UserEntity();
+    UserEntity userEntity = new UserEntity();
 
-    data.setUsername(username);
-    data.setPassword(bCryptPasswordEncoder.encode(password));
-    data.setRole("ROLE_ADMIN");
+    userEntity.setLoginId(loginId);
+    userEntity.setUserName(userName);
+    userEntity.setUserPassword(bCryptPasswordEncoder.encode(userPassword));
+    userEntity.setUserRole("ROLE_ADMIN");
 
-    userRepository.save(data);
+    userRepository.save(userEntity);
   }
 }
