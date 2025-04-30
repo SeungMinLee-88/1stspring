@@ -11,6 +11,12 @@ public class CorsMvcConfig implements WebMvcConfigurer {
   public void addCorsMappings(CorsRegistry corsRegistry) {
 
     corsRegistry.addMapping("/**")
+            //.exposedHeaders("userName")
+            .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 허용 메서드
+            .allowedHeaders("X-Custom-Header", "Content-Type") // 허용 헤더
+            .exposedHeaders("X-Custom-Header") // 클라이언트에서 접근 가능한 헤더
+            .allowCredentials(true) // 쿠키 포함 여부
             .allowedOrigins("http://localhost:3000");
   }
+
 }

@@ -123,12 +123,12 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
   protected void successfulAuthentication (HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) {
 
     //유저 정보
-    String username = authentication.getName();
+    String userName = authentication.getName();
     //String userId = (String) authentication.getPrincipal();
 /*    String userId = (String) SecurityContextHolder.getContext()
             .getAuthentication()
             .getPrincipal();*/
-    System.out.println("username : " + username);
+    System.out.println("userName : " + userName);
 
     Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
     Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
@@ -138,18 +138,20 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     //토큰 생성
     /*String access = jwtUtil.createJwt("access", username, role, 20000L);*/
     /*String access = jwtUtil.createJwt("access", username, role, 600000L);*/
-    String access = jwtUtil.createJwt("access", username, role, 1500000L);
-    String refresh = jwtUtil.createJwt("refresh", username, role, 86400000L);
+    String access = jwtUtil.createJwt("access", userName, role, 1500000L);
+    String refresh = jwtUtil.createJwt("refresh", userName, role, 86400000L);
 
     //Refresh 토큰 저장
-    addRefreshEntity(username, refresh, 86400000L);
+    addRefreshEntity(userName, refresh, 86400000L);
 
     //응답 설정
-    response.setHeader("access", access );
-/*    response.setHeader("Access-Control-Allow-Origin", "*" );
+    response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, userName, Response-Header" );
     response.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE, OPTIONS" );
-    response.setHeader("Access-Control-Allow-Headers", "Origin, Content-Type, X-Auth-Token" );
-    response.setHeader("username", username );*/
+    response.setHeader("Access-Control-Allow-Origin", "*" );
+    response.setHeader("Access-Control-Expose-Headers", "userName" );
+    response.setHeader("access", access );
+    response.setHeader("userName", userName );
+
     response.addCookie(createCookie("refresh", refresh));
     response.setStatus(HttpStatus.OK.value());
   }
