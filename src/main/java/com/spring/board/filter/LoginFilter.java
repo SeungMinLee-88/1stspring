@@ -147,7 +147,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     //응답 설정
     response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, userName, Response-Header, access" );
     response.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE, OPTIONS" );
-    response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000/*" );
+    response.setHeader("Access-Control-Allow-Origin", "localhost:3000" );
     response.setHeader("Access-Control-Expose-Headers", "userName, access" );
     response.setHeader("access", access );
     response.setHeader("userName", userName );

@@ -45,7 +45,7 @@ public class BoardService {
   public BoardDTO boardSaveAtta(BoardDTO boardDTO) throws IOException {
     // 파일 첨부 여부에 따라 로직 분리
     ModelMapper mapper = new ModelMapper();
-    if (boardDTO.getFileList().length == 0) {
+    if (boardDTO.getFileList() == null) {
     System.out.println("boardSaveAtta boardDTO = " + boardDTO);
     boardDTO.setFileAttached(0);
     BoardEntity saveBoardEntity = BoardEntity.toSaveEntity(boardDTO);
@@ -68,11 +68,12 @@ public class BoardService {
           //MultipartFile boardFile = boardDTO.getBoardFile(); // 1.
           String originalFilename = boardFile.getOriginalFilename(); // 2.
           System.out.println("originalFilename : " + originalFilename);
+          System.out.println("boardFile.getContentType(); : " + boardFile.getContentType());
           String storedFileName = System.currentTimeMillis() + "_" + originalFilename; // 3.
           String savePath = "C:/Users/lsmls/IdeaProjects/1stspring/springboot_img/" + storedFileName; // 4. C:/springboot_img/9802398403948_내사진.jpg
 //            String savePath = "/Users/사용자이름/springboot_img/" + storedFileName; // C:/springboot_img/9802398403948_내사진.jpg
           boardFile.transferTo(new File(savePath)); // 5.
-          BoardFileEntity boardFileEntity = BoardFileEntity.toBoardFileEntity(board, originalFilename, storedFileName);
+          BoardFileEntity boardFileEntity = BoardFileEntity.toBoardFileEntity(board, originalFilename, storedFileName, boardFile.getContentType());
           boardFileRepository.save(boardFileEntity);
         }
       }
@@ -224,7 +225,7 @@ public class BoardService {
           String savePath = "C:/Users/lsmls/IdeaProjects/1stspring/springboot_img/" + storedFileName; // 4. C:/springboot_img/9802398403948_내사진.jpg
 //            String savePath = "/Users/사용자이름/springboot_img/" + storedFileName; // C:/springboot_img/9802398403948_내사진.jpg
           boardFile.transferTo(new File(savePath)); // 5.
-          BoardFileEntity boardFileEntity = BoardFileEntity.toBoardFileEntity(board, originalFilename, storedFileName);
+          BoardFileEntity boardFileEntity = BoardFileEntity.toBoardFileEntity(board, originalFilename, storedFileName, boardFile.getContentType());
           boardFileRepository.save(boardFileEntity);
         }
       }
