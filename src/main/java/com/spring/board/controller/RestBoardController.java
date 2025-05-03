@@ -61,7 +61,7 @@ public class RestBoardController {
 
     //https://green-bin.tistory.com/44
     @PostMapping("/boardSave")
-    public ResponseEntity<BoardPostResponse> boardSave(@RequestParam("boardTitle") String boardTitle, @RequestParam("boardWriter") String boardWriter, @RequestParam("boardContents") String boardContents,@RequestParam("boardPass") String boardPass, @RequestParam(name="boardFile", required = false) MultipartFile[] boardFile) throws IOException {
+    public ResponseEntity<BoardPostResponse> boardSave(@RequestParam("boardTitle") String boardTitle, @RequestParam("boardWriter") String boardWriter, @RequestParam("boardContents") String boardContents, @RequestParam(name="boardFile", required = false) MultipartFile[] boardFile) throws IOException {
         System.out.println("boardTitle = " + boardTitle);
         System.out.println("boardFile = " + boardFile);
 
@@ -71,7 +71,7 @@ public class RestBoardController {
         boardDTO.setBoardTitle(boardTitle);
         boardDTO.setBoardWriter(boardWriter);
         boardDTO.setBoardContents(boardContents);
-        boardDTO.setBoardPass(boardPass);
+/*        boardDTO.setBoardPass(boardPass);*/
         boardDTO.setFileList(boardFile);
         boardService.boardSaveAtta(boardDTO);
         /*for (MultipartFile boardFiles : boardDTO.getFileList()) {
@@ -161,7 +161,7 @@ public class RestBoardController {
 
     @PostMapping("/updateBoard")
     public ResponseEntity<BoardPostResponse> updateBoard(@RequestParam("boardId") Long id,
-            @RequestParam("boardTitle") String boardTitle, @RequestParam("boardWriter") String boardWriter, @RequestParam("boardContents") String boardContents,@RequestParam("boardPass") String boardPass, @RequestParam(name="boardFile", defaultValue = "", required = false) MultipartFile[] boardFile) {
+            @RequestParam("boardTitle") String boardTitle, @RequestParam("boardWriter") String boardWriter, @RequestParam("boardContents") String boardContents, @RequestParam(name="boardFile", defaultValue = "", required = false) MultipartFile[] boardFile) {
 
         System.out.println("boardTitle = " + boardTitle);
         System.out.println("boardFile = " + boardFile);
@@ -173,7 +173,7 @@ public class RestBoardController {
         boardDTO.setBoardTitle(boardTitle);
         boardDTO.setBoardWriter(boardWriter);
         boardDTO.setBoardContents(boardContents);
-        boardDTO.setBoardPass(boardPass);
+/*        boardDTO.setBoardPass(boardPass);*/
         boardDTO.setFileList(boardFile);
 
         try {

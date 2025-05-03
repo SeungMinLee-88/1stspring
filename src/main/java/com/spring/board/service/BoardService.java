@@ -69,11 +69,18 @@ public class BoardService {
           String originalFilename = boardFile.getOriginalFilename(); // 2.
           System.out.println("originalFilename : " + originalFilename);
           System.out.println("boardFile.getContentType(); : " + boardFile.getContentType());
+
+          System.out.println("boardFile.indexOf(); : " + boardFile.getContentType().indexOf("/"));
+          System.out.println("boardFile.substring(); : " + boardFile.getContentType().substring(0, boardFile.getContentType().indexOf("/")));
+
+
+
           String storedFileName = System.currentTimeMillis() + "_" + originalFilename; // 3.
           String savePath = "C:/Users/lsmls/IdeaProjects/1stspring/springboot_img/" + storedFileName; // 4. C:/springboot_img/9802398403948_내사진.jpg
 //            String savePath = "/Users/사용자이름/springboot_img/" + storedFileName; // C:/springboot_img/9802398403948_내사진.jpg
+          String mimeType = boardFile.getContentType().substring(0, boardFile.getContentType().indexOf("/"));
           boardFile.transferTo(new File(savePath)); // 5.
-          BoardFileEntity boardFileEntity = BoardFileEntity.toBoardFileEntity(board, originalFilename, storedFileName, boardFile.getContentType());
+          BoardFileEntity boardFileEntity = BoardFileEntity.toBoardFileEntity(board, originalFilename, storedFileName, mimeType);
           boardFileRepository.save(boardFileEntity);
         }
       }
@@ -223,9 +230,10 @@ public class BoardService {
           System.out.println("originalFilename : " + originalFilename);
           String storedFileName = System.currentTimeMillis() + "_" + originalFilename; // 3.
           String savePath = "C:/Users/lsmls/IdeaProjects/1stspring/springboot_img/" + storedFileName; // 4. C:/springboot_img/9802398403948_내사진.jpg
-//            String savePath = "/Users/사용자이름/springboot_img/" + storedFileName; // C:/springboot_img/9802398403948_내사진.jpg
+
           boardFile.transferTo(new File(savePath)); // 5.
-          BoardFileEntity boardFileEntity = BoardFileEntity.toBoardFileEntity(board, originalFilename, storedFileName, boardFile.getContentType());
+          String mimeType = boardFile.getContentType().substring(0, boardFile.getContentType().indexOf("/"));
+          BoardFileEntity boardFileEntity = BoardFileEntity.toBoardFileEntity(board, originalFilename, storedFileName, mimeType);
           boardFileRepository.save(boardFileEntity);
         }
       }

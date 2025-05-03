@@ -21,7 +21,7 @@ public class BoardFileEntity {
   private String storedFileName;
 
   @Column
-  private String contentType;
+  private String mimeType;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "board_id")
@@ -31,7 +31,7 @@ public class BoardFileEntity {
     BoardFileEntity boardFileEntity = new BoardFileEntity();
     boardFileEntity.setOriginalFileName(originalFileName);
     boardFileEntity.setStoredFileName(storedFileName);
-    boardFileEntity.setContentType(contentType);
+    boardFileEntity.setMimeType(contentType);
     boardFileEntity.setBoardEntity(boardEntity);
     return boardFileEntity;
   }

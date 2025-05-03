@@ -17,4 +17,5 @@ public class BoardFileDTO {
     private Long boardId;
     private String originalFileName;
     private String storedFileName;
+    private String mimeType;
 }

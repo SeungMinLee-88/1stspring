@@ -23,8 +23,8 @@ public class BoardEntity extends BaseEntity {
   @Column(length = 20, nullable = false) // 크기 20, not null
   private String boardWriter;
 
-  @Column // 크기 255, null 가능
-  private String boardPass;
+/*  @Column // 크기 255, null 가능
+  private String boardPass;*/
 
   @Column
   private String boardTitle;
@@ -57,7 +57,7 @@ public class BoardEntity extends BaseEntity {
     return BoardEntity.builder()
             .id(boardDTO.getId())
             .boardWriter(boardDTO.getBoardWriter())
-            .boardPass(boardDTO.getBoardPass())
+/*            .boardPass(boardDTO.getBoardPass())*/
             .boardTitle(boardDTO.getBoardTitle())
             .boardContents(boardDTO.getBoardContents())
             .fileAttached(boardDTO.getFileAttached()) // 파일 있음.
@@ -70,7 +70,7 @@ public class BoardEntity extends BaseEntity {
     return BoardEntity.builder()
             .id(boardDTO.getId())
             .boardWriter(boardDTO.getBoardWriter())
-            .boardPass(boardDTO.getBoardPass())
+/*            .boardPass(boardDTO.getBoardPass())*/
             .boardTitle(boardDTO.getBoardTitle())
             .boardContents(boardDTO.getBoardContents())
             .boardHits(boardDTO.getBoardHits())
