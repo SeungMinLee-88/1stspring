@@ -36,7 +36,7 @@ public class JoinService {
     userEntity.setLoginId(loginId);
     userEntity.setUserName(userName);
     userEntity.setUserPassword(bCryptPasswordEncoder.encode(userPassword));
-    userEntity.setUserRole("ROLE_ADMIN");
+    userEntity.setUserRole("COMMON");
 
     userRepository.save(userEntity);
   }
