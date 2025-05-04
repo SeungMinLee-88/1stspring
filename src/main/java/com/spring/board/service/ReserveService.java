@@ -34,7 +34,7 @@ public class ReserveService {
         /*if (boardDTO.getBoardFile().isEmpty()) {*/
 
         /*Optional<UserEntity> optionalUserEntity = userRepository.findById(reserveDTO.getUserId());*/
-        Optional<UserEntity> optionalUserEntity = Optional.ofNullable(userRepository.findByLoginId(reserveDTO.getUserName()));
+        Optional<UserEntity> optionalUserEntity = Optional.ofNullable(userRepository.findByLoginId(reserveDTO.getLoginId()));
         Optional<HallEntity> optionalHallEntity = hallRepository.findById(reserveDTO.getHallId());
         if (optionalUserEntity.isPresent() && optionalHallEntity.isPresent()) {
             UserEntity userEntity = optionalUserEntity.get();
@@ -57,13 +57,14 @@ public class ReserveService {
             return reserveDTO1;
 
         } else {
+            System.out.println("null case!!!!!!!!");
             return null;
         }
     }
 
     public ReserveDTO updateReserve(ReserveDTO reserveDTO) {
 
-        Optional<UserEntity> optionalUserEntity = userRepository.findById(reserveDTO.getUserId());
+        Optional<UserEntity> optionalUserEntity = Optional.ofNullable(userRepository.findByLoginId(reserveDTO.getLoginId()));
         Optional<HallEntity> optionalHallEntity = hallRepository.findById(reserveDTO.getHallId());
         if (optionalUserEntity.isPresent() && optionalHallEntity.isPresent()) {
             UserEntity userEntity = optionalUserEntity.get();

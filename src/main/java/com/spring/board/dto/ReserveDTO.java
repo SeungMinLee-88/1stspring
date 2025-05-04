@@ -20,7 +20,7 @@ public class ReserveDTO {
     private String reserveDate;
     private String reservePeriod;
     private String userName;
-    private Long userId;
+    private String loginId;
 
     private Long hallId;
     private List<Long> reserveTimeSave;

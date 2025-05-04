@@ -25,9 +25,11 @@ public class UserEntity extends BaseEntity {
   private String loginId;
   private String userName;
   private String userPassword;
-  private String userRole;
 
   @OneToMany(mappedBy = "userEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
   private final List<ReserveEntity> reserveEntities = new ArrayList<>();
+
+  @OneToMany(mappedBy = "userEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+  private final List<RoleUserEntity> roleUserEntities = new ArrayList<>();
 
 }
