@@ -15,4 +15,8 @@ import java.util.Optional;
 public interface CommentService {
   List<CommentDTO> commentList(Long boardId);
 
+  void commentSave(CommentDTO commentDTO);
+
+  void commentUpdate(CommentDTO commentDTO);
+
 }

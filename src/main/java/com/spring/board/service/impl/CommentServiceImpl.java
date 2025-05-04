@@ -48,7 +48,44 @@ public class CommentServiceImpl implements CommentService {
     return commentDTOList;
   }
 
+  @Override
+  public void commentSave(CommentDTO commentDTO) {
+/*    BoardEntity boardEntity = boardRepository.findById(boardId).get();
+    List<CommentEntity> commentEntityList = commentRepository.findByBoardEntity(boardEntity);
 
 
+    ModelMapper mapper = new ModelMapper();
+    List<CommentDTO> commentDTOList = mapper.map(commentEntityList, new TypeToken<List<CommentDTO>>() {
+    }.getType());*/
+    BoardEntity boardEntity = boardRepository.findById(commentDTO.getBoardId()).get();
+    Optional<CommentEntity> optionalParentCommentEntity = commentRepository.findById(commentDTO.getParentCommentId());
+
+    Optional<CommentEntity> optionalRootCommentEntity = commentRepository.findById(commentDTO.getRootCommentId());
+
+
+
+    /*CommentEntity saveCommentEntity = CommentEntity.toSaveEntity(commentDTO, boardEntity, parentCommentEntity, rootCommentEntity);*/
+    System.out.println("isRootComment : " + commentDTO.getIsRootComment());
+    if(commentDTO.getIsRootComment().equals("true")){
+      CommentEntity saveCommentEntity = new CommentEntity().builder()
+              .commentWriter(commentDTO.getCommentWriter())
+              .commentContents(commentDTO.getCommentContents())
+              .boardEntity(boardEntity).build();
+      commentRepository.save(saveCommentEntity);
+    }else{
+      CommentEntity saveCommentEntity = new CommentEntity().builder()
+              .commentWriter(commentDTO.getCommentWriter())
+              .commentContents(commentDTO.getCommentContents())
+              .boardEntity(boardEntity)
+              .parentCommentEntity(optionalParentCommentEntity.get())
+              .rootCommentEntity(optionalRootCommentEntity.get()).build();
+      commentRepository.save(saveCommentEntity);
+    }
+
+  }
+
+  @Override
+  public void commentUpdate(CommentDTO commentDTO) {
+  }
 
 }

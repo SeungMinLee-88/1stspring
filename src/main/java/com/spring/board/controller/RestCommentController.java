@@ -46,7 +46,7 @@ public class RestCommentController {
     private final BoardRepository boardRepository;
     private final CategoryRepository categoryRepository;
 
-    @GetMapping("/commentList")
+   /* @GetMapping("/commentList")
     public List<CommentDTO> commentList(@RequestParam Long boardId) {
         System.out.println("boardId : " + boardId);
         // DB에서 전체 게시글 데이터를 가져와서 list.html에 보여준다.
@@ -54,9 +54,9 @@ public class RestCommentController {
         System.out.println("commentDTOList : " + commentDTOList.toString());
         //model.addAttribute("boardList", boardDTOList);
         return commentDTOList;
-    }
+    }*/
 
-    @GetMapping("/commentTrees")
+    @GetMapping("/commentList")
     @Transactional(readOnly = true)
     public Page<CommentEntity> commentTrees(@PageableDefault(page = 1) Pageable pageable, @RequestParam Long boardId) {
         int page = pageable.getPageNumber() - 1;
@@ -103,15 +103,8 @@ public class RestCommentController {
     @PostMapping("/commentSave")
     public ResponseEntity<String> commentSave(@RequestBody CommentDTO commentDTO) throws IOException {
         System.out.println("commentDTO = " + commentDTO);
-
-
-        BoardEntity boardEntity = boardRepository.findById(commentDTO.getBoardId()).get();
-        CommentEntity parentCommentEntity = commentRepository.findById(commentDTO.getParentCommentId()).get();
-        CommentEntity rootCommentEntity = commentRepository.findById(commentDTO.getRootCommentId()).get();
-
-        CommentEntity saveCommentEntity = CommentEntity.toSaveEntity(commentDTO, boardEntity, parentCommentEntity, rootCommentEntity);
-        commentRepository.save(saveCommentEntity);
-
+        System.out.println("PostMapping commentDTO = " + commentDTO.getIsRootComment());
+        commentService.commentSave(commentDTO);
         return ResponseEntity.status(HttpStatus.OK).body("save success");
     }
 

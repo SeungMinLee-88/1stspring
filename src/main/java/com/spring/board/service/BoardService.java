@@ -204,7 +204,7 @@ public class BoardService {
 
     System.out.println("fileList fileDTOList : " + fileDTOList);
 
-    if (boardDTO.getFileList().length == 0 && boardFileEntityList.size() == 0) {
+    if (boardDTO.getFileList() == null && boardFileEntityList.size() == 0) {
       System.out.println("attached XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
       boardDTO.setFileAttached(0);
       BoardEntity saveBoardEntity = BoardEntity.toSaveEntity(boardDTO);
@@ -244,7 +244,7 @@ public class BoardService {
     }
   }
 
-  public void delete(Long id) {
+  public void boardDelete(Long id) {
     boardRepository.deleteById(id);
   }
 

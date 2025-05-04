@@ -161,7 +161,7 @@ public class RestBoardController {
 
     @PostMapping("/updateBoard")
     public ResponseEntity<BoardPostResponse> updateBoard(@RequestParam("boardId") Long id,
-            @RequestParam("boardTitle") String boardTitle, @RequestParam("boardWriter") String boardWriter, @RequestParam("boardContents") String boardContents, @RequestParam(name="boardFile", defaultValue = "", required = false) MultipartFile[] boardFile) {
+            @RequestParam("boardTitle") String boardTitle, @RequestParam("boardWriter") String boardWriter, @RequestParam("boardContents") String boardContents, @RequestParam(name="boardFile", required = false) MultipartFile[] boardFile) {
 
         System.out.println("boardTitle = " + boardTitle);
         System.out.println("boardFile = " + boardFile);
@@ -194,7 +194,7 @@ public class RestBoardController {
     public ResponseEntity<String> boardDelete(@PathVariable Long id) {
 
         try {
-            boardService.delete(id);
+            boardService.boardDelete(id);
         }catch (Exception e){
             e.printStackTrace();
         }
