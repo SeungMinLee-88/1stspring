@@ -30,10 +30,8 @@ public class ReserveService {
     private final ReserveTimeRepository reserveTimeRepository;
 
     public ReserveDTO reserveSave(ReserveDTO reserveDTO) throws IOException {
-        // 파일 첨부 여부에 따라 로직 분리
-        /*if (boardDTO.getBoardFile().isEmpty()) {*/
 
-        /*Optional<UserEntity> optionalUserEntity = userRepository.findById(reserveDTO.getUserId());*/
+        System.out.println("reserveSave reserveDTO : " + reserveDTO);
         Optional<UserEntity> optionalUserEntity = Optional.ofNullable(userRepository.findByLoginId(reserveDTO.getLoginId()));
         Optional<HallEntity> optionalHallEntity = hallRepository.findById(reserveDTO.getHallId());
         if (optionalUserEntity.isPresent() && optionalHallEntity.isPresent()) {
@@ -128,6 +126,7 @@ public class ReserveService {
 
     @Transactional
     public List<ReserveTimeDTO> reserveTimeList(ReserveTimeDTO reserveTimeDTO) {
+        System.out.println("reserveTimeList reserveTimeDTO : " + reserveTimeDTO);
         List<ReserveTimeEntity> reserveTimeEntityList = reserveTimeRepository.findByReserveDate(reserveTimeDTO.getReserveDate());
         ModelMapper mapper = new ModelMapper();
         List<ReserveTimeDTO> reserveDTOList2 = mapper.map(reserveTimeEntityList, new TypeToken<List<ReserveTimeDTO>>(){}.getType());
@@ -140,6 +139,7 @@ public class ReserveService {
         List<TimeEntity> timeEntityList = timeRepository.findByReserveDate(params.get("reserveDate"));
         ModelMapper mapper = new ModelMapper();
         List<TimeDto> timeDtoList = mapper.map(timeEntityList, new TypeToken<List<TimeDto>>(){}.getType());
+        System.out.println("timeDtoList : " + timeDtoList);
         return timeDtoList;
     }
 
