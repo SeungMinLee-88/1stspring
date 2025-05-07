@@ -49,7 +49,7 @@ public class ReserveController {
 
         ReserveDTO reserveDTO = new ReserveDTO();
         reserveDTO.setReserveDate(params.get("reserveDate"));
-        reserveDTO.setUserName(params.get("userName"));
+        reserveDTO.setReserveUserId(params.get("reserveUserId"));
         System.out.println("reserveList reserveDTO : " + reserveDTO.toString());
         // DB에서 전체 게시글 데이터를 가져와서 list.html에 보여준다.
         List<ReserveDTO> reserveDTOList = reserveService.reserveList(reserveDTO);

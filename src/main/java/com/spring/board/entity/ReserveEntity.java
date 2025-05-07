@@ -25,7 +25,7 @@ public class ReserveEntity extends BaseEntity {
   private String reserveDate;
   private String reservePeriod;
 
-  private String loginId;
+  private String reserveUserId;
   private String userName;
 
 
@@ -59,7 +59,7 @@ public class ReserveEntity extends BaseEntity {
             .reserveDate(reserveDTO.getReserveDate())
             .reservePeriod(reserveDTO.getReservePeriod())
             .userEntity(userEntity)
-            .loginId(reserveDTO.getLoginId())
+            .reserveUserId(reserveDTO.getReserveUserId())
             .userName(reserveDTO.getUserName())
             .hallEntity(hallEntity)
             .build();

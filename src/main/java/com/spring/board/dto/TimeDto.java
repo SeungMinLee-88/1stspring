@@ -12,5 +12,5 @@ public class TimeDto {
     private Long id;
     private String time;
     private int reserved;
-    private String userName;
+    private String reserveUserId;
 }

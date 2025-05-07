@@ -32,7 +32,7 @@ public class ReserveService {
     public ReserveDTO reserveSave(ReserveDTO reserveDTO) throws IOException {
 
         System.out.println("reserveSave reserveDTO : " + reserveDTO);
-        Optional<UserEntity> optionalUserEntity = Optional.ofNullable(userRepository.findByLoginId(reserveDTO.getLoginId()));
+        Optional<UserEntity> optionalUserEntity = Optional.ofNullable(userRepository.findByLoginId(reserveDTO.getReserveUserId()));
         Optional<HallEntity> optionalHallEntity = hallRepository.findById(reserveDTO.getHallId());
         if (optionalUserEntity.isPresent() && optionalHallEntity.isPresent()) {
             UserEntity userEntity = optionalUserEntity.get();
@@ -62,7 +62,7 @@ public class ReserveService {
 
     public ReserveDTO updateReserve(ReserveDTO reserveDTO) {
 
-        Optional<UserEntity> optionalUserEntity = Optional.ofNullable(userRepository.findByLoginId(reserveDTO.getLoginId()));
+        Optional<UserEntity> optionalUserEntity = Optional.ofNullable(userRepository.findByLoginId(reserveDTO.getReserveUserId()));
         Optional<HallEntity> optionalHallEntity = hallRepository.findById(reserveDTO.getHallId());
         if (optionalUserEntity.isPresent() && optionalHallEntity.isPresent()) {
             UserEntity userEntity = optionalUserEntity.get();
@@ -85,6 +85,7 @@ public class ReserveService {
             return reserveDTO1;
 
         } else {
+            System.out.println("update null case!!!!!!!!");
             return null;
         }
     }
@@ -93,7 +94,7 @@ public class ReserveService {
     @Transactional
     public List<ReserveDTO> reserveList(ReserveDTO reserveDTO) {
         System.out.println("reserveList reserveDTO : " + reserveDTO);
-        List<ReserveEntity> reserveEntityList = reserveRepository.findByReserveDateContainingAndUserNameContaining(reserveDTO.getReserveDate(), reserveDTO.getUserName());
+        List<ReserveEntity> reserveEntityList = reserveRepository.findByReserveDateContainingAndReserveUserIdContaining(reserveDTO.getReserveDate(), reserveDTO.getReserveUserId());
 
         for(int i = 0; i < reserveEntityList.size(); i++) {
             System.out.println("reserveEntityList : " + reserveEntityList.get(i).getReserveTimeEntity().toString());
@@ -136,6 +137,7 @@ public class ReserveService {
     @Transactional
     public List<TimeDto> timeList(Map<String, String> params) {
         System.out.println("params.get : " + params.get("reserveDate"));
+        System.out.println("reserveDate : " + params.get("reserveDate"));
         List<TimeEntity> timeEntityList = timeRepository.findByReserveDate(params.get("reserveDate"));
         ModelMapper mapper = new ModelMapper();
         List<TimeDto> timeDtoList = mapper.map(timeEntityList, new TypeToken<List<TimeDto>>(){}.getType());
