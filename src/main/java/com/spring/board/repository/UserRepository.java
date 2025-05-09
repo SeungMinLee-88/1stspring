@@ -1,10 +1,19 @@
 package com.spring.board.repository;
 
 import com.spring.board.entity.UserEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
   Boolean existsByLoginId(String loginId);
 
   UserEntity findByLoginId(String loginId);
+
+  @Query("SELECT u FROM UserEntity u LEFT JOIN FETCH u.roleUserEntities")
+  Page<UserEntity> findAllWithRelated(Pageable pageable);
+
+  @Query("SELECT u FROM UserEntity u")
+  Page<UserEntity> findAllWithPageble(Pageable pageable);
 }

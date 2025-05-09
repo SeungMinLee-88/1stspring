@@ -23,7 +23,7 @@ public class ReserveTimeEntity extends BaseEntity {
     @JoinColumn(name = "reserve_id")
     private ReserveEntity reserveEntity;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "time_id")
     private TimeEntity timeEntity;
 

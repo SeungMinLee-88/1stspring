@@ -1,12 +1,17 @@
 package com.spring.board.controller;
 
+import com.spring.board.dto.BoardDTO;
 import com.spring.board.dto.UserDto;
 import com.spring.board.service.UserService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -29,9 +34,9 @@ public class RestUserController {
   }
 
   @GetMapping("/userList")
-  public List<UserDto> userList() {
+  public Page<UserDto> userList(@PageableDefault(page = 1) Pageable pageable, @RequestParam Map<String,String> params){
 
-    List<UserDto> userDtoList = userService.userList();
+    Page<UserDto> userDtoList = userService.userList(pageable, params);
 
     return userDtoList;
   }

@@ -1,5 +1,6 @@
 package com.spring.board.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,9 +27,11 @@ public class UserEntity extends BaseEntity {
   private String userName;
   private String userPassword;
 
+  @JsonIgnore
   @OneToMany(mappedBy = "userEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
   private final List<ReserveEntity> reserveEntities = new ArrayList<>();
 
+  @JsonIgnore
   @OneToMany(mappedBy = "userEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
   private final List<RoleUserEntity> roleUserEntities = new ArrayList<>();
 

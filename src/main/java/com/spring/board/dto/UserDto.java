@@ -1,6 +1,7 @@
 package com.spring.board.dto;
 
 
+import com.spring.board.entity.RoleUserEntity;
 import lombok.*;
 
 import java.util.List;
@@ -17,5 +18,13 @@ public class UserDto {
     private String userName;
     private String userPassword;
     private List<Long> roleUserSave;
+    private List<RoleUserDTO> roleUser;
 
+    public UserDto( Long id, String loginId, String userName, String userPassword,List<RoleUserDTO> roleUser) {
+        this.id = id;
+        this.loginId = loginId;
+        this.userName = userName;
+        this.userPassword = userPassword;
+        this.roleUser = roleUser;
+    }
 }
