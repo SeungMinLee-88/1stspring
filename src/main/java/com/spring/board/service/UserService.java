@@ -65,8 +65,9 @@ public class UserService {
 
     int page = pageable.getPageNumber() - 1;
     int pageLimit = 3;
-/*    Specification<BoardEntity> specification = new BoardSpecification(new SearchCriteria(params.get("searchKey"), params.get("searchValue")));*/
-    Page<UserEntity> userEntityList = userRepository.findAllWithPageble(PageRequest.of(page, 3));
+    Specification<UserEntity> specification = new UserSpecification(new SearchCriteria(params.get("searchKey"), params.get("searchValue")));
+    /*Page<UserEntity> userEntityList = userRepository.findAllWithPageble(specification, PageRequest.of(page, 3));*/
+    Page<UserEntity> userEntityList = userRepository.findAll(specification, PageRequest.of(page, 3));
 
     /*Page<UserEntity> userEntityList = userRepository.findAllWithPageble(PageRequest.of(page, 3));
     ModelMapper mapper = new ModelMapper();

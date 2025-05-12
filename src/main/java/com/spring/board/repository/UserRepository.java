@@ -1,12 +1,15 @@
 package com.spring.board.repository;
 
+import com.spring.board.entity.BoardEntity;
 import com.spring.board.entity.UserEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
-public interface UserRepository extends JpaRepository<UserEntity, Long> {
+public interface UserRepository extends JpaRepository<UserEntity, Long>, JpaSpecificationExecutor<UserEntity> {
   Boolean existsByLoginId(String loginId);
 
   UserEntity findByLoginId(String loginId);
@@ -15,5 +18,5 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
   Page<UserEntity> findAllWithRelated(Pageable pageable);
 
   @Query("SELECT u FROM UserEntity u")
-  Page<UserEntity> findAllWithPageble(Pageable pageable);
+  Page<UserEntity> findAllWithPageble(Specification specification, Pageable pageable);
 }

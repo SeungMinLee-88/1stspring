@@ -2,6 +2,7 @@ package com.spring.board.service;
 
 import com.spring.board.entity.BoardEntity;
 import com.spring.board.entity.SearchCriteria;
+import com.spring.board.entity.UserEntity;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
@@ -10,13 +11,13 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 
 @AllArgsConstructor
-public class UserSpecification implements Specification<BoardEntity> {
+public class UserSpecification implements Specification<UserEntity> {
 
     private SearchCriteria criteria;
 
     @Override
     public Predicate toPredicate
-            (Root<BoardEntity> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
+            (Root<UserEntity> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
 
 /*        if (criteria.getOperation().equalsIgnoreCase(">")) {
             return builder.greaterThanOrEqualTo(
