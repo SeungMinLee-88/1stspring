@@ -1,25 +1,32 @@
 package com.spring.board.service;
 
 import com.spring.board.dto.ReserveDTO;
+import com.spring.board.dto.RoleUserDTO;
 import com.spring.board.dto.UserDto;
 import com.spring.board.entity.UserEntity;
+import com.spring.board.repository.RoleUserRepository;
 import com.spring.board.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class CustomUserDetailsService  implements UserDetailsService {
 
 
   private final UserRepository userRepository;
+  private final RoleUserRepository roleUserRepository;
 
-  public CustomUserDetailsService(UserRepository userRepository) {
+  public CustomUserDetailsService(UserRepository userRepository, RoleUserRepository roleUserRepository) {
 
     this.userRepository = userRepository;
+      this.roleUserRepository = roleUserRepository;
   }
 
   @Override
@@ -33,7 +40,12 @@ public class CustomUserDetailsService  implements UserDetailsService {
 
     ModelMapper mapper = new ModelMapper();
     System.out.println("loadUserByUsername userData : " + userData);
-    UserDto userDto  = mapper.map(userData, new TypeToken<UserDto>(){}.getType());
+    /*UserDto userDto  = mapper.map(userData, new TypeToken<UserDto>(){}.getType());
+    System.out.println("loadUserByUsername userDto : " + userDto);*/
+    UserDto userDto = new UserDto(userData.getId(), userData.getLoginId(), userData.getUserName(), userData.getUserPassword(), mapper.map(roleUserRepository.findByLoginId(userData.getId())
+                    , new TypeToken<List<RoleUserDTO>>() {
+                    }.getType())
+            );
     System.out.println("loadUserByUsername userDto : " + userDto);
 
 

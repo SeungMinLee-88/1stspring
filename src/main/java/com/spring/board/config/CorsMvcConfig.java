@@ -16,7 +16,7 @@ public class CorsMvcConfig implements WebMvcConfigurer {
             .allowedHeaders("X-Custom-Header", "Content-Type") // 허용 헤더
             .exposedHeaders("X-Custom-Header") // 클라이언트에서 접근 가능한 헤더
             .allowCredentials(true) // 쿠키 포함 여부
-            .allowedOrigins("localhost:3200", "localhost:3100");
+            .allowedOrigins("localhost:3000");
   }
 
 }

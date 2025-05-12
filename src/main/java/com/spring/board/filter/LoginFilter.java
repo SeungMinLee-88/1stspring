@@ -79,6 +79,9 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
       userPassword = userDto.getUserPassword();
       System.out.println("userDto : " + userDto);
 
+      System.out.println("loginId : " + loginId);
+      System.out.println("userPassword : " + userPassword);
+
     } catch (JsonProcessingException e) {
       throw new RuntimeException(e);
     }
