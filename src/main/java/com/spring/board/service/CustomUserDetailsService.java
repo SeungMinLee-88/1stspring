@@ -42,11 +42,11 @@ public class CustomUserDetailsService  implements UserDetailsService {
     System.out.println("loadUserByUsername userData : " + userData);
     /*UserDto userDto  = mapper.map(userData, new TypeToken<UserDto>(){}.getType());
     System.out.println("loadUserByUsername userDto : " + userDto);*/
-    UserDto userDto = new UserDto(userData.getId(), userData.getLoginId(), userData.getUserName(), userData.getUserPassword(), mapper.map(roleUserRepository.findByLoginId(userData.getId())
+/*    UserDto userDto = new UserDto(userData.getId(), userData.getLoginId(), userData.getUserName(), userData.getUserPassword(), mapper.map(roleUserRepository.findByUserId(userData.getId())
                     , new TypeToken<List<RoleUserDTO>>() {
                     }.getType())
             );
-    System.out.println("loadUserByUsername userDto : " + userDto);
+    System.out.println("loadUserByUsername userDto : " + userDto);*/
 
 
     if (userData != null) {

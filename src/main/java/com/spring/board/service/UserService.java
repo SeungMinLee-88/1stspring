@@ -75,7 +75,7 @@ public class UserService {
     }.getType());*/
 
     ModelMapper mapper = new ModelMapper();
-    Page<UserDto> userDtoList = userEntityList.map(user -> new UserDto(user.getId(), user.getLoginId(), user.getUserName(), user.getUserPassword(), mapper.map(roleUserRepository.findByLoginId(user.getId())
+    Page<UserDto> userDtoList = userEntityList.map(user -> new UserDto(user.getId(), user.getLoginId(), user.getUserName(), user.getUserPassword(), mapper.map(roleUserRepository.findByUserEntity(user)
             , new TypeToken<List<RoleUserDTO>>() {
             }.getType())
     )
