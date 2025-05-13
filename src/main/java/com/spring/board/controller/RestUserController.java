@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/v1/user")
 @ResponseBody
 public class RestUserController {
   private final UserService userService;

@@ -31,12 +31,12 @@ import java.util.Iterator;
 
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
-  private final AuthenticationManager authenticationManager;
 
-  private final RefreshRepository refreshRepository;
   private ObjectMapper objectMapper =  new ObjectMapper();
 
-  //JWTUtil 주입
+
+  private final AuthenticationManager authenticationManager;
+  private final RefreshRepository refreshRepository;
   private final JWTUtil jwtUtil;
 
   public LoginFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil, RefreshRepository refreshRepository) {
@@ -44,6 +44,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     this.authenticationManager = authenticationManager;
     this.jwtUtil = jwtUtil;
     this.refreshRepository = refreshRepository;
+    setFilterProcessesUrl("/api/v1/user/login");
+
   }
 
   @Override
@@ -141,7 +143,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     //토큰 생성
     /*String access = jwtUtil.createJwt("access", username, role, 20000L);*/
     /*String access = jwtUtil.createJwt("access", username, role, 600000L);*/
-    String access = jwtUtil.createJwt("access", userName, role, 15000000L);
+    String access = jwtUtil.createJwt("access", userName, role, 600000L);
     String refresh = jwtUtil.createJwt("refresh", userName, role, 86400000L);
 
     //Refresh 토큰 저장
