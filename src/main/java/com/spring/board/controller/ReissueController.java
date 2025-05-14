@@ -29,7 +29,7 @@ public class ReissueController {
         this.refreshRepository = refreshRepository;
     }
 
-    @PostMapping("/reissue")
+    @PostMapping("/reIssueToken")
     public ResponseEntity<?> reissue(HttpServletRequest request, HttpServletResponse response) {
 
         System.out.println("call reissue");
