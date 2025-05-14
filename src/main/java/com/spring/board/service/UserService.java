@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +32,31 @@ public class UserService {
 
 
 
-  public void joinProcess(UserDto userDto) {
+  public void userUpdate(UserDto userDto) {
+
+    Optional<UserEntity> optionalUserEntity = userRepository.findById(userDto.getId());
+
+    if (optionalUserEntity.isPresent()) {
+
+
+      UserEntity userEntity = UserEntity.toSaveEntity(userDto);
+      userEntity.setUserPassword(bCryptPasswordEncoder.encode(userDto.getUserPassword()));
+
+      userRepository.save(userEntity);
+      for (int i = 0; i < userDto.getRoleUserSave().size(); i++) {
+        System.out.println("roleList : " + userDto.getRoleUserSave().get(i));
+        RoleEntity roleEntity = roleRepository.findById(userDto.getRoleUserSave().get(i)).get();
+        RoleUserEntity roleUserEntity = RoleUserEntity.toSaveEntity(roleEntity, userEntity);
+        roleUserRepository.save(roleUserEntity);
+      }
+    }else{
+    return;
+    }
+
+  }
+
+
+  public void joinUser(UserDto userDto) {
 
     String loginId = userDto.getLoginId();
     String userName = userDto.getUserName();
@@ -85,6 +110,34 @@ public class UserService {
     }
 
     return userDtoList;
+
+  }
+
+  public UserDto userDetail(UserDto userDto) {
+
+    /*Page<UserEntity> userEntityList = userRepository.findAllWithPageble(specification, PageRequest.of(page, 3));*/
+    Optional<UserEntity> userEntityOptional = userRepository.findById(userDto.getId());
+
+    if(userEntityOptional.isPresent()){
+      UserEntity userEntity = userEntityOptional.get();
+      ModelMapper mapper = new ModelMapper();
+      UserDto userDetail = new UserDto(userEntity.getId(), userEntity.getLoginId(), userEntity.getUserName(), userEntity.getUserPassword(), mapper.map(roleUserRepository.findByUserEntity(userEntity)
+              , new TypeToken<List<RoleUserDTO>>() {
+              }.getType())
+      );
+
+
+      return userDetail;
+
+    }else {
+      return null;
+    }
+
+    /*Page<UserEntity> userEntityList = userRepository.findAllWithPageble(PageRequest.of(page, 3));
+    ModelMapper mapper = new ModelMapper();
+    Page<UserDto> userDtoList = mapper.map(userEntityList, new TypeToken<Page<UserDto>>() {
+    }.getType());*/
+
 
   }
 }

@@ -1,6 +1,8 @@
 package com.spring.board.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.spring.board.dto.BoardDTO;
+import com.spring.board.dto.UserDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -35,4 +37,12 @@ public class UserEntity extends BaseEntity {
   @OneToMany(mappedBy = "userEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
   private final List<RoleUserEntity> roleUserEntities = new ArrayList<>();
 
+
+  public static UserEntity toSaveEntity(UserDto userDto) {
+    return UserEntity.builder()
+            .id(userDto.getId())
+            .userName(userDto.getUserName())
+            .userPassword(userDto.getUserPassword())
+            .build();
+  }
 }

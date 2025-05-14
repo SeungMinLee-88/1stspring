@@ -24,13 +24,22 @@ public class RestUserController {
     this.userService = userService;
   }
 
-  @PostMapping("/join")
-  public ResponseEntity<String> joinProcess(@RequestBody UserDto userDto) {
+  @PostMapping("/userJoin")
+  public ResponseEntity<String> userJoin(@RequestBody UserDto userDto) {
 
     System.out.println(userDto.getUserName());
-    userService.joinProcess(userDto);
+    userService.joinUser(userDto);
 
     return new ResponseEntity<>("Join Success", HttpStatusCode.valueOf(200));
+  }
+
+  @PostMapping("/userUpdate")
+  public ResponseEntity<String> userUpdate(@RequestBody UserDto userDto){
+    System.out.println("userDetail userDto : " + userDto);
+
+    userService.userUpdate(userDto);
+
+    return new ResponseEntity<>("Update Success", HttpStatusCode.valueOf(200));
   }
 
   @GetMapping("/userList")
@@ -40,4 +49,15 @@ public class RestUserController {
 
     return userDtoList;
   }
+
+  @PostMapping("/userDetail")
+  public UserDto userDetail(@RequestBody UserDto userDto){
+    System.out.println("userDetail userDto : " + userDto);
+
+    UserDto userDetail = userService.userDetail(userDto);
+
+    return userDetail;
+  }
+
+
 }

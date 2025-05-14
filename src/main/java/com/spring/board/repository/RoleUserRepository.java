@@ -16,4 +16,5 @@ public interface RoleUserRepository extends JpaRepository<RoleUserEntity, Long> 
             ,nativeQuery = true)*/
     @Query("SELECT r FROM RoleUserEntity r JOIN FETCH r.roleEntity WHERE r.userEntity = :userEntity")
     List<RoleUserEntity> findByUserEntity(UserEntity userEntity);
+
 }
