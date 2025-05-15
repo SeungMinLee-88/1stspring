@@ -1,9 +1,6 @@
 package com.spring.board.service;
 
-import com.spring.board.dto.BoardDTO;
-import com.spring.board.dto.BoardFileDTO;
-import com.spring.board.dto.RoleUserDTO;
-import com.spring.board.dto.UserDto;
+import com.spring.board.dto.*;
 import com.spring.board.entity.*;
 import com.spring.board.repository.RoleRepository;
 import com.spring.board.repository.RoleUserRepository;
@@ -108,9 +105,7 @@ public class UserService {
     for(int i=0;i<userEntityList.getSize();i++){
 
     }
-
     return userDtoList;
-
   }
 
   public UserDto userDetail(UserDto userDto) {
@@ -131,6 +126,18 @@ public class UserService {
 
     }else {
       return null;
+    }
+
+    public List<RoleDTO> roleList(Map<String, String> params) {
+
+
+      List<RoleEntity> roleEntity = roleRepository.findAllNotIn();
+      ModelMapper mapper = new ModelMapper();
+      List<RoleDTO> roleDTOList =  mapper.map(roleUserRepository.findByUserEntity(roleEntity)
+              , new TypeToken<List<RoleUserDTO>>() {
+              }.getType());
+
+      return roleDTOList;
     }
 
     /*Page<UserEntity> userEntityList = userRepository.findAllWithPageble(PageRequest.of(page, 3));

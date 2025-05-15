@@ -59,5 +59,13 @@ public class RestUserController {
     return userDetail;
   }
 
+  @GetMapping("/roleList")
+  public Page<UserDto> roleList(@RequestParam Map<String,String> params){
+
+    Page<UserDto> userDtoList = userService.roleList(params);
+
+    return userDtoList;
+  }
+
 
 }
