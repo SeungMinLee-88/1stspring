@@ -1,6 +1,8 @@
 package com.spring.board.controller;
 
 import com.spring.board.dto.BoardDTO;
+import com.spring.board.dto.RoleDTO;
+import com.spring.board.dto.RoleUserDTO;
 import com.spring.board.dto.UserDto;
 import com.spring.board.service.UserService;
 import org.springframework.data.domain.Page;
@@ -59,12 +61,13 @@ public class RestUserController {
     return userDetail;
   }
 
-  @GetMapping("/roleList")
-  public Page<UserDto> roleList(@RequestParam Map<String,String> params){
+  @PostMapping("/roleList")
+  public List<RoleDTO> roleList(@RequestBody List<Long> roleIds){
 
-    Page<UserDto> userDtoList = userService.roleList(params);
+    System.out.println("roleIds : " + roleIds);
+    List<RoleDTO> roleDTOList = userService.roleList(roleIds);
 
-    return userDtoList;
+    return roleDTOList;
   }
 
 

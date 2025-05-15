@@ -128,23 +128,19 @@ public class UserService {
       return null;
     }
 
-    public List<RoleDTO> roleList(Map<String, String> params) {
-
-
-      List<RoleEntity> roleEntity = roleRepository.findAllNotIn();
-      ModelMapper mapper = new ModelMapper();
-      List<RoleDTO> roleDTOList =  mapper.map(roleUserRepository.findByUserEntity(roleEntity)
-              , new TypeToken<List<RoleUserDTO>>() {
-              }.getType());
-
-      return roleDTOList;
-    }
-
     /*Page<UserEntity> userEntityList = userRepository.findAllWithPageble(PageRequest.of(page, 3));
     ModelMapper mapper = new ModelMapper();
     Page<UserDto> userDtoList = mapper.map(userEntityList, new TypeToken<Page<UserDto>>() {
     }.getType());*/
+  }
+
+  public List<RoleDTO> roleList(List<Long> roleIds) {
 
 
+    List<RoleEntity> roleEntity = roleRepository.findByIdNotIn(roleIds);
+    ModelMapper mapper = new ModelMapper();
+    List<RoleDTO> roleDTOList =  mapper.map(roleEntity, new TypeToken<List<RoleDTO>>(){}.getType());
+
+    return roleDTOList;
   }
 }
