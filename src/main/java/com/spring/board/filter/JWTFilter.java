@@ -47,13 +47,14 @@ public class JWTFilter extends OncePerRequestFilter {
     try {
       System.out.println("call JWTFilter.isExpired");
       jwtUtil.isExpired(accessToken);
+      System.out.println("jwtUtil.isExpired(accessToken) : " + jwtUtil.isExpired(accessToken));
       System.out.println("call JWTFilter.isExpired end");
     } catch (ExpiredJwtException e) {
 
       System.out.println("call JWTFilter.isExpired catch");
       //response body
       PrintWriter writer = response.getWriter();
-      writer.print("expired");
+      writer.print("accessToken expired");
 
       //response status code
       response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

@@ -11,12 +11,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Date;
 
 @Controller
-@ResponseBody
+@RequestMapping("/api/v1/user")
 public class ReissueController {
 
     private final JWTUtil jwtUtil;
@@ -30,11 +31,12 @@ public class ReissueController {
     }
 
     @PostMapping("/reIssueToken")
-    public ResponseEntity<?> reissue(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<?> reIssueToken(HttpServletRequest request, HttpServletResponse response) {
 
         System.out.println("call reissue");
         //get refresh token
         String refresh = null;
+        System.out.println("request.getCookies() : " + request.getCookies());
         Cookie[] cookies = request.getCookies();
         for (Cookie cookie : cookies) {
 
