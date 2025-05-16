@@ -137,6 +137,7 @@ public class UserService {
   public List<RoleDTO> roleList(List<Long> roleIds) {
 
 
+    System.out.println("roleIds : " + roleIds.size());
     List<RoleEntity> roleEntity = roleRepository.findByIdNotIn(roleIds);
     ModelMapper mapper = new ModelMapper();
     List<RoleDTO> roleDTOList =  mapper.map(roleEntity, new TypeToken<List<RoleDTO>>(){}.getType());

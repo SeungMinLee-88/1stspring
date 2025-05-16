@@ -41,6 +41,7 @@ public class UserEntity extends BaseEntity {
   public static UserEntity toSaveEntity(UserDto userDto) {
     return UserEntity.builder()
             .id(userDto.getId())
+            .loginId(userDto.getLoginId())
             .userName(userDto.getUserName())
             .userPassword(userDto.getUserPassword())
             .build();

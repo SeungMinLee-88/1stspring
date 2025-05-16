@@ -37,7 +37,7 @@ public class RestUserController {
 
   @PostMapping("/userUpdate")
   public ResponseEntity<String> userUpdate(@RequestBody UserDto userDto){
-    System.out.println("userDetail userDto : " + userDto);
+    System.out.println("userUpdate userDto : " + userDto);
 
     userService.userUpdate(userDto);
 
