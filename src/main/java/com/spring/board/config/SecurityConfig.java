@@ -99,11 +99,12 @@ public class SecurityConfig {
                     .anyRequest().authenticated());*/
     http
             .authorizeHttpRequests((auth) -> auth
-                    .requestMatchers("/**").permitAll()
-
-                    .requestMatchers("/login", "/", "/join").permitAll()
+                    .requestMatchers("/api/v1/user/login", "/", "/join").permitAll()
+                    .requestMatchers("/api/v1/board/boardList",
+                            "/api/v1/board/detal/*").permitAll()
                     .requestMatchers("/admin").hasRole("ADMIN")
-                    .requestMatchers("/board").hasRole("ADMIN"));
+                    .requestMatchers("/board").hasRole("ADMIN")
+                    .anyRequest().authenticated());
                     //.requestMatchers("/api/v1/*/*/*").permitAll()
                     /*.anyRequest().authenticated());*/
                     //.anyRequest().authenticated());

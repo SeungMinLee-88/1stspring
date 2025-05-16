@@ -98,7 +98,7 @@ public class RestBoardController {
         return boardDTOList;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/detail/{id}")
     public BoardDTO boardDetail(@PathVariable Long id, Model model,
                            @PageableDefault(page=1) Pageable pageable) {
         System.out.println("call boardDetail");
@@ -230,8 +230,8 @@ public class RestBoardController {
     }*/
 
 
-    @GetMapping("/pagingList")
-    public Page<BoardDTO> paging(@PageableDefault(page = 1) Pageable pageable, @RequestParam Map<String,String> params){
+    @GetMapping("/boardList")
+    public Page<BoardDTO> boardList(@PageableDefault(page = 1) Pageable pageable, @RequestParam Map<String,String> params){
 
         System.out.println("GetMapping pageable.getSort() : " + pageable.getSort());
         System.out.println("GetMapping pageable : " + pageable.toString());

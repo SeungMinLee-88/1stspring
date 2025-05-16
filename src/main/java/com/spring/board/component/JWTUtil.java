@@ -1,5 +1,6 @@
 package com.spring.board.component;
 
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -38,7 +39,7 @@ public class JWTUtil {
     System.out.println("isExpired token : " + token);
     if(token == null || token == ""){
       System.out.println("isExpired if chk");
-      return true;
+      throw new JwtException("accessToken not valid");
     }
     return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
   }

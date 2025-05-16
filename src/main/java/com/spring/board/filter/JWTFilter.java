@@ -4,6 +4,7 @@ import com.spring.board.component.JWTUtil;
 import com.spring.board.entity.UserEntity;
 import com.spring.board.service.CustomUserDetails;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,6 +35,8 @@ public class JWTFilter extends OncePerRequestFilter {
     String accessToken = request.getHeader("access");
 
     System.out.println("accessToken : " + accessToken);
+
+    System.out.println("getRequestURL : " + request.getRequestURI());
 // 토큰이 없다면 다음 필터로 넘김
     if (accessToken == null) {
       System.out.println("accessToken == null");
@@ -46,15 +49,29 @@ public class JWTFilter extends OncePerRequestFilter {
 // 토큰 만료 여부 확인, 만료시 다음 필터로 넘기지 않음
     try {
       System.out.println("call JWTFilter.isExpired");
-      jwtUtil.isExpired(accessToken);
       System.out.println("jwtUtil.isExpired(accessToken) : " + jwtUtil.isExpired(accessToken));
+      jwtUtil.isExpired(accessToken);
+
       System.out.println("call JWTFilter.isExpired end");
     } catch (ExpiredJwtException e) {
 
+      System.out.println("e : " + e);
       System.out.println("call JWTFilter.isExpired catch");
       //response body
       PrintWriter writer = response.getWriter();
       writer.print("accessToken expired");
+
+      //response status code
+      response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+      //response.addHeader("tokenstatus", "expired");
+      return;
+    }catch (JwtException e) {
+
+      System.out.println("e : " + e);
+      System.out.println("call JWTFilter.isExpired catch");
+      //response body
+      PrintWriter writer = response.getWriter();
+      writer.print("accessToken not valid");
 
       //response status code
       response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
