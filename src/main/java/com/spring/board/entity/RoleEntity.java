@@ -24,6 +24,8 @@ public class RoleEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment
     private Long id;
 
+    private Long roleId;
+
     private String roleName;
 
     private String roleDesc;
