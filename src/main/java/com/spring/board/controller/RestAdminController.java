@@ -2,12 +2,15 @@ package com.spring.board.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
+@RequestMapping("/api/v1/admin")
 @ResponseBody
-public class AdminController {
-  @GetMapping("/admin")
+public class RestAdminController {
+  @GetMapping("/manageUser")
   public String adminP() {
     System.out.println("call admin Controller");
 

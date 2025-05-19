@@ -1,7 +1,13 @@
 package com.spring.board.filter;
 
 import com.spring.board.component.JWTUtil;
+import com.spring.board.dto.RoleDTO;
+import com.spring.board.entity.RoleEntity;
+import com.spring.board.entity.RoleUserEntity;
 import com.spring.board.entity.UserEntity;
+import com.spring.board.repository.RoleRepository;
+import com.spring.board.repository.RoleUserRepository;
+import com.spring.board.repository.UserRepository;
 import com.spring.board.service.CustomUserDetails;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
@@ -9,6 +15,8 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,14 +24,26 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class JWTFilter extends OncePerRequestFilter {
 
   private final JWTUtil jwtUtil;
 
-  public JWTFilter(JWTUtil jwtUtil) {
+  private final RoleRepository roleRepository;
+
+  private final RoleUserRepository roleUserRepository;
+
+  private final UserRepository userRepository;
+
+  public JWTFilter(JWTUtil jwtUtil, RoleRepository roleRepository, RoleUserRepository roleUserRepository, UserRepository userRepository) {
 
     this.jwtUtil = jwtUtil;
+      this.roleRepository = roleRepository;
+      this.roleUserRepository = roleUserRepository;
+      this.userRepository = userRepository;
   }
 
 
@@ -32,6 +52,7 @@ public class JWTFilter extends OncePerRequestFilter {
 
     System.out.println("call doFilterInternal");
     // 헤더에서 access키에 담긴 토큰을 꺼냄
+
     String accessToken = request.getHeader("access");
 
     System.out.println("accessToken : " + accessToken);
@@ -99,12 +120,32 @@ public class JWTFilter extends OncePerRequestFilter {
 // username, role 값을 획득
     String userName = jwtUtil.getUsername(accessToken);
     String userRole = jwtUtil.getRole(accessToken);
-    System.out.println("getUsername end");
+
+    System.out.println("JWTFilter userName : " + userName);
+    System.out.println("JWTFilter userRole : " + userRole);
+    System.out.println("JWTFilter getUsername end");
 
     UserEntity userEntity = new UserEntity();
     userEntity.setUserName(userName);
-    //userEntity.setUserRole(userRole);
-    CustomUserDetails customUserDetails = new CustomUserDetails(userEntity);
+
+    Optional<UserEntity> optionalUserEntity = userRepository.findById(userEntity.getId());
+
+    UserEntity userEntityGet = optionalUserEntity.get();
+    List<RoleUserEntity> roleUserEntityList = roleUserRepository.findByUserEntity(userEntityGet);
+
+    List<RoleEntity> roleEntity = new ArrayList<>();
+    RoleDTO roleDTO = new RoleDTO();
+    ModelMapper mapper = new ModelMapper();
+    for(int i=0; i < roleUserEntityList.size(); i++) {
+      System.out.println("roleUserEntityList : " + roleUserEntityList.get(i).getRoleEntity());
+      roleDTO = mapper.map(roleUserEntityList.get(i).getRoleEntity()
+              , new TypeToken<RoleDTO>() {
+              }.getType());
+      System.out.println("roleDTO : " + roleDTO);
+      roleEntity.add(roleUserEntityList.get(i).getRoleEntity());
+    }
+
+    CustomUserDetails customUserDetails = new CustomUserDetails(userEntity, roleEntity);
 
     System.out.println("CustomUserDetails end");
     Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());

@@ -33,6 +33,7 @@ public class CustomLogoutFilter extends GenericFilterBean {
 
   private void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
 
+    System.out.println("call CustomLogoutFilter request.getRequestURI() : " + request.getRequestURI());
     System.out.println("call CustomLogoutFilter");
     //path and method verify
     String requestUri = request.getRequestURI();

@@ -1,19 +1,23 @@
 package com.spring.board.service;
 
+import com.spring.board.entity.RoleEntity;
 import com.spring.board.entity.UserEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class CustomUserDetails  implements UserDetails {
 
   private final UserEntity userEntity;
+  private final List<RoleEntity> roleEntity;
 
-  public CustomUserDetails(UserEntity userEntity) {
+  public CustomUserDetails(UserEntity userEntity, List<RoleEntity> roleEntity) {
 
     this.userEntity = userEntity;
+      this.roleEntity = roleEntity;
   }
 
 
@@ -26,8 +30,8 @@ public class CustomUserDetails  implements UserDetails {
 
       @Override
       public String getAuthority() {
-        return "";
-        /*return userEntity.getUserRole();*/
+        //return "";
+        return roleEntity.toString();
       }
     });
 

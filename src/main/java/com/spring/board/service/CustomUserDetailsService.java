@@ -3,6 +3,7 @@ package com.spring.board.service;
 import com.spring.board.dto.ReserveDTO;
 import com.spring.board.dto.RoleUserDTO;
 import com.spring.board.dto.UserDto;
+import com.spring.board.entity.RoleEntity;
 import com.spring.board.entity.UserEntity;
 import com.spring.board.repository.RoleUserRepository;
 import com.spring.board.repository.UserRepository;
@@ -15,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -47,9 +49,10 @@ public class CustomUserDetailsService  implements UserDetailsService {
 
 
     if (userData != null) {
+      List<RoleEntity> roleEntity = new ArrayList<>();
 
       //UserDetails에 담아서 return하면 AutneticationManager가 검증 함
-      return new CustomUserDetails(userData);
+      return new CustomUserDetails(userData, roleEntity);
     }
 
     return null;

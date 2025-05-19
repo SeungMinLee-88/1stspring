@@ -5,6 +5,9 @@ import com.spring.board.filter.CustomLogoutFilter;
 import com.spring.board.filter.JWTFilter;
 import com.spring.board.filter.LoginFilter;
 import com.spring.board.repository.RefreshRepository;
+import com.spring.board.repository.RoleRepository;
+import com.spring.board.repository.RoleUserRepository;
+import com.spring.board.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,12 +38,21 @@ public class SecurityConfig {
 
   private final RefreshRepository refreshRepository;
 
+  private final RoleRepository roleRepository;
 
-  public SecurityConfig(AuthenticationConfiguration authenticationConfiguration, JWTUtil jwtUtil, RefreshRepository refreshRepository) {
+  private final RoleUserRepository roleUserRepository;
+
+  private final UserRepository userRepository;
+
+
+  public SecurityConfig(AuthenticationConfiguration authenticationConfiguration, JWTUtil jwtUtil, RefreshRepository refreshRepository, RoleRepository roleRepository, RoleUserRepository roleUserRepository, UserRepository userRepository) {
 
     this.authenticationConfiguration = authenticationConfiguration;
     this.jwtUtil = jwtUtil;
     this.refreshRepository = refreshRepository;
+      this.roleRepository = roleRepository;
+      this.roleUserRepository = roleUserRepository;
+      this.userRepository = userRepository;
   }
 
   //AuthenticationManager Bean 등록
@@ -99,18 +111,17 @@ public class SecurityConfig {
                     .anyRequest().authenticated());*/
     http
             .authorizeHttpRequests((auth) -> auth
-                    .requestMatchers("/api/v1/user/login", "/", "/join").permitAll()
+                    .requestMatchers("/api/v1/user/login","/api/v1/user/reIssueToken",  "/", "/join").permitAll()
                     .requestMatchers("/api/v1/board/boardList",
                             "/api/v1/board/detal/*").permitAll()
-                    .requestMatchers("/admin").hasRole("ADMIN")
-                    .requestMatchers("/board").hasRole("ADMIN")
+                    .requestMatchers("/api/v1/admin/*").hasRole("ADMIN")
                     .anyRequest().authenticated());
                     //.requestMatchers("/api/v1/*/*/*").permitAll()
                     /*.anyRequest().authenticated());*/
                     //.anyRequest().authenticated());
 
     //JWTFilter 등록
-    http.addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
+    http.addFilterBefore(new JWTFilter(jwtUtil, roleRepository, roleUserRepository,userRepository), LoginFilter.class);
 
 //필터 추가 LoginFilter()는 인자를 받음 (AuthenticationManager() 메소드에 authenticationConfiguration 객체를 넣어야 함) 따라서 등록 필요
     /*http

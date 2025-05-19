@@ -37,10 +37,10 @@ public class JWTUtil {
 
     System.out.println("call jwtUtil.isExpired");
     System.out.println("isExpired token : " + token);
-    if(token == null || token == ""){
+/*    if(token == null || token == ""){
       System.out.println("isExpired if chk");
       throw new JwtException("accessToken not valid");
-    }
+    }*/
     return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
   }
 

@@ -46,6 +46,8 @@ public class ReissueController {
             }
         }
 
+        System.out.println("refresh : " + refresh);
+
         if (refresh == null) {
 
             //response status code
@@ -85,12 +87,15 @@ public class ReissueController {
         System.out.println("jwtUtil.getRole(refresh) : " + jwtUtil.getRole(refresh));
         //make new JWT
         /*String newAccess = jwtUtil.createJwt("access", username, role, 600000L);*/
-        String newAccess = jwtUtil.createJwt("access", username, role, 20000L);
-        String newRefresh = jwtUtil.createJwt("refresh", username, role, 86400000L);
+         /*
+    100000L 20000L 600000L 86400000L
+    */
+        String newAccess = jwtUtil.createJwt("access", username, role, 10000L);
+        String newRefresh = jwtUtil.createJwt("refresh", username, role, 20000L);
 
         //Refresh 토큰 저장 DB에 기존의 Refresh 토큰 삭제 후 새 Refresh 토큰 저장
         refreshRepository.deleteByRefresh(refresh);
-        addRefreshEntity(username, newRefresh, 86400000L);
+        addRefreshEntity(username, newRefresh, 600000L);
 
         //response
         response.setHeader("access", newAccess);
