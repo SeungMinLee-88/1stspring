@@ -1,9 +1,11 @@
 package com.spring.board.service;
 
 import com.spring.board.dto.ReserveDTO;
+import com.spring.board.dto.RoleDTO;
 import com.spring.board.dto.RoleUserDTO;
 import com.spring.board.dto.UserDto;
 import com.spring.board.entity.RoleEntity;
+import com.spring.board.entity.RoleUserEntity;
 import com.spring.board.entity.UserEntity;
 import com.spring.board.repository.RoleUserRepository;
 import com.spring.board.repository.UserRepository;
@@ -11,6 +13,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -25,6 +28,7 @@ public class CustomUserDetailsService  implements UserDetailsService {
 
   @Autowired
   private UserRepository userRepository;
+  @Autowired
   private RoleUserRepository roleUserRepository;
 
 
@@ -51,8 +55,17 @@ public class CustomUserDetailsService  implements UserDetailsService {
     if (userData != null) {
       List<RoleEntity> roleEntity = new ArrayList<>();
 
+      List<String> roles = new ArrayList<>();
+      List<RoleUserEntity> roleUserEntityList = roleUserRepository.findByUserEntity(userData);
+
+      for(int i=0; i < roleUserEntityList.size(); i++) {
+        roles.add(roleUserEntityList.get(i).getRoleEntity().getRoleName());
+        /*updatedAuthorities.addAll(oldAuthorities);*/
+      }
+
+      System.out.println("loadUserByUsername roles : " + roles);
       //UserDetails에 담아서 return하면 AutneticationManager가 검증 함
-      return new CustomUserDetails(userData, roleEntity);
+      return new CustomUserDetails(userData, roles);
     }
 
     return null;

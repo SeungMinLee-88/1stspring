@@ -25,6 +25,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,18 +33,11 @@ public class JWTFilter extends OncePerRequestFilter {
 
   private final JWTUtil jwtUtil;
 
-  private final RoleRepository roleRepository;
 
-  private final RoleUserRepository roleUserRepository;
 
-  private final UserRepository userRepository;
-
-  public JWTFilter(JWTUtil jwtUtil, RoleRepository roleRepository, RoleUserRepository roleUserRepository, UserRepository userRepository) {
+  public JWTFilter(JWTUtil jwtUtil) {
 
     this.jwtUtil = jwtUtil;
-      this.roleRepository = roleRepository;
-      this.roleUserRepository = roleUserRepository;
-      this.userRepository = userRepository;
   }
 
 
@@ -127,30 +121,17 @@ public class JWTFilter extends OncePerRequestFilter {
 
     UserEntity userEntity = new UserEntity();
     userEntity.setUserName(userName);
-
-    Optional<UserEntity> optionalUserEntity = userRepository.findById(userEntity.getId());
-
-    UserEntity userEntityGet = optionalUserEntity.get();
-    List<RoleUserEntity> roleUserEntityList = roleUserRepository.findByUserEntity(userEntityGet);
-
     List<RoleEntity> roleEntity = new ArrayList<>();
-    RoleDTO roleDTO = new RoleDTO();
-    ModelMapper mapper = new ModelMapper();
-    for(int i=0; i < roleUserEntityList.size(); i++) {
-      System.out.println("roleUserEntityList : " + roleUserEntityList.get(i).getRoleEntity());
-      roleDTO = mapper.map(roleUserEntityList.get(i).getRoleEntity()
-              , new TypeToken<RoleDTO>() {
-              }.getType());
-      System.out.println("roleDTO : " + roleDTO);
-      roleEntity.add(roleUserEntityList.get(i).getRoleEntity());
-    }
 
-    CustomUserDetails customUserDetails = new CustomUserDetails(userEntity, roleEntity);
+    List<String> roles = new ArrayList<>();
 
-    System.out.println("CustomUserDetails end");
+
+    CustomUserDetails customUserDetails = new CustomUserDetails(userEntity, roles);
+
+    System.out.println("customUserDetails.getAuthorities() : " + Arrays.toString(customUserDetails.getAuthorities().toArray()));
     Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
     SecurityContextHolder.getContext().setAuthentication(authToken);
-    System.out.println("setAuthentication end");
+    System.out.println("JWTFilter authToken : " + authToken);
     filterChain.doFilter(request, response);
     System.out.println("doFilter end");
   }

@@ -48,11 +48,22 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
   private final AuthenticationManager authenticationManager;
   private final RefreshRepository refreshRepository;
   private final JWTUtil jwtUtil;
-  public LoginFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil, RefreshRepository refreshRepository) {
+
+  private final RoleRepository roleRepository;
+
+  private final RoleUserRepository roleUserRepository;
+
+  private final UserRepository userRepository;
+
+  @Autowired
+  public LoginFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil, RefreshRepository refreshRepository, RoleRepository roleRepository, RoleUserRepository roleUserRepository, UserRepository userRepository) {
 
     this.authenticationManager = authenticationManager;
     this.jwtUtil = jwtUtil;
     this.refreshRepository = refreshRepository;
+      this.roleRepository = roleRepository;
+      this.roleUserRepository = roleUserRepository;
+      this.userRepository = userRepository;
       setFilterProcessesUrl("/api/v1/user/login");
 
   }
@@ -101,17 +112,44 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     }
     System.out.println("loginId : " + loginId);
 
-    //https://stackoverflow.com/questions/14712685/spring-security-set-grantedauthorities
-    Collection<SimpleGrantedAuthority> oldAuthorities = (Collection<SimpleGrantedAuthority>)SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-    SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_ANOTHER");
 
+    Optional<UserEntity> optionalUserEntity = Optional.ofNullable(userRepository.findByLoginId(loginId));
 
-    List<SimpleGrantedAuthority> updatedAuthorities = new ArrayList<SimpleGrantedAuthority>();
-    updatedAuthorities.add(authority);
-    updatedAuthorities.addAll(oldAuthorities);
+    /*if(optionalUserEntity.isPresent()) {*/
+      UserEntity userEntity = optionalUserEntity.get();
+        /*userDto.setRoleUser(mapper.map(roleUserRepository.findByUserEntity(userEntity)
+                , new TypeToken<List<RoleUserDTO>>() {
+                }.getType()));*/
+
+      List<RoleUserEntity> roleUserEntityList = roleUserRepository.findByUserEntity(userEntity);
+/*        List<RoleUserDTO> roleUserDTOList = mapper.map(roleUserEntityList
+                , new TypeToken<List<RoleUserDTO>>() {
+                }.getType());*/
+        /*roleUserEntityList.map(roleUser ->
+                System.out.println(roleUser.)
+        );*/
+
+      RoleDTO roleDTO = new RoleDTO();
+      ModelMapper mapper = new ModelMapper();
+
+      //https://stackoverflow.com/questions/14712685/spring-security-set-grantedauthorities
+      /*Collection<SimpleGrantedAuthority> oldAuthorities = (Collection<SimpleGrantedAuthority>)SecurityContextHolder.getContext().getAuthentication().getAuthorities();*/
+      List<SimpleGrantedAuthority> updatedAuthorities = new ArrayList<SimpleGrantedAuthority>();
+      for(int i=0; i < roleUserEntityList.size(); i++) {
+        System.out.println("roleUserEntityList : " + roleUserEntityList.get(i).getRoleEntity());
+        roleDTO = mapper.map(roleUserEntityList.get(i).getRoleEntity()
+                , new TypeToken<RoleDTO>() {
+                }.getType());
+        System.out.println("roleDTO : " + roleDTO);
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(roleDTO.getRoleName());
+        updatedAuthorities.add(authority);
+        /*updatedAuthorities.addAll(oldAuthorities);*/
+      }
+    System.out.println("updatedAuthorities : " + updatedAuthorities);
+
 
     //스프링 시큐리티에서 username과 password를 검증하기 위해서는 token에 담아야 함
-    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(loginId, userPassword, null);
+    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(loginId, userPassword, updatedAuthorities);
 
     //token에 담은 검증을 위한 AuthenticationManager로 전달
     System.out.println("authToken : " + authToken);
@@ -153,7 +191,9 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 /*    String userId = (String) SecurityContextHolder.getContext()
             .getAuthentication()
             .getPrincipal();*/
-    System.out.println("userName : " + userName);
+    System.out.println("successfulAuthentication userName : " + userName);
+
+    System.out.println("successfulAuthentication authentication.getAuthorities() : " + authentication.getAuthorities());
 
     Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
     Iterator<? extends GrantedAuthority> iterator = authorities.iterator();

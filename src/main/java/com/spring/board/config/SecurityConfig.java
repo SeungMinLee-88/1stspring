@@ -114,14 +114,14 @@ public class SecurityConfig {
                     .requestMatchers("/api/v1/user/login","/api/v1/user/reIssueToken",  "/", "/join").permitAll()
                     .requestMatchers("/api/v1/board/boardList",
                             "/api/v1/board/detal/*").permitAll()
-                    .requestMatchers("/api/v1/admin/*").hasRole("ADMIN")
+                    .requestMatchers("/api/v1/admin/*").hasRole("admin")
                     .anyRequest().authenticated());
                     //.requestMatchers("/api/v1/*/*/*").permitAll()
                     /*.anyRequest().authenticated());*/
                     //.anyRequest().authenticated());
 
     //JWTFilter 등록
-    http.addFilterBefore(new JWTFilter(jwtUtil, roleRepository, roleUserRepository,userRepository), LoginFilter.class);
+    http.addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
 
 //필터 추가 LoginFilter()는 인자를 받음 (AuthenticationManager() 메소드에 authenticationConfiguration 객체를 넣어야 함) 따라서 등록 필요
     /*http
@@ -129,7 +129,7 @@ public class SecurityConfig {
 
     //AuthenticationManager()와 JWTUtil 인수 전달
     http
-            .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, refreshRepository), UsernamePasswordAuthenticationFilter.class);
+            .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, refreshRepository, roleRepository, roleUserRepository, userRepository), UsernamePasswordAuthenticationFilter.class);
 
     http
             .addFilterBefore(new CustomLogoutFilter(jwtUtil, refreshRepository), LogoutFilter.class);

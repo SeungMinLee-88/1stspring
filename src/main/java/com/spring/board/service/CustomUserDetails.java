@@ -12,12 +12,12 @@ import java.util.List;
 public class CustomUserDetails  implements UserDetails {
 
   private final UserEntity userEntity;
-  private final List<RoleEntity> roleEntity;
+  private List<String> roles;
 
-  public CustomUserDetails(UserEntity userEntity, List<RoleEntity> roleEntity) {
+  public CustomUserDetails(UserEntity userEntity, List<String> roles) {
 
     this.userEntity = userEntity;
-      this.roleEntity = roleEntity;
+      this.roles = roles;
   }
 
 
@@ -31,7 +31,7 @@ public class CustomUserDetails  implements UserDetails {
       @Override
       public String getAuthority() {
         //return "";
-        return roleEntity.toString();
+        return "admin";
       }
     });
 
