@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/comment")
+@RequestMapping("/api/v1/comment")
 public class RestCommentController {
 
 
