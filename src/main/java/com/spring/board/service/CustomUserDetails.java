@@ -3,6 +3,7 @@ package com.spring.board.service;
 import com.spring.board.entity.RoleEntity;
 import com.spring.board.entity.UserEntity;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
@@ -12,12 +13,12 @@ import java.util.List;
 public class CustomUserDetails  implements UserDetails {
 
   private final UserEntity userEntity;
-  private List<String> roles;
+  private List<String> userRoles;
 
-  public CustomUserDetails(UserEntity userEntity, List<String> roles) {
+  public CustomUserDetails(UserEntity userEntity, List<String> userRoles) {
 
     this.userEntity = userEntity;
-      this.roles = roles;
+      this.userRoles = userRoles;
   }
 
 
@@ -26,14 +27,19 @@ public class CustomUserDetails  implements UserDetails {
 
     Collection<GrantedAuthority> collection = new ArrayList<>();
 
-    collection.add(new GrantedAuthority() {
+/*    collection.add(new GrantedAuthority() {
 
       @Override
       public String getAuthority() {
         //return "";
-        return "admin";
+        return userRoles.toString();
       }
-    });
+    });*/
+    List<SimpleGrantedAuthority> updatedAuthorities = new ArrayList<SimpleGrantedAuthority>();
+    for(int i=0; i < userRoles.size(); i++) {
+      SimpleGrantedAuthority authority = new SimpleGrantedAuthority(userRoles.get(i));
+      collection.add(authority);
+    }
 
     return collection;
   }

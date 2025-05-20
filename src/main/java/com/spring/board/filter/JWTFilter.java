@@ -19,15 +19,13 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class JWTFilter extends OncePerRequestFilter {
 
@@ -113,7 +111,7 @@ public class JWTFilter extends OncePerRequestFilter {
 
 // username, role 값을 획득
     String userName = jwtUtil.getUsername(accessToken);
-    String userRole = jwtUtil.getRole(accessToken);
+    List<String> userRole = jwtUtil.getRole(accessToken);
 
     System.out.println("JWTFilter userName : " + userName);
     System.out.println("JWTFilter userRole : " + userRole);
@@ -123,12 +121,20 @@ public class JWTFilter extends OncePerRequestFilter {
     userEntity.setUserName(userName);
     List<RoleEntity> roleEntity = new ArrayList<>();
 
-    List<String> roles = new ArrayList<>();
+    List<String> userRoles = new ArrayList<>();
+    //userRoles = List.of(userRole.replace("[","".replace("]","")).split(","));
+    userRoles = userRole;
+    System.out.println("JWTFilter userRolessssss : " + userRoles);
 
 
-    CustomUserDetails customUserDetails = new CustomUserDetails(userEntity, roles);
+    CustomUserDetails customUserDetails = new CustomUserDetails(userEntity, userRoles);
 
-    System.out.println("customUserDetails.getAuthorities() : " + Arrays.toString(customUserDetails.getAuthorities().toArray()));
+    Collection<? extends GrantedAuthority> authorities = customUserDetails.getAuthorities();
+    Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
+    GrantedAuthority auth = iterator.next();
+    String role = auth.getAuthority();
+
+    System.out.println("JWTFilter role : " + role);
     Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
     SecurityContextHolder.getContext().setAuthentication(authToken);
     System.out.println("JWTFilter authToken : " + authToken);

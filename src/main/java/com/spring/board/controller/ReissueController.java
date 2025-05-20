@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping("/api/v1/user")
@@ -81,7 +82,7 @@ public class ReissueController {
         }
 
         String username = jwtUtil.getUsername(refresh);
-        String role = jwtUtil.getRole(refresh);
+        List<String> role = jwtUtil.getRole(refresh);
 
         System.out.println("jwtUtil.getUsername(refresh) : " + jwtUtil.getUsername(refresh));
         System.out.println("jwtUtil.getRole(refresh) : " + jwtUtil.getRole(refresh));

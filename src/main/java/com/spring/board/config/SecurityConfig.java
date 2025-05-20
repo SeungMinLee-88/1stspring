@@ -113,8 +113,8 @@ public class SecurityConfig {
             .authorizeHttpRequests((auth) -> auth
                     .requestMatchers("/api/v1/user/login","/api/v1/user/reIssueToken",  "/", "/join").permitAll()
                     .requestMatchers("/api/v1/board/boardList",
-                            "/api/v1/board/detal/*").permitAll()
-                    .requestMatchers("/api/v1/admin/*").hasRole("admin")
+                            "/api/v1/board/detal/*", "/api/v1/user/userUpdate","/error").permitAll()
+                    .requestMatchers("/api/v1/admin/*").hasAnyRole("ADMIN", "MANAGER")
                     .anyRequest().authenticated());
                     //.requestMatchers("/api/v1/*/*/*").permitAll()
                     /*.anyRequest().authenticated());*/

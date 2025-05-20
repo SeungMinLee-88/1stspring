@@ -10,6 +10,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.List;
 
 @Component
 public class JWTUtil {
@@ -28,9 +29,9 @@ public class JWTUtil {
     return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("username", String.class);
   }
 
-  public String getRole(String token) {
+  public List<String> getRole(String token) {
 
-    return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("role", String.class);
+    return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("role", List.class);
   }
 
   public Boolean isExpired(String token) {
@@ -50,7 +51,7 @@ public class JWTUtil {
     return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("category", String.class);
   }
 
-  public String createJwt(String category, String username, String role, Long expiredMs) {
+  public String createJwt(String category, String username, List<String> role, Long expiredMs) {
 
     return Jwts.builder()
             .claim("category", category)
