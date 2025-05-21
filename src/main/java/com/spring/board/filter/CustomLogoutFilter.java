@@ -63,6 +63,7 @@ public class CustomLogoutFilter extends GenericFilterBean {
 
     //refresh null check
     if (refresh == null) {
+      System.out.println("chk 11111111111");
 
       response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
       return;
@@ -74,6 +75,7 @@ public class CustomLogoutFilter extends GenericFilterBean {
     } catch (ExpiredJwtException e) {
 
       //response status code
+      System.out.println("chk 22222222");
       response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
       return;
     }
@@ -83,6 +85,7 @@ public class CustomLogoutFilter extends GenericFilterBean {
     if (!category.equals("refresh")) {
 
       //response status code
+      System.out.println("chk 333333333");
       response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
       return;
     }
@@ -92,6 +95,7 @@ public class CustomLogoutFilter extends GenericFilterBean {
     if (!isExist) {
 
       //response status code
+      System.out.println("chk 444444444444");
       response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
       return;
     }

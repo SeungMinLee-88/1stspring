@@ -228,7 +228,8 @@ public class BoardServiceImpl implements BoardService {
       BoardEntity board = boardRepository.findById(savedId).get();
 
 
-      if(boardDTO.getFileList().length > 0 ||  boardFileEntityList.size() == 0) {
+      System.out.println("boardDTO.getFileList() : " + boardDTO.getFileList());
+      if(boardDTO.getFileList() != null && boardDTO.getFileList().length > 0 ||  boardFileEntityList.size() == 0) {
         System.out.println("attached OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
         for (MultipartFile boardFile : boardDTO.getFileList()) {
           //MultipartFile boardFile = boardDTO.getBoardFile(); // 1.

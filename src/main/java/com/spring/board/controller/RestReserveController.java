@@ -2,14 +2,10 @@ package com.spring.board.controller;
 
 import com.spring.board.dto.*;
 import com.spring.board.entity.ReserveEntity;
-import com.spring.board.entity.TimeEntity;
 import com.spring.board.service.ReserveService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,8 +15,8 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/reserve")
-public class ReserveController {
+@RequestMapping("/api/v1/reserve")
+public class RestReserveController {
 
     private final ReserveService reserveService;
 
