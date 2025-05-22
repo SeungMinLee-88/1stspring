@@ -111,10 +111,16 @@ public class SecurityConfig {
                     .anyRequest().authenticated());*/
     http
             .authorizeHttpRequests((auth) -> auth
-                    .requestMatchers("/api/v1/user/login","/api/v1/user/reIssueToken",  "/", "/join").permitAll()
-                    .requestMatchers("/api/v1/board/**",
-                            "/api/v1/board/detal/*", "/api/v1/user/userUpdate","/error",
-                            "/api/v1/user/userJoin").permitAll()
+                    .requestMatchers(
+                            "/api/v1/user/login"
+                            ,"/api/v1/user/reIssueToken"
+                            ,  "/"
+                            , "/join").permitAll()
+                    .requestMatchers(
+                            "/api/v1/board/**"
+                            , "/api/v1/board/detal/*"
+                            , "/api/v1/user/userJoin"
+                            , "/error").permitAll()
                     .requestMatchers("/api/v1/admin/*").hasAnyRole("ADMIN", "MANAGER")
                     .anyRequest().authenticated());
                     //.requestMatchers("/api/v1/*/*/*").permitAll()

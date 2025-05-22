@@ -1,5 +1,6 @@
 package com.spring.board.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.spring.board.dto.BoardDTO;
 import jakarta.persistence.*;
 import lombok.*;
@@ -37,6 +38,11 @@ public class BoardEntity extends BaseEntity {
 
   @Column
   private int fileAttached; // 1 or 0
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id")
+  @JsonIgnore
+  private UserEntity userEntity;
 
 
   @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.REMOVE, orphanRemoval = false, fetch = FetchType.LAZY)

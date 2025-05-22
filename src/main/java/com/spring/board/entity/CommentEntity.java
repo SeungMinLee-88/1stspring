@@ -35,6 +35,11 @@ public class CommentEntity extends BaseEntity {
   @JsonIgnore
   private BoardEntity boardEntity;
 
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id")
+  @JsonIgnore
+  private UserEntity userEntity;
+
 
   /*@OneToMany(mappedBy = "commentEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

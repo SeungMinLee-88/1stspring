@@ -29,6 +29,12 @@ public class UserEntity extends BaseEntity {
   private String userName;
   private String userPassword;
 
+  @OneToMany(mappedBy = "userEntity", cascade = CascadeType.REMOVE, orphanRemoval = false, fetch = FetchType.LAZY)
+  private List<CommentEntity> commentEntityList = new ArrayList<>();
+
+  @OneToMany(mappedBy = "userEntity", cascade = CascadeType.REMOVE, orphanRemoval = false, fetch = FetchType.LAZY)
+  private List<BoardEntity> boardEntityList = new ArrayList<>();
+
   @JsonIgnore
   @OneToMany(mappedBy = "userEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
   private final List<ReserveEntity> reserveEntities = new ArrayList<>();

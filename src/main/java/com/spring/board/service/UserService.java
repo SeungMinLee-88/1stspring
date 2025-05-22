@@ -31,4 +31,6 @@ public interface UserService {
   UserDto userDetail(UserDto userDto);
 
   List<RoleDTO> roleList(List<Long> roleIds);
+
+  void userDelete(Long id);
 }

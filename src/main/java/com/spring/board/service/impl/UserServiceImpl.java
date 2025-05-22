@@ -146,4 +146,9 @@ public class UserServiceImpl implements UserService {
 
     return roleDTOList;
   }
+
+  @Override
+  public void userDelete(Long id) {
+    userRepository.deleteById(id);
+  }
 }
