@@ -13,5 +13,6 @@ public class RoleUserDTO {
     private String roleId;
     private String userId;
     private String roleName;
+    private String roleDesc;
     private String reserveDate;
 }

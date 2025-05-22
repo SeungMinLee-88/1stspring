@@ -119,6 +119,7 @@ public class SecurityConfig {
                     .requestMatchers(
                             "/api/v1/board/**"
                             , "/api/v1/board/detal/*"
+                            , "/api/v1/comment/commentList"
                             , "/api/v1/user/userJoin"
                             , "/error").permitAll()
                     .requestMatchers("/api/v1/admin/*").hasAnyRole("ADMIN", "MANAGER")
